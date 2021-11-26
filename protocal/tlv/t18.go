@@ -11,12 +11,14 @@ import (
 	"Tangent-PC/protocal/GuBuffer"
 )
 
-func GetTlv18(sdk *model.Sdk) []byte {
+func GetTlv18(Uin uint64, sdk *model.Sdk, RedirectCount uint16) []byte {
 	pack := GuBuffer.NewGuPacket()
 	pack.SetUint16(wSubVer)
 	pack.SetUint32(sdk.DwSSOVersion)
 	pack.SetUint32(sdk.ServiceId)
 	pack.SetUint32(sdk.ClientVer)
-
+	pack.SetUint32(uint32(Uin))
+	pack.SetUint16(RedirectCount)
+	pack.SetUint16(0)
 	return pack.ToTlv(0x00_18)
 }
