@@ -1,1 +1,3 @@
-module "Tangent-PC"
+module Tangent-PC
+
+go 1.16
