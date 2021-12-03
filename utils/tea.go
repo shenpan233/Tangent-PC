@@ -147,3 +147,13 @@ func xor(a, b []byte) (bts [8]byte) {
 	}
 	return bts
 }
+
+func Encrypt(key, bin []byte) []byte {
+	tea := NewCipher(key)
+	return tea.Encrypt(bin)
+}
+
+func Decrypt(key, bin []byte) []byte {
+	tea := NewCipher(key)
+	return tea.Decrypt(bin)
+}

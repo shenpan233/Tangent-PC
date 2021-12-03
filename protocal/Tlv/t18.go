@@ -4,14 +4,14 @@
 * @app:		tlv018
 * @Creat:   2021/11/26 0026 22:15
  */
-package tlv
+package Tlv
 
 import (
 	"Tangent-PC/model"
-	"Tangent-PC/protocal/GuBuffer"
+	"Tangent-PC/utils/GuBuffer"
 )
 
-func GetTlv18(Uin uint64, sdk *model.Sdk, RedirectCount uint16) []byte {
+func GetTlv18Ping(Uin uint64, sdk *model.Version, RedirectCount uint16) []byte {
 	pack := GuBuffer.NewGuPacket()
 	pack.SetUint16(wSubVer)
 	pack.SetUint32(sdk.DwSSOVersion)
