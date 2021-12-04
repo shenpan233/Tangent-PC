@@ -9,16 +9,27 @@ package Tlv
 import (
 	util "Tangent-PC/utils"
 	"Tangent-PC/utils/GuBuffer"
+	"container/list"
 )
 
-func GetTlv309PingStrategy(IP string) []byte {
+//	ConnectIp 当前连接的IP
+//
+func GetTlv309PingStrategy(ConnectIp string, RedirectIp *list.List) []byte {
 	pack := GuBuffer.NewGuPacket()
 	pack.SetUint16(0xA)
 	pack.SetUint16(0x4)
-	ip := uint32(util.IpToInt(IP))
-	pack.SetUint32(ip)
-	//先暂时写成这样,后续修改
-	pack.SetUint8(0)
-	pack.SetUint8(4)
+	pack.SetUint32(uint32(util.IpToInt(ConnectIp))) /*当前连接IP*/
+	if RedirectIp != nil {
+		if RedirectIp.Len() > 0 {
+			pack.SetUint8(1)
+			pack.SetUint16(uint16(RedirectIp.Len())) /*重定向IP个数*/
+			for element := RedirectIp.Front(); element != nil; element = element.Next() {
+				pack.SetUint32(uint32(util.IpToInt(element.Value.(string))))
+			}
+		} else {
+			pack.SetUint8(0) /*没有向其他服务器发0825*/
+		}
+	}
+	pack.SetUint8(2)
 	return pack.ToTlv(0x03_09)
 }

@@ -8,6 +8,7 @@ package udper
 
 import (
 	"Tangent-PC/utils/GuBuffer"
+	"context"
 	"net"
 	"sync"
 )
@@ -18,6 +19,8 @@ type (
 		seq  uint32
 		*Set
 		pull *sync.Map
+		context.Context
+		context.CancelFunc
 	}
 
 	Set struct {

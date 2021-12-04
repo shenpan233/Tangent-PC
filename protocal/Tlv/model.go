@@ -7,5 +7,6 @@
 package Tlv
 
 const (
-	wSubVer uint16 = 1
+	wSubVer   uint16 = 1
+	wUnknown1 uint16 = 0 /*18和19都是同一个参数,不知道叫什么*/
 )

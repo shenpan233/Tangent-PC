@@ -6,6 +6,10 @@
  */
 package model
 
+import (
+	"container/list"
+)
+
 type (
 	Version struct {
 		DwSSOVersion uint32 //Sso版本
@@ -15,15 +19,31 @@ type (
 		CMainVer     uint16
 		CSubVer      uint16 //同CMainVer
 	}
+
 	Information struct {
-		LongUin  uint64
-		Account  string
-		PassWord []byte //md5加密
+		LongUin    uint64
+		Account    string
+		PassWord   []byte //md5加密
+		RedirectIp *list.List
+		ConnectIp  string
+		Computer
 	}
 
 	TeaKey struct {
 		Ping0825Key []byte
+		Ping0818Key []byte
 		PublicKey   []byte
 		ShareKey    []byte
+	}
+
+	/*一些token/sign*/
+	Sig struct {
+		BufSigClientAddr []byte /*0825返回*/
+	}
+
+	/*Computer*/
+	Computer struct {
+		ComputerId   []byte
+		ComputerIdEx []byte
 	}
 )

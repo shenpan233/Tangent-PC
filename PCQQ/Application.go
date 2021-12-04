@@ -6,22 +6,36 @@
  */
 package PCQQ
 
-import (
-	"Tangent-PC/utils/GuLog"
-)
-
 /*连接初始化,Ping服务器*/
-func (this *TangentPC) Ping() {
+func (this *TangentPC) PingServer() bool {
 	ssoSeq, buffer := this.pack0825()
 	if bin := this.udper.SendAndGet(ssoSeq, WaitTime, &buffer); bin == nil {
 		/*无接收返回*/
-		GuLog.Error("[%s]=>Ping失败", this.info.Account)
-		return
+		return false
 	} else {
 		/*正常接收*/
 		switch this.unpack0825(bin[3:]) {
-		case _0825redirect:
-
+		case _0825Redirect: /*需要重定向*/
+			/*重建udp组件*/
+			if this.udper.ChangeConnect(this.info.ConnectIp + ":8000") {
+				if this.PingServer() {
+					return true
+				}
+			}
+			break
+		case _0825PingSuc:
+			this.info.RedirectIp = nil
+			return true
 		}
 	}
+	return false
+}
+
+func (this *TangentPC) FetchQRCode() *QRResp {
+	ssoSeq, buffer := this.pack0818()
+	if bin := this.udper.SendAndGet(ssoSeq, WaitTime, &buffer); bin != nil {
+		/*无接收返回*/
+		return this.unpack0818(bin)
+	}
+	return nil
 }

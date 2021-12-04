@@ -7,6 +7,8 @@
 package udper
 
 import (
+	"Tangent-PC/utils/GuLog"
+	"context"
 	"net"
 	"sync"
 	"sync/atomic"
@@ -23,6 +25,7 @@ func New(host string, set *Set) (udper *Udper) {
 		udper.BuffMaxSize = 1024
 	}
 	udper.pull = new(sync.Map)
+	udper.Context, udper.CancelFunc = context.WithCancel(context.Background())
 	udper.seq = 0
 	conn, _ := net.ResolveUDPAddr("udp", host)
 	if udper.conn, _ = net.Dial("udp", conn.String()); udper.conn == nil {
@@ -31,6 +34,27 @@ func New(host string, set *Set) (udper *Udper) {
 		go udper.recv()
 	}
 	return
+}
+
+/*连其他服务器*/
+func (this *Udper) ChangeConnect(host string) bool {
+	this.Break()
+	this.Context, this.CancelFunc = context.WithCancel(context.Background())
+	conn, _ := net.ResolveUDPAddr("udp", host)
+	var err error
+	if this.conn, err = net.Dial("udp", conn.String()); err != nil {
+		GuLog.Error("ChangeConnect", "重连失败,%s", err)
+		return false
+	} else {
+		go this.recv()
+		return true
+	}
+}
+
+/*销毁组件*/
+func (this *Udper) Break() {
+	this.CancelFunc() /*清理读取器*/
+	this.conn.Close()
 }
 
 func (this *Udper) GetSeq() uint16 {

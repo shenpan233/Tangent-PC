@@ -11,5 +11,5 @@ var (
 )
 
 func init() {
-	TxServer = []string{"183.60.48.174:8000", "sz.tencent.com:8000", "sz2.tencent.com:8000", "sz3.tencent.com:8000", "sz4.tencent.com:8000", "sz5.tencent.com:8000", "sz6.tencent.com:8000", "sz7.tencent.com:8000", "sz8.tencent.com:8000", "sz9.tencent.com:8000"}
+	TxServer = []string{"183.60.48.174", "sz.tencent.com", "sz2.tencent.com", "sz3.tencent.com", "sz4.tencent.com", "sz5.tencent.com", "sz6.tencent.com", "sz7.tencent.com", "sz8.tencent.com", "sz9.tencent.com"}
 }
