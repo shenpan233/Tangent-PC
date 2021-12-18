@@ -15,7 +15,7 @@ import (
 	"strconv"
 )
 
-var WaitTime = uint32(30) /*三秒延迟*/
+var WaitTime = uint32(3) /*三秒延迟*/
 
 type TangentPC struct {
 	sdk    *model.Version
@@ -41,15 +41,15 @@ func New(Account string, Computer model.Computer) (this *TangentPC) {
 	/*硬件信息等部分*/
 	{
 		this.sdk = new(model.Version)
+		Computer.RedirectIp = list.New()
 		this.info = &model.Information{
 			LongUin: func() uint64 {
 				Uint, _ := strconv.ParseUint(Account, 10, 64)
 				return Uint
 			}(),
-			Account:    Account,
-			PassWord:   nil,
-			RedirectIp: list.New(),
-			Computer:   Computer,
+			Account:  Account,
+			PassWord: nil,
+			Computer: Computer,
 		}
 		this.info.ComputerId = append(this.info.ComputerId[:4], 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0)
 

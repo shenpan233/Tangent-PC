@@ -1,0 +1,6 @@
+.goreleaser.yml
+dist/
+
+
+.idea
+python-tools

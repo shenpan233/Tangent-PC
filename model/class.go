@@ -6,9 +6,7 @@
  */
 package model
 
-import (
-	"container/list"
-)
+import "container/list"
 
 type (
 	Version struct {
@@ -21,11 +19,10 @@ type (
 	}
 
 	Information struct {
-		LongUin    uint64
-		Account    string
-		PassWord   []byte //md5加密
-		RedirectIp *list.List
-		ConnectIp  string
+		LongUin  uint64
+		Account  string
+		PassWord []byte //md5加密
+		PingTime uint32
 		Computer
 	}
 
@@ -39,11 +36,18 @@ type (
 	/*一些token/sign*/
 	Sig struct {
 		BufSigClientAddr []byte /*0825返回*/
+		BufTgTGTKey      []byte
+		BufQR303         []byte
 	}
 
 	/*Computer*/
 	Computer struct {
 		ComputerId   []byte
 		ComputerIdEx []byte
+		ComputerName string
+		MacGuid      []byte
+		RedirectIp   *list.List
+		ConnectIp    string
+		WlanIp       string
 	}
 )

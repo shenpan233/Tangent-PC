@@ -24,18 +24,27 @@ func (this *TangentPC) PingServer() bool {
 			}
 			break
 		case _0825PingSuc:
-			this.info.RedirectIp = nil
 			return true
 		}
 	}
 	return false
 }
 
+/*获取登录二维码*/
 func (this *TangentPC) FetchQRCode() *QRResp {
 	ssoSeq, buffer := this.pack0818()
 	if bin := this.udper.SendAndGet(ssoSeq, WaitTime, &buffer); bin != nil {
-		/*无接收返回*/
+		/*正常接收*/
 		return this.unpack0818(bin)
 	}
 	return nil
+}
+
+/*检测二维码状态*/
+func (this TangentPC) CheckQRCode(resp *QRResp) {
+	ssoSeq, buffer := this.pack0819(resp)
+	if bin := this.udper.SendAndGet(ssoSeq, WaitTime, &buffer); bin != nil {
+		this.unpack0819(resp, bin)
+	}
+	return
 }

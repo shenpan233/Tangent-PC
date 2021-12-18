@@ -10,7 +10,7 @@ import (
 	"Tangent-PC/utils/GuBuffer"
 )
 
-func GetTlv0() []byte {
+func GetTlv() []byte {
 	pack := GuBuffer.NewGuPacket()
 	return pack.ToTlv(0x0)
 }

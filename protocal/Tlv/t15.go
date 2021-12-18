@@ -16,6 +16,7 @@ import (
 
 func GetTlv15(computer *model.Computer) []byte {
 	pack := GuBuffer.NewGuPacket()
+	pack.SetUint16(wSubVer)
 	/*CComputerIDGenerator::Generate*/
 	pack.SetUint8(1)
 	pack.SetUint32(crc32.ChecksumIEEE(computer.ComputerId))
@@ -23,6 +24,6 @@ func GetTlv15(computer *model.Computer) []byte {
 	//bufComputerIDEx
 	pack.SetUint8(2)
 	pack.SetUint32(crc32.ChecksumIEEE(computer.ComputerIdEx))
-	pack.SetToken(computer.ComputerId)
+	pack.SetToken(computer.ComputerIdEx)
 	return pack.ToTlv(0x15)
 }

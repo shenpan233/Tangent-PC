@@ -9,7 +9,9 @@ package PCQQ
 /*二维码相关*/
 type (
 	QRResp struct {
-		Status uint8
-		QRCode []byte
+		Status             uint8
+		QRCode             []byte
+		sig0x30, sigQRsing []byte
+		key                []byte
 	}
 )

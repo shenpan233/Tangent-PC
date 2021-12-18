@@ -35,7 +35,7 @@ func (this *TangentPC) pack0825() (SsoSeq uint16, buffer []byte) {
 //	返回值说明 0xFE->需要重定向
 func (this *TangentPC) unpack0825(bin []byte) (result uint8) {
 	pack := GuBuffer.NewGuUnPacket(util.Decrypt(this.teaKey.Ping0825Key, bin))
-	result = pack.GetInt8()
+	result = pack.GetUint8()
 	/*Tlv解析*/
 	this.uCode0825Tlv(pack)
 	return
@@ -52,6 +52,10 @@ func (this TangentPC) uCode0825Tlv(pack *GuBuffer.GuUnPacket) {
 					this.info.RedirectIp.PushBack(this.info.ConnectIp)
 				case 0x01_12:
 					this.sig.BufSigClientAddr = tlv.Value
+				case 0x00_17:
+					tPack.GetInt16()
+					this.info.PingTime = uint32(tPack.GetInt32())
+					this.info.WlanIp = util.IntToIp(tPack.GetInt32())
 				}
 			})
 		}

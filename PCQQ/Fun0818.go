@@ -24,10 +24,11 @@ func (this *TangentPC) pack0818() (SsoSeq uint16, buffer []byte) {
 		})))
 	}))
 }
+
 func (this *TangentPC) unpack0818(bin []byte) (ret *QRResp) {
 	pack := GuBuffer.NewGuUnPacket(util.Decrypt(this.teaKey.ShareKey, bin[3:]))
 	ret = new(QRResp)
-	ret.Status = pack.GetInt8()
+	ret.Status = pack.GetUint8()
 	/*Tlv解析*/
 	for pack.GetLen() > 0 {
 		if tlv := pack.GetTlv(); tlv != nil {
@@ -36,7 +37,16 @@ func (this *TangentPC) unpack0818(bin []byte) (ret *QRResp) {
 				case 0x302:
 					ret.QRCode = tPack.GetToken()
 					break
-
+				case 0x30:
+					ret.sig0x30 = tPack.GetAll()
+					break
+				case 0x301:
+					ret.sigQRsing = tPack.GetAll()
+					break
+				case 0x9:
+					tPack.GetBin(2)
+					ret.key = tPack.GetAll()
+					break
 				}
 			})
 		}
