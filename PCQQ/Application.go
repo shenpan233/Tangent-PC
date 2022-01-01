@@ -6,11 +6,10 @@
  */
 package PCQQ
 
-/*连接初始化,Ping服务器*/
+// PingServer 连接初始化,Ping服务器
 func (this *TangentPC) PingServer() bool {
 	ssoSeq, buffer := this.pack0825()
 	if bin := this.udper.SendAndGet(ssoSeq, WaitTime, &buffer); bin == nil {
-		/*无接收返回*/
 		return false
 	} else {
 		/*正常接收*/
@@ -30,7 +29,7 @@ func (this *TangentPC) PingServer() bool {
 	return false
 }
 
-/*获取登录二维码*/
+// FetchQRCode 获取登录二维码
 func (this *TangentPC) FetchQRCode() *QRResp {
 	ssoSeq, buffer := this.pack0818()
 	if bin := this.udper.SendAndGet(ssoSeq, WaitTime, &buffer); bin != nil {
@@ -40,11 +39,19 @@ func (this *TangentPC) FetchQRCode() *QRResp {
 	return nil
 }
 
-/*检测二维码状态*/
-func (this TangentPC) CheckQRCode(resp *QRResp) {
+// CheckQRCode 检测二维码状态
+func (this TangentPC) CheckQRCode(resp *QRResp) uint8 {
 	ssoSeq, buffer := this.pack0819(resp)
 	if bin := this.udper.SendAndGet(ssoSeq, WaitTime, &buffer); bin != nil {
-		this.unpack0819(resp, bin)
+		return this.unpack0819(resp, bin)
+	}
+	return QRUnKnow
+}
+
+func (this *TangentPC) QRLogin() {
+	ssoSeq, buffer := this.pack0836QrCode()
+	if bin := this.udper.SendAndGet(ssoSeq, WaitTime, &buffer); bin != nil {
+		this.unpack0836(bin)
 	}
 	return
 }

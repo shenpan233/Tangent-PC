@@ -34,7 +34,7 @@ func New(Account string, Computer model.Computer) (this *TangentPC) {
 			UdpRecv:     nil,
 		}); this.udper == nil {
 			GuLog.Error("New", "服务器连接失败")
-			return
+			return nil
 		}
 	}
 

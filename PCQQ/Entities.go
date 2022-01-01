@@ -1,17 +1,23 @@
 /*
-* @Author:  Trial
-* @email:   shenpan233@vip.qq.com
-* @app:		返回的类
-* @Creat:   2021/12/4 0004 16:24
- */
+  @Author:  Trial(Trialpro@gmail.com)
+  @Creat:   2021/12/31 23:55
+  @Notice:	返回的类
+*/
+
 package PCQQ
 
-/*二维码相关*/
+// QRResp /*二维码相关*/
 type (
 	QRResp struct {
 		Status             uint8
 		QRCode             []byte
-		sig0x30, sigQRsing []byte
+		sig0x30, sigQRSing []byte
 		key                []byte
+	}
+	tgtInfo struct {
+		bufTgTgTKey      []byte
+		bufTgt           []byte
+		bufGTKeyST       []byte
+		bufServiceTicket []byte
 	}
 )

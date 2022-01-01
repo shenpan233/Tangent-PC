@@ -11,6 +11,7 @@ import (
 	"Tangent-PC/protocal/Tlv"
 	util "Tangent-PC/utils"
 	"Tangent-PC/utils/GuBuffer"
+	"Tangent-PC/utils/GuLog"
 )
 
 //组包
@@ -36,4 +37,44 @@ func (this *TangentPC) pack0836QrCode() (Ssoseq uint16, data []byte) {
 			pack.SetBytes(Tlv.GetTlv102Official(this.info))
 		})))
 	}))
+}
+
+const (
+	ecdhTwice = 0x00_08
+	LoginSuc  = 0
+)
+
+//0836解包
+func (this *TangentPC) unpack0836(bin []byte, tgt *tgtInfo) {
+	pack := GuBuffer.NewGuUnPacket(bin)
+	pack.GetInt16()                //是否二次加密
+	LoginStatus := pack.GetUint8() //登录状态
+	if LoginStatus == LoginSuc {
+		tgt = new(tgtInfo)
+		pack = GuBuffer.NewGuUnPacket(util.Decrypt(this.sig.BufTgTGTKey, util.Decrypt(this.teaKey.ShareKey, pack.GetAll())))
+		pack.GetUint8() //不知道什么鬼
+		for pack.GetLen() > 0 {
+			tlv := pack.GetTlv()
+			pack := GuBuffer.NewGuUnPacket(tlv.Value)
+			switch tlv.Tag {
+			case 0x01_09:
+				pack.GetInt16()
+				this.teaKey.SessionKey = pack.GetBin(16)
+				this.sig.BufSession = pack.GetToken()
+				this.sig.BufPwdForConn = pack.GetToken()
+				break
+			case 0x01_07:
+				pack.GetInt16()
+				pack.GetToken()
+				tgt.bufTgTgTKey = pack.GetBin(16)
+				tgt.bufTgt = pack.GetToken()
+				tgt.bufGTKeyST = pack.GetBin(16)
+				tgt.bufServiceTicket = pack.GetToken()
+				break
+			default:
+				GuLog.Error("0836 unpack", "tlv=0x%x\ndata=%s", tlv.Tag, pack.GetAllHex())
+			}
+		}
+	}
+	//GuLog.Warm("0836Recv", "%s\nTgt=%s", util.BinToHex(pack.GetAll()), this.sig.BufTgTGTKey)
 }

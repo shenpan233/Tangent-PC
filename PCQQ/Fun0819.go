@@ -21,7 +21,7 @@ func (this *TangentPC) pack0819(resp *QRResp) (SsoSeq uint16, buffer []byte) {
 		packet.SetBytes(Tlv.GetTlv30(resp.sig0x30))
 		packet.SetBytes(util.Encrypt(resp.key, GuBuffer.NewGuPacketFun(func(pack *GuBuffer.GuPacket) {
 			pack.SetBytes(Tlv.GetTlv19SSOInfo(this.sdk))
-			pack.SetBytes(Tlv.GetTlv301(resp.sigQRsing))
+			pack.SetBytes(Tlv.GetTlv301(resp.sigQRSing))
 		}),
 		))
 	}))
@@ -31,17 +31,19 @@ func (this *TangentPC) pack0819(resp *QRResp) (SsoSeq uint16, buffer []byte) {
 
 //二维码状态标识
 const (
-	QRNoAgree = 0x1 /*已扫码但未点击确认*/
-	QRNoScan  = 0x2 /*未扫码*/
-	QROk      = 0x0 /*已确认登录*/
+	QRNoAgree = 0x1  /*已扫码但未点击确认*/
+	QRNoScan  = 0x2  /*未扫码*/
+	QROk      = 0x0  /*已确认登录*/
+	QRUnKnow  = 0xFF /*未响应*/
 )
 
-func (this *TangentPC) unpack0819(qrResp *QRResp, bin []byte) {
+func (this *TangentPC) unpack0819(qrResp *QRResp, bin []byte) (status uint8) {
 	pack := GuBuffer.NewGuUnPacket(util.Decrypt(qrResp.key, bin[3:]))
-
-	switch pack.GetUint8() {
+	status = pack.GetUint8()
+	qrResp.Status = status
+	switch status {
 	case QRNoScan, QRNoAgree:
-		break
+		return
 	case QROk:
 		/*已确认登录*/
 		/*Tlv解析*/
@@ -70,7 +72,6 @@ func (this *TangentPC) unpack0819(qrResp *QRResp, bin []byte) {
 				})
 			}
 		}
-
 		break
 	}
 

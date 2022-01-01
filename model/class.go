@@ -31,6 +31,7 @@ type (
 		Ping0818Key []byte
 		PublicKey   []byte
 		ShareKey    []byte
+		SessionKey  []byte
 	}
 
 	/*一些token/sign*/
@@ -38,6 +39,8 @@ type (
 		BufSigClientAddr []byte /*0825返回*/
 		BufTgTGTKey      []byte
 		BufQR303         []byte
+		BufSession       []byte
+		BufPwdForConn    []byte
 	}
 
 	/*Computer*/

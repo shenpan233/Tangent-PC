@@ -41,7 +41,7 @@ func (this *TangentPC) unpack0818(bin []byte) (ret *QRResp) {
 					ret.sig0x30 = tPack.GetAll()
 					break
 				case 0x301:
-					ret.sigQRsing = tPack.GetAll()
+					ret.sigQRSing = tPack.GetAll()
 					break
 				case 0x9:
 					tPack.GetBin(2)

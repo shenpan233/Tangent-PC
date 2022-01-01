@@ -17,7 +17,7 @@ const (
 	_0825PingSuc  = 0x00
 )
 
-/*0825组包*/
+//pack0825 0825组包
 func (this *TangentPC) pack0825() (SsoSeq uint16, buffer []byte) {
 	this.teaKey.Ping0825Key = util.GetRandomBin(16)
 	return this.packetLogin(0x08_25, GuBuffer.NewGuPacketFun(func(pack *GuBuffer.GuPacket) {

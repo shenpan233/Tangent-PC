@@ -25,6 +25,9 @@ func TestBuild1(t *testing.T) {
 		ComputerName: "Beijing University",
 		MacGuid:      util.GetRandomBin(16),
 	})
+	if client == nil {
+		return
+	}
 	client.U948()
 
 	if client.PingServer() {
@@ -32,10 +35,10 @@ func TestBuild1(t *testing.T) {
 		resp := client.FetchQRCode()
 		os.WriteFile("./QRCode.png", resp.QRCode, os.FileMode(0777))
 		go func() {
-			for resp.Status != client2.QROk {
-				client.CheckQRCode(resp)
+			for client.CheckQRCode(resp) != client2.QROk {
 				time.Sleep(3 * time.Second)
 			}
+			client.QRLogin()
 		}()
 	}
 
