@@ -6,7 +6,10 @@
  */
 package PCQQ
 
-import "Tangent-PC/model"
+import (
+	"Tangent-PC/model"
+	util "Tangent-PC/utils"
+)
 
 func (this *TangentPC) U948() {
 	this.sdk = &model.Version{
@@ -15,6 +18,7 @@ func (this *TangentPC) U948() {
 		ServiceId:    0x00_00_00_01,
 		ClientVer:    0x00_00_16_BD,
 		CMainVer:     0x3A_15,
+		ClientMd5:    util.HexToBin("58 D1 6F C1 80 EF 1F F1 0D FA 98 98 F8 DF 75 AD"),
 	}
 	this.sdk.CSubVer = this.sdk.CMainVer
 }

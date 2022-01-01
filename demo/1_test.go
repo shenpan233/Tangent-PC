@@ -22,6 +22,7 @@ func TestBuild1(t *testing.T) {
 	client := client2.New("0", model.Computer{
 		ComputerId:   util.HexToBin("9B 13 EE DA 00 00 00 00 00 00 00 00 00 00 00 00"),
 		ComputerIdEx: util.HexToBin("3B AE C1 AD 3C 07 44 EE 29 BE C0 38 4E F2 4A 1A"),
+		DeviceID:     util.GetRandomBin(32),
 		ComputerName: "Beijing University",
 		MacGuid:      util.GetRandomBin(16),
 	})

@@ -6,6 +6,11 @@
  */
 package PCQQ
 
+import (
+	util "Tangent-PC/utils"
+	"Tangent-PC/utils/GuLog"
+)
+
 // PingServer 连接初始化,Ping服务器
 func (this *TangentPC) PingServer() bool {
 	ssoSeq, buffer := this.pack0825()
@@ -51,7 +56,14 @@ func (this TangentPC) CheckQRCode(resp *QRResp) uint8 {
 func (this *TangentPC) QRLogin() {
 	ssoSeq, buffer := this.pack0836QrCode()
 	if bin := this.udper.SendAndGet(ssoSeq, WaitTime, &buffer); bin != nil {
-		this.unpack0836(bin)
+		tgt := this.unpack0836(bin)
+		if tgt != nil {
+			ssoSeq, buffer := this.pack0828(tgt)
+			if bin := this.udper.SendAndGet(ssoSeq, WaitTime, &buffer); bin != nil {
+				GuLog.Warm("QRLogin", "%s", util.BinToHex(bin[3:]))
+				this.unpack0828(bin, tgt)
+			}
+		}
 	}
 	return
 }

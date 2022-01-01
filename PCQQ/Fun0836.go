@@ -11,7 +11,6 @@ import (
 	"Tangent-PC/protocal/Tlv"
 	util "Tangent-PC/utils"
 	"Tangent-PC/utils/GuBuffer"
-	"Tangent-PC/utils/GuLog"
 )
 
 //组包
@@ -45,7 +44,7 @@ const (
 )
 
 //0836解包
-func (this *TangentPC) unpack0836(bin []byte, tgt *tgtInfo) {
+func (this *TangentPC) unpack0836(bin []byte) (tgt *tgtInfo) {
 	pack := GuBuffer.NewGuUnPacket(bin)
 	pack.GetInt16()                //是否二次加密
 	LoginStatus := pack.GetUint8() //登录状态
@@ -71,10 +70,9 @@ func (this *TangentPC) unpack0836(bin []byte, tgt *tgtInfo) {
 				tgt.bufGTKeyST = pack.GetBin(16)
 				tgt.bufServiceTicket = pack.GetToken()
 				break
-			default:
-				GuLog.Error("0836 unpack", "tlv=0x%x\ndata=%s", tlv.Tag, pack.GetAllHex())
 			}
 		}
 	}
-	//GuLog.Warm("0836Recv", "%s\nTgt=%s", util.BinToHex(pack.GetAll()), this.sig.BufTgTGTKey)
+	//GuLog.Warm("0836Recv", "%s\nTgt=%X\nbufGTKeyST=%X\nKeySession=%X\nBufSession=%X", util.BinToHex(pack.GetAll()), tgt.bufTgTgTKey, tgt.bufGTKeyST, this.teaKey.SessionKey, this.sig.BufSession)
+	return
 }

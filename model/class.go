@@ -16,6 +16,8 @@ type (
 		ClientVer    uint32 //客户端版本
 		CMainVer     uint16
 		CSubVer      uint16 //同CMainVer
+		ClientMd5    []byte //客户端MD5
+
 	}
 
 	Information struct {
