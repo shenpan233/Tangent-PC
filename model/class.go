@@ -47,6 +47,7 @@ type (
 	Computer struct {
 		ComputerId   []byte
 		ComputerIdEx []byte
+		DeviceID     []byte
 		ComputerName string
 		MacGuid      []byte
 		RedirectIp   *list.List
