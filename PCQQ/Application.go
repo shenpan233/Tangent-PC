@@ -1,9 +1,10 @@
 /*
 * @Author:  Trial
 * @email:   shenpan233@vip.qq.com
-* @app:		应用接口
+* @app:		应用接口(对外)
 * @Creat:   2021/12/3 0003 21:53
  */
+
 package PCQQ
 
 import (
@@ -53,7 +54,7 @@ func (this TangentPC) CheckQRCode(resp *QRResp) uint8 {
 	return QRUnKnow
 }
 
-func (this *TangentPC) QRLogin() {
+func (this *TangentPC) QRLogin() bool {
 	ssoSeq, buffer := this.pack0836QrCode()
 	if bin := this.udper.SendAndGet(ssoSeq, WaitTime, &buffer); bin != nil {
 		tgt := this.unpack0836(bin)
@@ -61,9 +62,31 @@ func (this *TangentPC) QRLogin() {
 			ssoSeq, buffer := this.pack0828(tgt)
 			if bin := this.udper.SendAndGet(ssoSeq, WaitTime, &buffer); bin != nil {
 				GuLog.Warm("QRLogin", "%s", util.BinToHex(bin[3:]))
-				this.unpack0828(bin, tgt)
+				if this.unpack0828(bin, tgt) == 0 {
+					this.refreshClient()
+					this.refresh26()
+					return true
+				}
 			}
 		}
 	}
-	return
+	return false
+}
+
+//ChangeOnlineStatus 修改在线状态
+func (this *TangentPC) ChangeOnlineStatus(OnLineSts uint16) bool {
+	ssoSeq, buffer := this.pack00EC(OnLineSts)
+	if bin := this.udper.SendAndGet(ssoSeq, WaitTime, &buffer); bin != nil {
+		return true
+	}
+	return false
+}
+
+// HeatBoat 心跳
+func (this *TangentPC) HeatBoat() bool {
+	ssoSeq, buffer := this.pack0058HeatBoat()
+	if bin := this.udper.SendAndGet(ssoSeq, WaitTime, &buffer); bin != nil {
+		return true
+	}
+	return false
 }

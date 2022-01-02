@@ -41,13 +41,13 @@ func (this *TangentPC) unpack0828(bin []byte, tgt *tgtInfo) (result uint8) {
 			pack := GuBuffer.NewGuUnPacket(tlv.Value)
 			switch tlv.Tag {
 			case 0x01_0C:
-				pack.GetUint8()
+				pack.GetInt16()
 				this.teaKey.SessionKey = pack.GetBin(16)
 			default:
 				GuLog.Warm("un0828", "%X", pack.GetAll())
 			}
 		}
+		GuLog.Info("unpack0828", "NewBufSessionKey=%X\n", this.teaKey.SessionKey)
 	}
-
 	return
 }

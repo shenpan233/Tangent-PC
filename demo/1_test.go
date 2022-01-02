@@ -39,7 +39,15 @@ func TestBuild1(t *testing.T) {
 			for client.CheckQRCode(resp) != client2.QROk {
 				time.Sleep(3 * time.Second)
 			}
-			client.QRLogin()
+			if client.QRLogin() {
+				if client.ChangeOnlineStatus(client2.Online) {
+					for {
+						client.HeatBoat()
+						time.Sleep(time.Minute)
+					}
+				}
+
+			}
 		}()
 	}
 
