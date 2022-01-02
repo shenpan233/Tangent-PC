@@ -1,9 +1,3 @@
-/*
-* @Author:  Trial
-* @email:   shenpan233@vip.qq.com
-* @app:
-* @Creat:   2021/11/27 0027 12:07
- */
 package model
 
 var (

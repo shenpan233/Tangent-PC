@@ -4,6 +4,7 @@
 * @app:		类
 * @Creat:   2021/11/26 0026 22:33
  */
+
 package model
 
 import "container/list"
@@ -36,7 +37,7 @@ type (
 		SessionKey  []byte
 	}
 
-	/*一些token/sign*/
+	// Sig 一些token/sign
 	Sig struct {
 		BufSigClientAddr []byte /*0825返回*/
 		BufTgTGTKey      []byte

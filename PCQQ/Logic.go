@@ -8,6 +8,7 @@ package PCQQ
 
 import (
 	util "Tangent-PC/utils"
+	"Tangent-PC/utils/GuBuffer"
 	"Tangent-PC/utils/GuLog"
 )
 
@@ -25,4 +26,17 @@ func (this *TangentPC) refresh26() {
 	if bin := this.udper.SendAndGet(ssoSeq, WaitTime, &buffer); bin != nil {
 		GuLog.Error("refresh26", util.BinToHex(bin))
 	}
+}
+
+func (this *TangentPC) finishLogin() {
+	this.refreshClient()
+	this.refresh26()
+	this.udper.UdpRecv = this.Recv
+}
+
+func (this *TangentPC) Recv(Cmd int16, pack *GuBuffer.GuUnPacket) {
+	pack.GetBin(3)
+	pack = GuBuffer.NewGuUnPacket(util.Decrypt(this.teaKey.SessionKey, pack.GetAll()))
+	GuLog.Info("ReCv", "QQ:[%d],Cmd=0x%X,Buff=%X", this.info.LongUin, Cmd, pack.GetAll())
+
 }

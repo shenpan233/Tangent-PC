@@ -63,8 +63,7 @@ func (this *TangentPC) QRLogin() bool {
 			if bin := this.udper.SendAndGet(ssoSeq, WaitTime, &buffer); bin != nil {
 				GuLog.Warm("QRLogin", "%s", util.BinToHex(bin[3:]))
 				if this.unpack0828(bin, tgt) == 0 {
-					this.refreshClient()
-					this.refresh26()
+					this.finishLogin()
 					return true
 				}
 			}

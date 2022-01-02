@@ -1,6 +1,6 @@
 .goreleaser.yml
 dist/
-
+QRCode.png
 
 .idea
 python-tools
