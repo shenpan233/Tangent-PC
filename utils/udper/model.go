@@ -28,5 +28,5 @@ type (
 		UdpRecv
 	}
 
-	UdpRecv func(Cmd int16, pack *GuBuffer.GuUnPacket)
+	UdpRecv func(Cmd int16, seq uint16, pack *GuBuffer.GuUnPacket)
 )

@@ -8,8 +8,10 @@
 package PCQQ
 
 import (
+	"Tangent-PC/model"
 	util "Tangent-PC/utils"
 	"Tangent-PC/utils/GuLog"
+	"fmt"
 )
 
 // PingServer 连接初始化,Ping服务器
@@ -62,10 +64,30 @@ func (this *TangentPC) QRLogin() bool {
 			ssoSeq, buffer := this.pack0828(tgt)
 			if bin := this.udper.SendAndGet(ssoSeq, WaitTime, &buffer); bin != nil {
 				GuLog.Warm("QRLogin", "%s", util.BinToHex(bin[3:]))
+
 				if this.unpack0828(bin, tgt) == 0 {
+					fmt.Println(tgt.Encode())
+
 					this.finishLogin()
 					return true
 				}
+			}
+		}
+	}
+	return false
+}
+
+//LoginByToken
+
+func (this *TangentPC) LoginByToken(tgt *model.TgtInfo) bool {
+	if tgt != nil {
+		ssoSeq, buffer := this.pack0828(tgt)
+		fmt.Println(util.BinToHex(buffer))
+		if bin := this.udper.SendAndGet(ssoSeq, WaitTime, &buffer); bin != nil {
+			GuLog.Warm("QRLogin", "%s", util.BinToHex(bin[3:]))
+			if this.unpack0828(bin, tgt) == 0 {
+				this.finishLogin()
+				return true
 			}
 		}
 	}

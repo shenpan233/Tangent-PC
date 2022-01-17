@@ -11,14 +11,16 @@ import (
 	"Tangent-PC/utils/GuBuffer"
 )
 
-func GetTlv10B(LoginByQRCode bool, version *model.Version, bufTgt *[]byte) []byte {
+func GetTlv10B(isQRLogin bool, version *model.Version, bufTgt, QdData *[]byte) []byte {
 	pack := GuBuffer.NewGuPacket()
 	pack.SetUint16(2)
 	pack.SetBytes(version.ClientMd5)
 	pack.SetUint8(CreateQDFlag(1, version.ClientMd5, *bufTgt))
 	pack.SetBytes([]byte{0x10, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02})
-	if LoginByQRCode {
+	if isQRLogin {
 		pack.SetBytes([]byte{0, 0})
+	} else {
+		pack.SetBytes((*QdData)[2:])
 	}
 	pack.SetUint32(0)
 	return pack.ToTlv(0x01_0B)

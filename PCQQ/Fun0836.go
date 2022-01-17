@@ -8,6 +8,7 @@
 package PCQQ
 
 import (
+	"Tangent-PC/model"
 	"Tangent-PC/protocal/Tlv"
 	util "Tangent-PC/utils"
 	"Tangent-PC/utils/GuBuffer"
@@ -44,12 +45,12 @@ const (
 )
 
 //0836解包
-func (this *TangentPC) unpack0836(bin []byte) (tgt *tgtInfo) {
+func (this *TangentPC) unpack0836(bin []byte) (tgt *model.TgtInfo) {
 	pack := GuBuffer.NewGuUnPacket(bin)
 	pack.GetInt16()                //是否二次加密
 	LoginStatus := pack.GetUint8() //登录状态
 	if LoginStatus == LoginSuc {
-		tgt = new(tgtInfo)
+		tgt = new(model.TgtInfo)
 		pack = GuBuffer.NewGuUnPacket(util.Decrypt(this.sig.BufTgTGTKey, util.Decrypt(this.teaKey.ShareKey, pack.GetAll())))
 		pack.GetUint8() //不知道什么鬼
 		for pack.GetLen() > 0 {
@@ -58,17 +59,17 @@ func (this *TangentPC) unpack0836(bin []byte) (tgt *tgtInfo) {
 			switch tlv.Tag {
 			case 0x01_09:
 				pack.GetInt16()
-				this.teaKey.SessionKey = pack.GetBin(16)
-				this.sig.BufSession = pack.GetToken()
+				tgt.BufSessionKey = pack.GetBin(16)
+				tgt.BufSession = pack.GetToken()
 				this.sig.BufPwdForConn = pack.GetToken()
 				break
 			case 0x01_07:
 				pack.GetInt16()
 				pack.GetToken()
-				tgt.bufTgTgTKey = pack.GetBin(16)
-				tgt.bufTgt = pack.GetToken()
-				tgt.bufGTKeyST = pack.GetBin(16)
-				tgt.bufServiceTicket = pack.GetToken()
+				tgt.BufTgTgTKey = pack.GetBin(16)
+				tgt.BufTgt = pack.GetToken()
+				tgt.BufGTKeyST = pack.GetBin(16)
+				tgt.BufServiceTicket = pack.GetToken()
 				break
 			}
 		}

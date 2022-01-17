@@ -17,6 +17,7 @@ type TangentPC struct {
 	sig    *model.Sig
 	udper  *udper.Udper
 	teaKey *model.TeaKey
+	handle map[int16]unpack
 }
 
 func New(Account string, Computer model.Computer) (this *TangentPC) {

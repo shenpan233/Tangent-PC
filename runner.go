@@ -12,7 +12,6 @@ import (
 )
 
 func main() {
-
 	GuLog.Config(true, "")
 	client := client2.New("0", model.Computer{
 		ComputerId:   util.HexToBin("9B 13 EE DA 00 00 00 00 00 00 00 00 00 00 00 00"),

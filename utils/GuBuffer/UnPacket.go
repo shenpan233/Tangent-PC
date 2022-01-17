@@ -3,6 +3,7 @@ package GuBuffer
 import (
 	util "Tangent-PC/utils"
 	"bytes"
+	"os"
 )
 
 func NewGuUnPacket(bin []byte) (u *GuUnPacket) {
@@ -93,7 +94,11 @@ func (r *GuUnPacket) GetTlv() (t *Tlv) {
 	return
 }
 
-//仿Mirai,这种还挺好用的
+func (this *GuUnPacket) Skip(len int64) {
+	this.r.Seek(len, os.SEEK_CUR)
+}
+
+// NewGuUnPacketFun 仿Mirai,这种还挺好用的
 func NewGuUnPacketFun(Buffer []byte, fun GuUnPackFun) *GuUnPacket {
 	pack := NewGuUnPacket(Buffer)
 	if fun != nil {

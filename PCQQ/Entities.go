@@ -14,10 +14,4 @@ type (
 		sig0x30, sigQRSing []byte
 		key                []byte
 	}
-	tgtInfo struct {
-		bufTgTgTKey      []byte
-		bufTgt           []byte
-		bufGTKeyST       []byte
-		bufServiceTicket []byte
-	}
 )

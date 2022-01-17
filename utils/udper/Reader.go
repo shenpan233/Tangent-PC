@@ -40,7 +40,7 @@ func (this *Udper) recv() {
 
 				/*无需拉取*/
 				if this.UdpRecv != nil {
-					go this.UdpRecv(Cmd, pack)
+					go this.UdpRecv(Cmd, SsoSeq, pack)
 				}
 			} else {
 				GuLog.Error("UdpEr", "%s", err.Error())
