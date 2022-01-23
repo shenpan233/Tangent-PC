@@ -4,23 +4,34 @@ package cmd0x3f7;
 
 message targer {
   required uint32 wCsCmdNo = 1 [default=1];
-  required Info GroupSub = 2;
+  required Info   GroupSub = 2;
 }
 message Info {
-  required uint32 SubCmd =1 [default=1];
-  required uint32 GroupType = 2;
-  required uint64 GroupCode = 3;
+  optional uint32 SubCmd      = 19;
+  required uint32 GroupType   = 51;
+  optional uint64 dwRequestId = 52 [default=1];
 }
 //------------------------------------
 message msg {
-  required uint32 RequestId = 1 [default=1];
-  required uint32 unknow1 = 2 [default=0];
+  required uint32 wCsCmdNo  = 1;
+  required uint32 tag2      = 2;
   required uint64 GroupCode = 3;
-  required Cs cs = 4;
+  required Cs     cs        = 4;
+  required tag5   tag5      = 5;
 }
 message Cs {
-  required uint32 MsgSeq = 1;
+  required uint32 MsgSeq    = 1;
   required uint32 MsgRandom = 2;
+}
+message tag5{
+  required uint32    tag1 = 1;
+  required tag5_tag2 tag2 = 2;
+}
+message tag5_tag2 {
+  required uint32 MsgSeq = 1;
+  required uint32 tag2   = 2;
+  required uint32 tag3   = 3;
+  required uint32 tag4   = 4;
 }
 
 
