@@ -14,4 +14,8 @@ type (
 		sig0x30, sigQRSing []byte
 		key                []byte
 	}
+
+	// HOOK 回调钩子
+	HOOK struct {
+	}
 )

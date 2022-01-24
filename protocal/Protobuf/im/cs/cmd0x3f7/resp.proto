@@ -1,0 +1,14 @@
+syntax = "proto2";
+package cmd0x3f7;
+
+
+//只是第二个pb的解析
+message resp{
+  required uint32 ReqCode   = 1;
+  required uint32 Code      = 2;
+  required uint32 wCsCmd    = 3;
+  required uint64 GroupCode = 4;
+  required string Message   = 5;
+}
+
+

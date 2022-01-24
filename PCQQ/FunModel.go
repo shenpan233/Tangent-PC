@@ -17,3 +17,9 @@ func (this *TangentPC) pack() (SsoSeq uint16, buffer []byte) {
 
 	}))
 }
+
+func (this *TangentPC) unpack(bin []byte) {
+	GuBuffer.NewGuUnPacketFun(bin, func(pack *GuBuffer.GuUnPacket) {
+
+	})
+}

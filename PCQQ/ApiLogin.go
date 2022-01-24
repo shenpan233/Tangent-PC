@@ -1,7 +1,7 @@
 /*
 * @Author:  Trial
 * @email:   shenpan233@vip.qq.com
-* @app:		应用接口(对外)
+* @app:		登录相关的Api
 * @Creat:   2021/12/3 0003 21:53
  */
 
@@ -77,8 +77,7 @@ func (this *TangentPC) QRLogin() bool {
 	return false
 }
 
-//LoginByToken
-
+//LoginByToken	令牌登录
 func (this *TangentPC) LoginByToken(tgt *model.TgtInfo) bool {
 	if tgt != nil {
 		ssoSeq, buffer := this.pack0828(tgt)

@@ -18,7 +18,7 @@ func GetBuffer(GroupCode uint64, MsgSeq uint32) []byte {
 			WCsCmdNo: proto.Uint32(wCsCmdNo),
 			GroupSub: &Info{
 				SubCmd:      proto.Uint32(subCmd),
-				GroupType:   proto.Uint32(3645433720),
+				GroupType:   proto.Uint32(uint32(util.GetRand32())),
 				DwRequestId: proto.Uint64(1),
 			},
 		}
@@ -50,4 +50,13 @@ func GetBuffer(GroupCode uint64, MsgSeq uint32) []byte {
 		}
 
 	})
+}
+
+func Decode(bin []byte) *Resp {
+	response := new(Resp)
+	if err := proto.Unmarshal(bin, response); err != nil {
+		return nil
+	} else {
+		return response
+	}
 }

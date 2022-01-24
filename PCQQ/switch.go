@@ -20,7 +20,7 @@ func (this *TangentPC) U948() {
 		ClientVer:    0x00_00_16_BD,
 		CMainVer:     0x3A_15,
 		DwQdVersion:  0x04_05_00_09,
-		ClientMd5:    util.HexToBin("58 D1 6F C1 80 EF 1F F1 0D FA 98 98 F8 DF 75 AD"),
+		ClientMd5:    util.HexToBin("D01D63A585280197598CECFF29C631A3"),
 	}
 	this.sdk.CSubVer = this.sdk.CMainVer
 }
