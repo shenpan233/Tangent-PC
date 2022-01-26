@@ -1,14 +1,13 @@
 /*
   @Author:  Trial(Trialpro@gmail.com)
   @Creat:   2022/1/1 17:48
-  @Notice:	内部业务接口
+  @Notice:	内部业务
 */
 
 package PCQQ
 
 import (
-	"Tangent-PC/model"
-	"Tangent-PC/protocal/Msg"
+	"Tangent-PC/protocal/Msg/GroupMsg"
 	util "Tangent-PC/utils"
 	"Tangent-PC/utils/GuBuffer"
 	"Tangent-PC/utils/GuLog"
@@ -30,6 +29,7 @@ func (this *TangentPC) refresh26() {
 	}
 }
 
+//finishLogin 登录完成后的操作
 func (this *TangentPC) finishLogin() {
 	//刷新token
 	this.refreshClient()
@@ -41,6 +41,7 @@ func (this *TangentPC) finishLogin() {
 	}
 }
 
+//GetServerMsg 读取系统信息
 func (this *TangentPC) GetServerMsg(Cmd int16, seq uint16, MsgInfo, data []byte) {
 	go func() {
 		buffer := this.pack0017(seq, MsgInfo)
@@ -48,14 +49,27 @@ func (this *TangentPC) GetServerMsg(Cmd int16, seq uint16, MsgInfo, data []byte)
 	}()
 	switch Cmd {
 	case 0x00_52:
-		Msg := Msg.GroupMsg(data)
+		Msg := GroupMsg.GroupMsg(data)
 		Msg.Account = this.info.LongUin
-		GuLog.Info("Recv GroupMsg", model.Msg2Json(Msg))
+		if this.hook.GroupMsg != nil {
+			go this.hook.GroupMsg(Msg)
+			go this.ReadGroupMsg(Msg.GroupUin, Msg.MsgSeq)
+		}
 		break
 
 	}
 }
 
+//ReadGroupMsg 置群消息已读
+func (this *TangentPC) ReadGroupMsg(GroupCode uint64, MsgSeq uint32) bool {
+	ssoSeq, buffer := this.pack0002(GroupMsg.ReadMsg(GroupCode, MsgSeq))
+	if bin := this.udper.SendAndGet(ssoSeq, WaitTime, &buffer); bin != nil {
+		return this.unpack0002(bin)
+	}
+	return false
+}
+
+//Recv 数据包接收
 func (this *TangentPC) Recv(Cmd int16, seq uint16, pack *GuBuffer.GuUnPacket) {
 	pack.GetBin(3)
 	pack = GuBuffer.NewGuUnPacket(util.Decrypt(this.teaKey.SessionKey, pack.GetAll()))

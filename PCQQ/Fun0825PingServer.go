@@ -1,9 +1,10 @@
 /*
 * @Author:  Trial
 * @email:   shenpan233@vip.qq.com
-* @app:		0825组包/解包
+* @app:		0825组包/解包 服务器Ping
 * @Creat:   2021/11/26 0026 22:48
  */
+
 package PCQQ
 
 import (
@@ -48,14 +49,14 @@ func (this TangentPC) uCode0825Tlv(pack *GuBuffer.GuUnPacket) {
 				switch tlv.Tag {
 				case 0x00_0C: /*Tlv000C*/
 					tPack.GetBin(12)
-					this.info.ConnectIp = util.IntToIp(tPack.GetInt32())
+					this.info.ConnectIp = util.IntToIp(int32(tPack.GetUint32()))
 					this.info.RedirectIp.PushBack(this.info.ConnectIp)
 				case 0x01_12:
 					this.sig.BufSigClientAddr = tlv.Value
 				case 0x00_17:
 					tPack.GetInt16()
-					this.info.PingTime = uint32(tPack.GetInt32())
-					this.info.WlanIp = util.IntToIp(tPack.GetInt32())
+					this.info.PingTime = tPack.GetUint32()
+					this.info.WlanIp = util.IntToIp(int32(tPack.GetUint32()))
 				}
 			})
 		}

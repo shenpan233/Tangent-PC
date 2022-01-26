@@ -6,7 +6,10 @@
 
 package PCQQ
 
-import "Tangent-PC/utils/GuBuffer"
+import (
+	util "Tangent-PC/utils"
+	"Tangent-PC/utils/GuBuffer"
+)
 
 type (
 	unpack func(_ uint16, bin []byte)
@@ -19,7 +22,7 @@ func (this *TangentPC) pack() (SsoSeq uint16, buffer []byte) {
 }
 
 func (this *TangentPC) unpack(bin []byte) {
-	GuBuffer.NewGuUnPacketFun(bin, func(pack *GuBuffer.GuUnPacket) {
+	GuBuffer.NewGuUnPacketFun(util.Decrypt(this.teaKey.SessionKey, bin), func(pack *GuBuffer.GuUnPacket) {
 
 	})
 }

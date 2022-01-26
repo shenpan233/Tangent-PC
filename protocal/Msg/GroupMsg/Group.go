@@ -1,10 +1,10 @@
 /*
   @Author:  Trial(Trialpro@gmail.com)
   @Creat:   2022/1/2 20:53
-  @Notice:
+  @Notice:	群消息接收处理
 */
 
-package Msg
+package GroupMsg
 
 import (
 	"Tangent-PC/model"
@@ -25,18 +25,18 @@ func GroupMsg(data []byte) (Msg *model.GroupMsg) {
 	Msg = new(model.GroupMsg)
 	GuBuffer.NewGuUnPacketFun(data, func(pack *GuBuffer.GuUnPacket) {
 		{
-			GuBuffer.NewGuUnPacketFun(pack.GetBin(int(pack.GetInt32())), func(pack *GuBuffer.GuUnPacket) {
+			GuBuffer.NewGuUnPacketFun(pack.GetBin(int(pack.GetUint32())), func(pack *GuBuffer.GuUnPacket) {
 				//Part1
 			})
 		}
 		//第二部分
 		{
-			Msg.GroupUin = uint64(pack.GetInt32()) //群号
+			Msg.GroupUin = uint64(pack.GetUint32()) //群号
 			pack.Skip(1)
 			{
-				Msg.SenderUin = uint64(pack.GetInt32())       //发消息的人
-				Msg.MsgSeq = uint32(pack.GetInt32())          //消息Seq
-				Msg.MsgTime.Receive = uint64(pack.GetInt32()) //消息的时间
+				Msg.SenderUin = uint64(pack.GetUint32())       //发消息的人
+				Msg.MsgSeq = pack.GetUint32()                  //消息Seq
+				Msg.MsgTime.Receive = uint64(pack.GetUint32()) //消息的时间
 			}
 			pack.Skip(8)
 			//piceceNum := pack.GetUint8()
@@ -44,8 +44,8 @@ func GroupMsg(data []byte) (Msg *model.GroupMsg) {
 			//piceceKind := pack.GetInt16()
 			pack.Skip(4)
 			pack.Skip(12)
-			Msg.MsgTime.Send = uint64(pack.GetInt32()) //发送的时间
-			Msg.MsgID = uint32(pack.GetInt32())
+			Msg.MsgTime.Send = uint64(pack.GetUint32()) //发送的时间
+			Msg.MsgID = pack.GetUint32()
 			pack.Skip(1)
 			{
 				Msg.Red = pack.GetUint8()
@@ -72,7 +72,19 @@ func groupMsgBuild(pack *GuBuffer.GuUnPacket) string {
 			case msgTypeText:
 				switch pack.GetUint8() {
 				case msgCommon:
-					msgBuilder.Write(pack.GetToken())
+					//检查是否有At的消息
+					msgTmp := pack.GetToken()
+					GuBuffer.NewGuUnPacketFun(pack.GetAll(), func(pack *GuBuffer.GuUnPacket) {
+						pack.Skip(1)
+						pack = GuBuffer.NewGuUnPacket(pack.GetBin(int(pack.GetInt16())))
+						if pack.GetLen() != 0 {
+							//有其他的内容
+							pack.Skip(7)
+							msgBuilder.WriteString(buildAt(pack.GetUint32()))
+							msgTmp = nil //清空缓存的内容
+						}
+					})
+					msgBuilder.Write(msgTmp)
 					break
 				}
 				break
@@ -83,7 +95,7 @@ func groupMsgBuild(pack *GuBuffer.GuUnPacket) string {
 				break
 			case msgPic:
 				pack.Skip(1)
-				msgBuilder.Write(pack.GetToken())
+				msgBuilder.WriteString(buildPic(string(pack.GetToken())))
 				break
 			default:
 				GuLog.Warm("GroupMsg 解析", "Type=0x%d\nData=%X", MsgType, pack.GetAll())

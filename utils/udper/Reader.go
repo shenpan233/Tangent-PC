@@ -30,7 +30,7 @@ func (this *Udper) recv() {
 				pack.GetInt16()                          //Version
 				Cmd := pack.GetInt16()                   //命令
 				SsoSeq := uint16(pack.GetInt16())
-				pack.GetInt32() //QQUin
+				pack.GetUint32() //QQUin
 				/*检查是否要拉取*/
 				if value, exits := this.pull.LoadAndDelete(SsoSeq); exits && value != nil {
 					puller := value.(chan []byte)

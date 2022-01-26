@@ -18,6 +18,7 @@ type TangentPC struct {
 	udper  *udper.Udper
 	teaKey *model.TeaKey
 	handle map[int16]unpack
+	hook   HOOK
 }
 
 func New(Account string, Computer model.Computer) (this *TangentPC) {
@@ -25,7 +26,7 @@ func New(Account string, Computer model.Computer) (this *TangentPC) {
 	/*通讯器部分*/
 	{
 		if this.udper = udper.New(model.TxServer[1]+":8000", &udper.Set{
-			BuffMaxSize: 1024,
+			BuffMaxSize: 2048,
 			UdpRecv:     nil,
 		}); this.udper == nil {
 			GuLog.Error("New", "服务器连接失败")

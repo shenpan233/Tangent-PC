@@ -66,9 +66,9 @@ func (r *GuUnPacket) GetInt16() int16 {
 	}
 }
 
-func (r *GuUnPacket) GetInt32() int32 {
+func (r *GuUnPacket) GetUint32() uint32 {
 	if bArr := r.GetBin(4); bArr != nil {
-		return int32((int(bArr[0])<<24)&-16777216 + ((int(bArr[1]) << 16) & 16711680) + ((int(bArr[2]) << 8) & 65280) + (int(bArr[3]<<0) & 255))
+		return uint32((int(bArr[0])<<24)&-16777216 + ((int(bArr[1]) << 16) & 16711680) + ((int(bArr[2]) << 8) & 65280) + (int(bArr[3]<<0) & 255))
 	} else {
 		return 0
 	}
@@ -101,6 +101,9 @@ func (this *GuUnPacket) Skip(len int64) {
 // NewGuUnPacketFun 仿Mirai,这种还挺好用的
 func NewGuUnPacketFun(Buffer []byte, fun GuUnPackFun) *GuUnPacket {
 	pack := NewGuUnPacket(Buffer)
+	if pack == nil {
+		return nil
+	}
 	if fun != nil {
 		fun(pack)
 	}
