@@ -1,9 +1,10 @@
 /*
 * @Author:  Trial
 * @email:   shenpan233@vip.qq.com
-* @app:		TLV_Ping_Strategy_0x309
+* @app:	    TLV_Ping_Strategy_0x309
 * @Creat:   2021/11/26 0026 23:09
  */
+
 package Tlv
 
 import (
@@ -12,8 +13,9 @@ import (
 	"container/list"
 )
 
+//GetTlv309PingStrategy
 //	ConnectIp 当前连接的IP
-//
+//	RedirectIp 重定向的IP列表
 func GetTlv309PingStrategy(ConnectIp string, RedirectIp *list.List) []byte {
 	pack := GuBuffer.NewGuPacket()
 	pack.SetUint16(0xA)

@@ -1,7 +1,7 @@
 /*
   @Author:  Trial(Trialpro@gmail.com)
   @Creat:   2022/1/19 16:28
-  @Notice:
+  @Notice:  cmd0x3f7的测试
 */
 
 package test

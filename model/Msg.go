@@ -1,7 +1,7 @@
 /*
   @Author:  Trial(Trialpro@gmail.com)
   @Creat:   2022/1/2 20:19
-  @Notice:消息相关
+  @Notice:  消息相关
 */
 
 package model

@@ -1,7 +1,7 @@
 /*
   @Author:  Trial(Trialpro@gmail.com)
   @Creat:   2022/1/2 20:53
-  @Notice:	群消息接收处理
+  @Notice:  群消息接收处理
 */
 
 package GroupMsg

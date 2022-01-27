@@ -1,7 +1,7 @@
 /*
 * @Author:  Trial
 * @email:   shenpan233@vip.qq.com
-* @app:		二维码检验
+* @app:	    二维码检验
 * @Creat:   2021/12/10 21:35
  */
 

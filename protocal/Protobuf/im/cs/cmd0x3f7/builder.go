@@ -1,7 +1,7 @@
 /*
   @Author:  Trial(Trialpro@gmail.com)
   @Creat:   2022/1/21 11:38
-  @Notice:
+  @Notice:  构造器
 */
 
 package cmd0x3f7

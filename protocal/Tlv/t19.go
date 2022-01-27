@@ -1,9 +1,10 @@
 /*
 * @Author:  Trial
 * @email:   shenpan233@vip.qq.com
-* @app:
+* @app:     SSo的信息
 * @Creat:   2021/12/4 0004 14:57
  */
+
 package Tlv
 
 import (

@@ -1,7 +1,7 @@
 /*
   @Author:  Trial(Trialpro@gmail.com)
   @Creat:   2022/1/24 12:06
-  @Notice:	聊天相关的Api
+  @Notice:  聊天相关的Api
 */
 
 package PCQQ
