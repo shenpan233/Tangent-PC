@@ -60,15 +60,6 @@ func (this *TangentPC) GetServerMsg(Cmd int16, seq uint16, MsgInfo, data []byte)
 	}
 }
 
-//ReadGroupMsg 置群消息已读
-func (this *TangentPC) ReadGroupMsg(GroupCode uint64, MsgSeq uint32) bool {
-	ssoSeq, buffer := this.pack0002(GroupMsg.ReadMsg(GroupCode, MsgSeq))
-	if bin := this.udper.SendAndGet(ssoSeq, WaitTime, &buffer); bin != nil {
-		return this.unpack0002(bin)
-	}
-	return false
-}
-
 //Recv 数据包接收
 func (this *TangentPC) Recv(Cmd int16, seq uint16, pack *GuBuffer.GuUnPacket) {
 	pack.GetBin(3)
