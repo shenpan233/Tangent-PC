@@ -17,7 +17,7 @@ func GetTlv6TGTGT(QQInfo *model.Information, version *model.Version, TGTKey []by
 	pack := GuBuffer.NewGuPacket()
 	Password2 := util.ToMd5Bytes(QQInfo.PassWord)
 	pack.SetBytes(util.Encrypt(Password2, GuBuffer.NewGuPacketFun(func(pack *GuBuffer.GuPacket) {
-		pack.SetUint32(uint32(util.GetRand32()))
+		pack.SetUint32(util.GetRand32())
 		pack.SetUint16(2)
 		pack.SetUint32(uint32(QQInfo.LongUin))
 		pack.SetUint32(version.DwSSOVersion)

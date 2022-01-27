@@ -1,7 +1,7 @@
 /*
 * @Author:  Trial
 * @email:   shenpan233@vip.qq.com
-* @app:		Uin
+* @app:		AtUin
 * @Creat:   2021/12/10 23:31
  */
 

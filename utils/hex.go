@@ -20,9 +20,9 @@ func GetRandomBin(i int) (data []byte) {
 	return
 }
 
-func GetRand32() int32 {
+func GetRand32() uint32 {
 	rand.Seed(GetServerCurTime())
-	return int32(rand.Int())
+	return uint32(rand.Int())
 }
 
 func RandUint32(min, max uint32) uint32 {

@@ -4,21 +4,15 @@
   @Notice:  群消息接收处理
 */
 
-package GroupMsg
+package Receive
 
 import (
 	"Tangent-PC/model"
+	"Tangent-PC/protocal/Msg"
 	"Tangent-PC/utils/GuBuffer"
 	"Tangent-PC/utils/GuLog"
 	"bytes"
 	"strings"
-)
-
-const (
-	msgTypeText = 0x01
-	msgCommon   = 0x01
-	msgFace     = 0x02
-	msgPic      = 0x03
 )
 
 func GroupMsg(data []byte) (Msg *model.GroupMsg) {
@@ -53,52 +47,58 @@ func GroupMsg(data []byte) (Msg *model.GroupMsg) {
 				Msg.Green = pack.GetUint8()
 				Msg.Size = pack.GetUint8()
 				Msg.Encoding = uint16(pack.GetInt16())
-				pack.Skip(1)
+				Msg.Style = pack.GetUint8()
 				Msg.Font.FontName = pack.GetStr(int32(pack.GetInt16()))
 				pack.Skip(2)
 			}
 		}
-		Msg.Msg = groupMsgBuild(pack)
+		Msg.Msg = groupMsgUnpack(pack)
 	})
 	return
 }
 
-func groupMsgBuild(pack *GuBuffer.GuUnPacket) string {
+//groupMsgUnpack 解包群消息并结构化
+func groupMsgUnpack(pack *GuBuffer.GuUnPacket) string {
 	msgBuilder := bytes.NewBuffer(nil)
 	for pack.GetLen() > 0 {
 		MsgType := pack.GetUint8()
 		GuBuffer.NewGuUnPacketFun(pack.GetToken(), func(pack *GuBuffer.GuUnPacket) {
 			switch MsgType {
-			case msgTypeText:
+			case Msg.TypeText:
 				switch pack.GetUint8() {
-				case msgCommon:
+				case Msg.CommonMsg:
 					//检查是否有At的消息
-					msgTmp := pack.GetToken()
+					common := Msg.Common{
+						Msg: string(pack.GetToken()),
+					}
 					GuBuffer.NewGuUnPacketFun(pack.GetAll(), func(pack *GuBuffer.GuUnPacket) {
 						pack.Skip(1)
 						pack = GuBuffer.NewGuUnPacket(pack.GetBin(int(pack.GetInt16())))
 						if pack.GetLen() != 0 {
 							//有其他的内容
 							pack.Skip(7)
-							msgBuilder.WriteString(buildAt(pack.GetUint32()))
-							msgTmp = nil //清空缓存的内容
+							common.IsAt = true
+							common.AtUin = pack.GetUint32()
 						}
 					})
-					msgBuilder.Write(msgTmp)
+					msgBuilder.WriteString(common.ToString())
 					break
 				}
 				break
-			case msgFace:
+			case Msg.TypeFace:
 				pack.Skip(1)
 				pack.Skip(2)
 				msgBuilder.WriteString(strings.TrimSpace(pack.GetAllHex()))
 				break
-			case msgPic:
+			case Msg.TypePic:
+				tmp := pack.GetAll()
+				GuLog.Debug("tmp pic", "%X", tmp)
+				pack = GuBuffer.NewGuUnPacket(tmp)
 				pack.Skip(1)
 				msgBuilder.WriteString(buildPic(string(pack.GetToken())))
 				break
 			default:
-				GuLog.Warm("GroupMsg 解析", "Type=0x%d\nData=%X", MsgType, pack.GetAll())
+				GuLog.Warm("Group 解析", "Type=0x%d\nData=%X", MsgType, pack.GetAll())
 			}
 		})
 	}

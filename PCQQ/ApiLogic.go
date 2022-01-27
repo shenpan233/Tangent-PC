@@ -7,7 +7,7 @@
 package PCQQ
 
 import (
-	"Tangent-PC/protocal/Msg/GroupMsg"
+	GroupMsg "Tangent-PC/protocal/Msg/Group/Receive"
 	util "Tangent-PC/utils"
 	"Tangent-PC/utils/GuBuffer"
 	"Tangent-PC/utils/GuLog"

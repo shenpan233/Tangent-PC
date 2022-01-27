@@ -4,20 +4,17 @@
   @Notice:  消息回执
 */
 
-package GroupMsg
+package Receive
 
 import (
+	Model "Tangent-PC/protocal/Msg/Group"
 	"Tangent-PC/utils/GuBuffer"
-)
-
-const (
-	Receipt = 0x29
 )
 
 //ReadMsg 消息已读
 func ReadMsg(GroupCode uint64, MsgSeq uint32) []byte {
 	return GuBuffer.NewGuPacketFun(func(pack *GuBuffer.GuPacket) {
-		pack.SetUint8(Receipt) //事件类型
+		pack.SetUint8(Model.Receipt) //事件类型
 		pack.SetUint32(uint32(GroupCode))
 		pack.SetUint8(0x02)
 		pack.SetUint32(MsgSeq)

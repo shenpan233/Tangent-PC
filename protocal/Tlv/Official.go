@@ -1,9 +1,10 @@
 /*
 * @Author:  Trial
 * @email:   shenpan233@vip.qq.com
-* @app:		Official算法
+* @app:	  Official算法
 * @Creat:   2021/12/11 20:27
  */
+
 package Tlv
 
 import (
@@ -18,10 +19,6 @@ const (
 	TmOffModAdd    = 5
 	TxpTEANKeySize = 16
 )
-
-/*
-未完成 => 8轮的tea还有问题
-*/
 
 func CreateOfficial(PasswordMd5, OfficialSig, OfficialKey []byte) []byte {
 	MD5Info := util.ToMd5Bytes(OfficialKey)
@@ -65,6 +62,7 @@ func CreateOfficial(PasswordMd5, OfficialSig, OfficialKey []byte) []byte {
 			key = append(key, prekey[c+3], prekey[c+2], prekey[c+1], prekey[c])
 		}
 		Md5InfoEncode := bytes.NewBuffer(nil)
+		//TODO CreateOfficial:未完成 => 8轮的tea还有问题
 		Md5InfoEncode.Write(util.Encrypt(key, bodyLeft))
 		Md5InfoEncode.Write(util.Encrypt(key, bodyRight))
 		bufMd5InfoEncode := Md5InfoEncode.Bytes()

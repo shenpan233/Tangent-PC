@@ -18,7 +18,7 @@ func GetBuffer(GroupCode uint64, MsgSeq uint32) []byte {
 			WCsCmdNo: proto.Uint32(wCsCmdNo),
 			GroupSub: &Info{
 				SubCmd:      proto.Uint32(subCmd),
-				GroupType:   proto.Uint32(uint32(util.GetRand32())),
+				GroupType:   proto.Uint32(util.GetRand32()),
 				DwRequestId: proto.Uint64(1),
 			},
 		}
@@ -28,7 +28,7 @@ func GetBuffer(GroupCode uint64, MsgSeq uint32) []byte {
 			GroupCode: &GroupCode,
 			Cs: &Cs{
 				MsgSeq:    &MsgSeq,
-				MsgRandom: proto.Uint32(uint32(util.GetRand32())),
+				MsgRandom: proto.Uint32(util.GetRand32()),
 			},
 			Tag5: &Tag5{
 				Tag1: zeroTag,
