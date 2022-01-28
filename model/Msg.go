@@ -7,8 +7,8 @@
 package model
 
 import (
-	"Tangent-PC/utils/GuBuffer"
 	"encoding/json"
+	"github.com/shenpan233/Tangent-PC/utils/GuBuffer"
 )
 
 type MsgTime struct {

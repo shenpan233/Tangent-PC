@@ -8,9 +8,9 @@
 package Tlv
 
 import (
-	util "Tangent-PC/utils"
-	"Tangent-PC/utils/GuBuffer"
 	"container/list"
+	util "github.com/shenpan233/Tangent-PC/utils"
+	"github.com/shenpan233/Tangent-PC/utils/GuBuffer"
 )
 
 //GetTlv309PingStrategy

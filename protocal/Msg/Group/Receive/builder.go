@@ -7,7 +7,7 @@
 package Receive
 
 import (
-	"Tangent-PC/protocal/Msg"
+	"github.com/shenpan233/Tangent-PC/protocal/Msg"
 )
 
 func buildPic(guid string) string {

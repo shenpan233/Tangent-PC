@@ -7,11 +7,11 @@
 package Group
 
 import (
-	"Tangent-PC/protocal/Msg"
-	util "Tangent-PC/utils"
-	"Tangent-PC/utils/Bytes"
-	"Tangent-PC/utils/GuBuffer"
 	"fmt"
+	"github.com/shenpan233/Tangent-PC/protocal/Msg"
+	util "github.com/shenpan233/Tangent-PC/utils"
+	"github.com/shenpan233/Tangent-PC/utils/Bytes"
+	"github.com/shenpan233/Tangent-PC/utils/GuBuffer"
 )
 
 type (

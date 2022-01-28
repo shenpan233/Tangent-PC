@@ -7,8 +7,8 @@
 package PCQQ
 
 import (
-	util "Tangent-PC/utils"
-	"Tangent-PC/utils/GuBuffer"
+	util "github.com/shenpan233/Tangent-PC/utils"
+	"github.com/shenpan233/Tangent-PC/utils/GuBuffer"
 )
 
 type (

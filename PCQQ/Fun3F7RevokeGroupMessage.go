@@ -7,9 +7,9 @@
 package PCQQ
 
 import (
-	"Tangent-PC/protocal/Protobuf/im/cs/cmd0x3f7"
-	"Tangent-PC/utils/GuBuffer"
 	"fmt"
+	"github.com/shenpan233/Tangent-PC/protocal/Protobuf/im/cs/cmd0x3f7"
+	"github.com/shenpan233/Tangent-PC/utils/GuBuffer"
 )
 
 func (this *TangentPC) pack0x3f7(GroupCode uint64, MsgSeq uint32) (SsoSeq uint16, buffer []byte) {

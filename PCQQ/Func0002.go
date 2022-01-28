@@ -7,11 +7,11 @@
 package PCQQ
 
 import (
-	GroupMsgModel "Tangent-PC/protocal/Msg/Group"
-	GroupMsg "Tangent-PC/protocal/Msg/Group/Receive"
-	GroupSend "Tangent-PC/protocal/Msg/Group/Send"
-	util "Tangent-PC/utils"
-	"Tangent-PC/utils/GuBuffer"
+	GroupMsgModel "github.com/shenpan233/Tangent-PC/protocal/Msg/Group"
+	GroupMsg "github.com/shenpan233/Tangent-PC/protocal/Msg/Group/Receive"
+	GroupSend "github.com/shenpan233/Tangent-PC/protocal/Msg/Group/Send"
+	util "github.com/shenpan233/Tangent-PC/utils"
+	"github.com/shenpan233/Tangent-PC/utils/GuBuffer"
 )
 
 func (this *TangentPC) pack0002(bin []byte) (SsoSeq uint16, buffer []byte) {

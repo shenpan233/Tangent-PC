@@ -7,7 +7,7 @@
 
 package Tlv
 
-import "Tangent-PC/utils/GuBuffer"
+import "github.com/shenpan233/Tangent-PC/utils/GuBuffer"
 
 func GetTlv5Uin(qqUin uint64) []byte {
 	pack := GuBuffer.NewGuPacket()

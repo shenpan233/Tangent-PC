@@ -8,10 +8,10 @@
 package PCQQ
 
 import (
-	"Tangent-PC/model"
-	util "Tangent-PC/utils"
-	"Tangent-PC/utils/GuLog"
 	"fmt"
+	"github.com/shenpan233/Tangent-PC/model"
+	util "github.com/shenpan233/Tangent-PC/utils"
+	"github.com/shenpan233/Tangent-PC/utils/GuLog"
 )
 
 // PingServer 连接初始化,Ping服务器

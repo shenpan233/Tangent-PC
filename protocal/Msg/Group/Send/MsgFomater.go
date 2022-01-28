@@ -7,10 +7,10 @@
 package Send
 
 import (
-	"Tangent-PC/protocal/Msg"
-	"Tangent-PC/protocal/Msg/Group"
-	"Tangent-PC/utils/GuStr"
 	"fmt"
+	"github.com/shenpan233/Tangent-PC/protocal/Msg"
+	"github.com/shenpan233/Tangent-PC/protocal/Msg/Group"
+	"github.com/shenpan233/Tangent-PC/utils/GuStr"
 	"regexp"
 	"strconv"
 )

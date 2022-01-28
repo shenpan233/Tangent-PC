@@ -6,7 +6,7 @@
 
 package PCQQ
 
-import "Tangent-PC/model"
+import "github.com/shenpan233/Tangent-PC/model"
 
 // QRResp /*二维码相关*/
 type (

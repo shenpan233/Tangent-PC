@@ -7,8 +7,8 @@
 package udper
 
 import (
-	"Tangent-PC/utils/GuLog"
 	"context"
+	"github.com/shenpan233/Tangent-PC/utils/GuLog"
 	"net"
 	"sync"
 	"sync/atomic"

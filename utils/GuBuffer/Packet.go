@@ -1,8 +1,8 @@
 package GuBuffer
 
 import (
-	util "Tangent-PC/utils"
 	"bytes"
+	util "github.com/shenpan233/Tangent-PC/utils"
 )
 
 func NewGuPacket() (p *GuPacket) {

@@ -8,8 +8,8 @@
 package PCQQ
 
 import (
-	"Tangent-PC/model"
-	util "Tangent-PC/utils"
+	"github.com/shenpan233/Tangent-PC/model"
+	util "github.com/shenpan233/Tangent-PC/utils"
 )
 
 func (this *TangentPC) U948() {

@@ -7,8 +7,8 @@
 package udper
 
 import (
-	"Tangent-PC/utils/GuBuffer"
 	"context"
+	"github.com/shenpan233/Tangent-PC/utils/GuBuffer"
 	"net"
 	"sync"
 )

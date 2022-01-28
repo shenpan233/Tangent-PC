@@ -7,7 +7,7 @@
 
 package Tlv
 
-import "Tangent-PC/utils/GuBuffer"
+import "github.com/shenpan233/Tangent-PC/utils/GuBuffer"
 
 func GetTlv0(passwordMD5 []byte) []byte {
 	pack := GuBuffer.NewGuPacket()

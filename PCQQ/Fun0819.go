@@ -8,11 +8,11 @@
 package PCQQ
 
 import (
-	"Tangent-PC/protocal/Tlv"
-	util "Tangent-PC/utils"
-	"Tangent-PC/utils/Bytes"
-	"Tangent-PC/utils/GuBuffer"
-	"Tangent-PC/utils/GuLog"
+	"github.com/shenpan233/Tangent-PC/protocal/Tlv"
+	util "github.com/shenpan233/Tangent-PC/utils"
+	"github.com/shenpan233/Tangent-PC/utils/Bytes"
+	"github.com/shenpan233/Tangent-PC/utils/GuBuffer"
+	"github.com/shenpan233/Tangent-PC/utils/GuLog"
 	"strconv"
 )
 

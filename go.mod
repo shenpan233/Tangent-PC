@@ -1,4 +1,4 @@
-module Tangent-PC
+module "github.com/shenpan233/Tangent-PC"
 
 go 1.17
 

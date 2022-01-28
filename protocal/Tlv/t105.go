@@ -7,9 +7,9 @@
 package Tlv
 
 import (
-	util "Tangent-PC/utils"
-	"Tangent-PC/utils/GuBuffer"
 	"fmt"
+	util "github.com/shenpan233/Tangent-PC/utils"
+	"github.com/shenpan233/Tangent-PC/utils/GuBuffer"
 )
 
 func GetTlv105(buf0102, buf0202 []byte) []byte {

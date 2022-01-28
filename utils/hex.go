@@ -1,10 +1,10 @@
 package util
 
 import (
-	"Tangent-PC/utils/GuStr"
 	"bytes"
 	"encoding/hex"
 	"fmt"
+	"github.com/shenpan233/Tangent-PC/utils/GuStr"
 	"math/rand"
 	"regexp"
 	"strconv"

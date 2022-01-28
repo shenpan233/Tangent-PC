@@ -1,11 +1,11 @@
 package PCQQ
 
 import (
-	"Tangent-PC/model"
-	util "Tangent-PC/utils"
-	"Tangent-PC/utils/GuLog"
-	"Tangent-PC/utils/udper"
 	"container/list"
+	"github.com/shenpan233/Tangent-PC/model"
+	util "github.com/shenpan233/Tangent-PC/utils"
+	"github.com/shenpan233/Tangent-PC/utils/GuLog"
+	"github.com/shenpan233/Tangent-PC/utils/udper"
 	"strconv"
 )
 

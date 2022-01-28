@@ -6,7 +6,7 @@
 
 package PCQQ
 
-import "Tangent-PC/utils/GuBuffer"
+import "github.com/shenpan233/Tangent-PC/utils/GuBuffer"
 
 func (this *TangentPC) pack0058HeatBoat() (SsoSeq uint16, buffer []byte) {
 	return this.packetCommonEnc(0x00_58, GuBuffer.NewGuPacketFun(func(pack *GuBuffer.GuPacket) {

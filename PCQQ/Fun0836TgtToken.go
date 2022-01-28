@@ -8,10 +8,10 @@
 package PCQQ
 
 import (
-	"Tangent-PC/model"
-	"Tangent-PC/protocal/Tlv"
-	util "Tangent-PC/utils"
-	"Tangent-PC/utils/GuBuffer"
+	"github.com/shenpan233/Tangent-PC/model"
+	"github.com/shenpan233/Tangent-PC/protocal/Tlv"
+	util "github.com/shenpan233/Tangent-PC/utils"
+	"github.com/shenpan233/Tangent-PC/utils/GuBuffer"
 )
 
 //组包

@@ -7,9 +7,9 @@
 package Receive
 
 import (
-	"Tangent-PC/model"
-	Model "Tangent-PC/protocal/Msg/Group"
-	"Tangent-PC/utils/GuBuffer"
+	"github.com/shenpan233/Tangent-PC/model"
+	Model "github.com/shenpan233/Tangent-PC/protocal/Msg/Group"
+	"github.com/shenpan233/Tangent-PC/utils/GuBuffer"
 )
 
 //ReadMsg 消息已读

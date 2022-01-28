@@ -7,8 +7,8 @@
 package Tlv
 
 import (
-	util "Tangent-PC/utils"
-	"Tangent-PC/utils/GuBuffer"
+	util "github.com/shenpan233/Tangent-PC/utils"
+	"github.com/shenpan233/Tangent-PC/utils/GuBuffer"
 )
 
 func GetTlvC(IP string) []byte {

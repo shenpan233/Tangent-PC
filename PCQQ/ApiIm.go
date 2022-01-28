@@ -7,9 +7,9 @@
 package PCQQ
 
 import (
-	GroupMsg "Tangent-PC/protocal/Msg/Group/Receive"
-	GroupSend "Tangent-PC/protocal/Msg/Group/Send"
-	"Tangent-PC/protocal/Protobuf/im/cmd0x0002"
+	GroupMsg "github.com/shenpan233/Tangent-PC/protocal/Msg/Group/Receive"
+	GroupSend "github.com/shenpan233/Tangent-PC/protocal/Msg/Group/Send"
+	"github.com/shenpan233/Tangent-PC/protocal/Protobuf/im/cmd0x0002"
 )
 
 //RevokeGroupMessage 撤回消息	(:要有管理员权限

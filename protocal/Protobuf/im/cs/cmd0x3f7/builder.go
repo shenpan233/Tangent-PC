@@ -7,9 +7,9 @@
 package cmd0x3f7
 
 import (
-	util "Tangent-PC/utils"
-	"Tangent-PC/utils/GuBuffer"
 	"github.com/golang/protobuf/proto"
+	util "github.com/shenpan233/Tangent-PC/utils"
+	"github.com/shenpan233/Tangent-PC/utils/GuBuffer"
 )
 
 func GetBuffer(GroupCode uint64, MsgSeq uint32) []byte {

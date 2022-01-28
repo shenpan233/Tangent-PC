@@ -7,9 +7,9 @@
 package Tlv
 
 import (
-	"Tangent-PC/model"
-	util "Tangent-PC/utils"
-	"Tangent-PC/utils/GuBuffer"
+	"github.com/shenpan233/Tangent-PC/model"
+	util "github.com/shenpan233/Tangent-PC/utils"
+	"github.com/shenpan233/Tangent-PC/utils/GuBuffer"
 )
 
 func GetTlv32QDData(Machine []byte, sdk *model.Version) []byte {

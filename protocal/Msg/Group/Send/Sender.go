@@ -7,12 +7,12 @@
 package Send
 
 import (
-	"Tangent-PC/model"
-	Model "Tangent-PC/protocal/Msg/Group"
-	"Tangent-PC/protocal/Protobuf/im/cmd0x0002"
-	util "Tangent-PC/utils"
-	"Tangent-PC/utils/GuBuffer"
 	"github.com/golang/protobuf/proto"
+	"github.com/shenpan233/Tangent-PC/model"
+	Model "github.com/shenpan233/Tangent-PC/protocal/Msg/Group"
+	"github.com/shenpan233/Tangent-PC/protocal/Protobuf/im/cmd0x0002"
+	util "github.com/shenpan233/Tangent-PC/utils"
+	"github.com/shenpan233/Tangent-PC/utils/GuBuffer"
 	"reflect"
 )
 

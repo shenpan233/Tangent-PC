@@ -7,7 +7,7 @@
 package PCQQ
 
 import (
-	"Tangent-PC/utils/GuBuffer"
+	"github.com/shenpan233/Tangent-PC/utils/GuBuffer"
 )
 
 // Online 0A=在线，3C=Q我吧，1E=离开，32=忙碌，46=请勿打扰，28=隐身

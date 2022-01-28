@@ -1,12 +1,12 @@
 //goreleaser --snapshot --skip-publish --rm-dist
 
-package main
+package test
 
 import (
-	client2 "Tangent-PC/PCQQ"
-	"Tangent-PC/model"
-	util "Tangent-PC/utils"
-	"Tangent-PC/utils/GuLog"
+	client2 "github.com/shenpan233/Tangent-PC/PCQQ"
+	"github.com/shenpan233/Tangent-PC/model"
+	util "github.com/shenpan233/Tangent-PC/utils"
+	"github.com/shenpan233/Tangent-PC/utils/GuLog"
 	"os"
 	"time"
 )

@@ -8,10 +8,10 @@
 package Tlv
 
 import (
-	"Tangent-PC/model"
-	util "Tangent-PC/utils"
-	"Tangent-PC/utils/Bytes"
-	"Tangent-PC/utils/GuBuffer"
+	"github.com/shenpan233/Tangent-PC/model"
+	util "github.com/shenpan233/Tangent-PC/utils"
+	"github.com/shenpan233/Tangent-PC/utils/Bytes"
+	"github.com/shenpan233/Tangent-PC/utils/GuBuffer"
 )
 
 func GetTlv102Official(info *model.Information) []byte {

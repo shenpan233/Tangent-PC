@@ -7,9 +7,9 @@
 package udper
 
 import (
-	"Tangent-PC/utils/GuBuffer"
-	"Tangent-PC/utils/GuLog"
 	"bytes"
+	"github.com/shenpan233/Tangent-PC/utils/GuBuffer"
+	"github.com/shenpan233/Tangent-PC/utils/GuLog"
 )
 
 func (this *Udper) recv() {

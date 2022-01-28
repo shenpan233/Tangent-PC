@@ -7,8 +7,8 @@
 package Tlv
 
 import (
-	"Tangent-PC/model"
-	"Tangent-PC/utils/GuBuffer"
+	"github.com/shenpan233/Tangent-PC/model"
+	"github.com/shenpan233/Tangent-PC/utils/GuBuffer"
 )
 
 func GetTlv10B(isQRLogin bool, version *model.Version, bufTgt, QdData *[]byte) []byte {
