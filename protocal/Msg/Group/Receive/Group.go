@@ -8,7 +8,6 @@ package Receive
 
 import (
 	"bytes"
-	"fmt"
 	"github.com/shenpan233/Tangent-PC/model"
 	"github.com/shenpan233/Tangent-PC/protocal/Msg"
 	"github.com/shenpan233/Tangent-PC/protocal/Msg/Group"
@@ -55,7 +54,6 @@ func GroupMsg(data []byte) (Msg model.GroupMsg) {
 		}
 		Msg.Msg = groupMsgUnpack(pack)
 	})
-	fmt.Println(Msg)
 	return
 }
 

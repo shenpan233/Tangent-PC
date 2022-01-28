@@ -26,6 +26,7 @@ func (this *TangentPC) unpack0002(bin []byte) (isSuc bool, Recall interface{}) {
 			return
 		case GroupMsgModel.Send:
 			isSuc, Recall = GroupSend.Recall(pack.GetAll())
+			return
 		}
 	})
 	return false, nil

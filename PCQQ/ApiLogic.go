@@ -7,7 +7,6 @@
 package PCQQ
 
 import (
-	"fmt"
 	GroupMsg "github.com/shenpan233/Tangent-PC/protocal/Msg/Group/Receive"
 	util "github.com/shenpan233/Tangent-PC/utils"
 	"github.com/shenpan233/Tangent-PC/utils/GuBuffer"
@@ -53,7 +52,6 @@ func (this *TangentPC) GetServerMsg(Cmd int16, seq uint16, MsgInfo, data []byte)
 		Msg := GroupMsg.GroupMsg(data)
 		Msg.Account = this.info.LongUin
 		if this.hook.GroupMsg != nil {
-			fmt.Println(Msg)
 			go this.ReadGroupMsg(Msg.GroupUin, Msg.MsgSeq)
 			go this.hook.GroupMsg(Msg)
 		}

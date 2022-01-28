@@ -36,8 +36,10 @@ func (this *TangentPC) SendGroupMsg(GroupCode uint64, Msg string) (Code bool, Ms
 	ssoSeq, buffer := this.pack0002(GroupSend.GroupMsg(GroupCode, Msg))
 	if bin := this.udper.SendAndGet(ssoSeq, WaitTime, &buffer); bin != nil {
 		isSuc, Recall := this.unpack0002(bin)
-		msg := Recall.(cmd0x0002.SendGroupMsg)
-		return isSuc, msg.GetMsgSeq()
+		if isSuc {
+			msg := Recall.(cmd0x0002.SendGroupMsg)
+			return true, msg.GetMsgSeq()
+		}
 	}
 	return false, 0
 }
