@@ -10,12 +10,13 @@ package Tlv
 import (
 	"Tangent-PC/model"
 	util "Tangent-PC/utils"
+	"Tangent-PC/utils/Bytes"
 	"Tangent-PC/utils/GuBuffer"
 )
 
 func GetTlv6TGTGT(QQInfo *model.Information, version *model.Version, TGTKey []byte) []byte {
 	pack := GuBuffer.NewGuPacket()
-	Password2 := util.ToMd5Bytes(QQInfo.PassWord)
+	Password2 := Bytes.GetMd5Bytes(QQInfo.PassWord)
 	pack.SetBytes(util.Encrypt(Password2, GuBuffer.NewGuPacketFun(func(pack *GuBuffer.GuPacket) {
 		pack.SetUint32(util.GetRand32())
 		pack.SetUint16(2)

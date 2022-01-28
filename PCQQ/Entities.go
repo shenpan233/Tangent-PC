@@ -19,6 +19,6 @@ type (
 
 	// HOOK 回调钩子
 	HOOK struct {
-		GroupMsg func(Msg *model.GroupMsg) //群消息接收
+		GroupMsg func(Msg model.GroupMsg) //群消息接收
 	}
 )

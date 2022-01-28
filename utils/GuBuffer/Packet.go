@@ -11,7 +11,7 @@ func NewGuPacket() (p *GuPacket) {
 	return
 }
 
-//仿Mirai,这种还挺好用的
+//NewGuPacketFun 仿Mirai,这种还挺好用的
 func NewGuPacketFun(fun GuPackFun) []byte {
 	pack := NewGuPacket()
 	if fun != nil {
@@ -32,18 +32,19 @@ func (p *GuPacket) JmpHead() {
 //func (p *GuPacket) SetHex(hex string) {
 //	p.SetBytes(util.HexToBin(hex))
 //}
+
 func (p *GuPacket) SetBytes(bin []byte) {
 	p.w.Write(bin)
 }
 
 func (p *GuPacket) SetToken(bin []byte) {
 	p.SetUint16(uint16(len(bin)))
-	p.SetBytes(bin)
+	p.w.Write(bin)
 }
 
 func (p *GuPacket) SetSToken(bin string) {
 	p.SetUint16(uint16(len(bin)))
-	p.SetBytes([]byte(bin))
+	p.w.WriteString(bin)
 }
 
 func (p *GuPacket) SetString(bin string) {
@@ -57,7 +58,7 @@ func (p *GuPacket) SetTlv(t *Tlv) {
 }
 
 func (p *GuPacket) SetUint8(i uint8) {
-	p.w.Write([]byte{(byte)(i >> 0)})
+	p.w.WriteByte(i)
 }
 
 func (p *GuPacket) SetUint16(i uint16) {
@@ -74,13 +75,15 @@ func (p *GuPacket) SetUint64(i uint64) {
 
 //SetLitTlv 一种Type只有8bit的tlv结构
 func (this *GuPacket) SetLitTlv(Type uint8, Val []byte) {
-	this.SetUint8(Type)
+	this.w.WriteByte(Type)
 	this.SetToken(Val)
 }
 
 func (p *GuPacket) GetAll() (bin []byte) {
-	p.w.Write(p.tmp)
-	p.tmp = nil
+	if p.tmp != nil {
+		p.w.Write(p.tmp)
+		p.tmp = nil
+	}
 	bin = p.w.Bytes()
 	return
 }
@@ -95,6 +98,6 @@ func (p *GuPacket) ToTlv(t uint16) (bin []byte) {
 	p.Reset()
 	p.SetUint16(t)
 	p.SetUint16(uint16(len(bin)))
-	p.SetBytes(bin)
+	p.w.Write(bin)
 	return p.GetAll()
 }

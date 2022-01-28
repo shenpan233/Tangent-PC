@@ -9,8 +9,11 @@ package Send
 import (
 	"Tangent-PC/model"
 	Model "Tangent-PC/protocal/Msg/Group"
+	"Tangent-PC/protocal/Protobuf/im/cmd0x0002"
 	util "Tangent-PC/utils"
 	"Tangent-PC/utils/GuBuffer"
+	"github.com/golang/protobuf/proto"
+	"reflect"
 )
 
 //GroupMsg 发送群消息
@@ -19,15 +22,11 @@ func GroupMsg(GroupUin uint64, Msg string) []byte {
 	return GuBuffer.NewGuPacketFun(func(pack *GuBuffer.GuPacket) {
 		pack.SetUint8(Model.Send) //事件类型
 		pack.SetUint32(uint32(GroupUin))
-		//part1
 		pack.SetToken(GuBuffer.NewGuPacketFun(func(pack *GuBuffer.GuPacket) {
 			pack.SetUint16(1)
-			num := 1 //TODO GroupMsg:分片总数暂时不知道干嘛的
-			pack.SetUint8(uint8(num))
-			for i := 0; i < num; i++ {
-				pack.SetUint8(uint8(i))
-				pack.SetBytes(util.GetRandomBin(2)) //RandomSeq
-			}
+			pack.SetUint8(uint8(1))
+			pack.SetUint8(uint8(0))
+			pack.SetBytes([]byte{0x00, 0x00})                                     //RandomSeq
 			pack.SetBytes([]byte{0, 0, 0, 0})                                     //固定空白4字节
 			pack.SetBytes([]byte{0x4D, 0x53, 0x47, 0x00, 0x00, 0x00, 0x00, 0x00}) //MSG
 			pack.SetUint32(uint32(util.GetServerCurTime()))
@@ -44,8 +43,24 @@ func GroupMsg(GroupUin uint64, Msg string) []byte {
 			}
 			pack.SetBytes(font.ToBytes())
 			pack.SetBytes([]byte{0x00, 0x00})
+			//构造消息
+			ret := BuildMsgStructure(Msg)
+			for _, subCall := range ret {
+				pack.SetBytes(reflect.ValueOf(subCall).MethodByName("Marshal").Call(nil)[0].Bytes())
+			}
+
 		}))
-		//构造消息
 
 	})
+}
+
+//Recall 发送消息回调
+func Recall(bin []byte) (isSuc bool, Recall cmd0x0002.SendGroupMsg) {
+	pack := GuBuffer.NewGuUnPacket(bin)
+	isSuc = pack.GetUint8() == model.LogicSuc
+	if isSuc {
+		pack.Skip(4) //MsgRandom好像没用
+		_ = proto.Unmarshal(pack.GetToken(), &Recall)
+	}
+	return
 }

@@ -4,12 +4,12 @@
 * @app:		打印
 * @Creat:   2021/10/29 0029 22:46
  */
+
 package GuLog
 
 import (
 	"bytes"
 	"fmt"
-	"strings"
 	"time"
 )
 
@@ -62,13 +62,16 @@ func print(Type int8, info, msg string) {
 }
 
 func msgLoader(msg *string, left, right string) string {
-	lit := strings.Split(*msg, "\n")
 	buffer := bytes.NewBufferString("")
-	for _, kid := range lit {
-		buffer.WriteString(left)
-		buffer.WriteString(kid)
-		buffer.WriteString(right)
-		buffer.WriteString(" \n")
-	}
+	//lit := strings.Split(*msg, "\n")
+	//for _, kid := range lit {
+	//	buffer.WriteString(left)
+	//	buffer.WriteString(kid)
+	//	buffer.WriteString(right)
+	//	buffer.WriteString(" \n")
+	//}
+	buffer.WriteString(left)
+	buffer.WriteString(*msg)
+	buffer.WriteString(right)
 	return buffer.String()
 }

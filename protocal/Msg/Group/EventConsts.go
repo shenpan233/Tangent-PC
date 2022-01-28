@@ -8,5 +8,5 @@ package Group
 
 const (
 	Receipt = 0x29
-	Send    = 0x1A
+	Send    = 0x2A
 )

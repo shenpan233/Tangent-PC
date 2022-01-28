@@ -10,6 +10,7 @@ package PCQQ
 import (
 	"Tangent-PC/protocal/Tlv"
 	util "Tangent-PC/utils"
+	"Tangent-PC/utils/Bytes"
 	"Tangent-PC/utils/GuBuffer"
 	"Tangent-PC/utils/GuLog"
 	"strconv"
@@ -63,7 +64,7 @@ func (this *TangentPC) unpack0819(qrResp *QRResp, bin []byte) (status uint8) {
 						break
 					case 0x03_03: //一种临时密码
 						this.sig.BufQR303 = tlv.Value
-						this.info.PassWord = util.ToMd5Bytes(tPack.GetAll())
+						this.info.PassWord = Bytes.GetMd5Bytes(tPack.GetAll())
 						break
 					case 0x03_04:
 						this.sig.BufTgTGTKey = tPack.GetAll()

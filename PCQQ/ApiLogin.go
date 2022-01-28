@@ -112,6 +112,6 @@ func (this *TangentPC) HeatBoat() bool {
 }
 
 //Hook 事件回调
-func (this *TangentPC) Hook(GroupMsg func(Msg *model.GroupMsg)) {
+func (this *TangentPC) Hook(GroupMsg func(Msg model.GroupMsg)) {
 	this.hook.GroupMsg = GroupMsg
 }

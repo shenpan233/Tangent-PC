@@ -1,10 +1,10 @@
 package util
 
 import (
-	"crypto/md5"
+	"Tangent-PC/utils/GuStr"
+	"bytes"
 	"encoding/hex"
 	"fmt"
-	"hash/crc32"
 	"math/rand"
 	"regexp"
 	"strconv"
@@ -12,12 +12,17 @@ import (
 	"time"
 )
 
-func GetRandomBin(i int) (data []byte) {
+var (
+	matchHexData = regexp.MustCompile("[0-9a-fA-F]+")
+)
+
+func GetRandomBin(len int) []byte {
 	rand.Seed(time.Now().Unix())
-	for i2 := 0; i2 < i; i2++ {
-		data = append(data, byte(rand.Intn(255)))
+	buffer := bytes.NewBuffer(nil)
+	for i := 0; i < len; i++ {
+		buffer.WriteByte(byte(rand.Intn(255)))
 	}
-	return
+	return buffer.Bytes()
 }
 
 func GetRand32() uint32 {
@@ -37,13 +42,12 @@ func GetServerCurTime() int64 {
 }
 
 func HexToBin(HexData string) []byte {
-	r := regexp.MustCompile("([0-9a-fA-F]+)")
-	data := r.FindAllStringSubmatch(HexData, -1)
-	tmp := ""
+	data := matchHexData.FindAllString(HexData, -1)
+	tmp := bytes.NewBuffer(nil)
 	for _, datum := range data {
-		tmp += datum[0]
+		tmp.WriteString(datum)
 	}
-	decodeString, _ := hex.DecodeString(tmp)
+	decodeString, _ := hex.DecodeString(tmp.String())
 	return decodeString
 }
 
@@ -53,12 +57,6 @@ func BinToHex(Bin []byte) string {
 
 func BinToHex2(Bin *[]byte) string {
 	return strings.ToUpper(hex.EncodeToString(*Bin))
-}
-
-func ToMd5Bytes(data []byte) (ret []byte) {
-	tmp := md5.Sum(data)
-	ret = tmp[:]
-	return
 }
 
 func IpToInt(Ip string) int64 {
@@ -81,7 +79,11 @@ func IntToIp(i int32) string {
 	return fmt.Sprintf("%d.%d.%d.%d", (byte)(i>>24), (byte)(i>>16), (byte)(i>>8), (byte)(i>>0))
 }
 
-func GetCrc32(data []byte) []byte {
-	ieee := crc32.ChecksumIEEE(data)
-	return []byte{byte(ieee >> 0), byte(ieee >> 8), byte(ieee >> 16), byte(ieee >> 24)}
+func Guid2Md5Bytes(GuidData string) []byte {
+	Guid := GuStr.Between(GuidData, "{", "}")
+	if Guid == "" {
+		return nil
+	} else {
+		return HexToBin(strings.ReplaceAll(Guid, "-", ""))
+	}
 }

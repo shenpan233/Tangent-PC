@@ -9,14 +9,15 @@ package Receive
 import (
 	"Tangent-PC/model"
 	"Tangent-PC/protocal/Msg"
+	"Tangent-PC/protocal/Msg/Group"
 	"Tangent-PC/utils/GuBuffer"
 	"Tangent-PC/utils/GuLog"
 	"bytes"
+	"fmt"
 	"strings"
 )
 
-func GroupMsg(data []byte) (Msg *model.GroupMsg) {
-	Msg = new(model.GroupMsg)
+func GroupMsg(data []byte) (Msg model.GroupMsg) {
 	GuBuffer.NewGuUnPacketFun(data, func(pack *GuBuffer.GuUnPacket) {
 		{
 			GuBuffer.NewGuUnPacketFun(pack.GetBin(int(pack.GetUint32())), func(pack *GuBuffer.GuUnPacket) {
@@ -46,14 +47,15 @@ func GroupMsg(data []byte) (Msg *model.GroupMsg) {
 				Msg.Blue = pack.GetUint8()
 				Msg.Green = pack.GetUint8()
 				Msg.Size = pack.GetUint8()
-				Msg.Encoding = uint16(pack.GetInt16())
 				Msg.Style = pack.GetUint8()
+				Msg.Encoding = uint16(pack.GetInt16())
 				Msg.Font.FontName = pack.GetStr(int32(pack.GetInt16()))
 				pack.Skip(2)
 			}
 		}
 		Msg.Msg = groupMsgUnpack(pack)
 	})
+	fmt.Println(Msg)
 	return
 }
 
@@ -68,7 +70,7 @@ func groupMsgUnpack(pack *GuBuffer.GuUnPacket) string {
 				switch pack.GetUint8() {
 				case Msg.CommonMsg:
 					//检查是否有At的消息
-					common := Msg.Common{
+					common := Group.Common{
 						Msg: string(pack.GetToken()),
 					}
 					GuBuffer.NewGuUnPacketFun(pack.GetAll(), func(pack *GuBuffer.GuUnPacket) {
@@ -92,7 +94,6 @@ func groupMsgUnpack(pack *GuBuffer.GuUnPacket) string {
 				break
 			case Msg.TypePic:
 				tmp := pack.GetAll()
-				GuLog.Debug("tmp pic", "%X", tmp)
 				pack = GuBuffer.NewGuUnPacket(tmp)
 				pack.Skip(1)
 				msgBuilder.WriteString(buildPic(string(pack.GetToken())))

@@ -9,6 +9,7 @@ package PCQQ
 import (
 	GroupMsgModel "Tangent-PC/protocal/Msg/Group"
 	GroupMsg "Tangent-PC/protocal/Msg/Group/Receive"
+	GroupSend "Tangent-PC/protocal/Msg/Group/Send"
 	util "Tangent-PC/utils"
 	"Tangent-PC/utils/GuBuffer"
 )
@@ -17,13 +18,15 @@ func (this *TangentPC) pack0002(bin []byte) (SsoSeq uint16, buffer []byte) {
 	return this.packetCommonEnc(0x00_02, bin)
 }
 
-func (this *TangentPC) unpack0002(bin []byte) (isSuc bool) {
+func (this *TangentPC) unpack0002(bin []byte) (isSuc bool, Recall interface{}) {
 	GuBuffer.NewGuUnPacketFun(util.Decrypt(this.teaKey.SessionKey, bin[3:]), func(pack *GuBuffer.GuUnPacket) {
 		switch pack.GetUint8() { //事件类型
 		case GroupMsgModel.Receipt:
 			isSuc = GroupMsg.UnReadMsg(pack.GetAll())
 			return
+		case GroupMsgModel.Send:
+			isSuc, Recall = GroupSend.Recall(pack.GetAll())
 		}
 	})
-	return false
+	return false, nil
 }

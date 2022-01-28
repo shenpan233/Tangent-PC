@@ -7,6 +7,7 @@
 package Receive
 
 import (
+	"Tangent-PC/model"
 	Model "Tangent-PC/protocal/Msg/Group"
 	"Tangent-PC/utils/GuBuffer"
 )
@@ -24,5 +25,5 @@ func ReadMsg(GroupCode uint64, MsgSeq uint32) []byte {
 //UnReadMsg 处理消息已读
 func UnReadMsg(bin []byte) bool {
 	pack := GuBuffer.NewGuUnPacket(bin)
-	return pack.GetUint8() == 0
+	return pack.GetUint8() == model.LogicSuc
 }

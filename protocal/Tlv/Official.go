@@ -9,6 +9,7 @@ package Tlv
 
 import (
 	util "Tangent-PC/utils"
+	"Tangent-PC/utils/Bytes"
 	"bytes"
 )
 
@@ -21,8 +22,8 @@ const (
 )
 
 func CreateOfficial(PasswordMd5, OfficialSig, OfficialKey []byte) []byte {
-	MD5Info := util.ToMd5Bytes(OfficialKey)
-	MD5Info = append(MD5Info, util.ToMd5Bytes(OfficialSig)...)
+	MD5Info := Bytes.GetMd5Bytes(OfficialKey)
+	MD5Info = append(MD5Info, Bytes.GetMd5Bytes(OfficialSig)...)
 
 	ls, off, seq := make([]byte, Round), make([]byte, Round), make([]byte, Round)
 	keyRound := 480%TmOffMod + TmOffModAdd
@@ -45,11 +46,11 @@ func CreateOfficial(PasswordMd5, OfficialSig, OfficialKey []byte) []byte {
 	}
 
 	/*最后加密准备工作*/
-	MD5Info = append(MD5Info, util.ToMd5Bytes(PasswordMd5)...)
-	MD5InfoTwice := util.ToMd5Bytes(MD5Info)
+	MD5Info = append(MD5Info, Bytes.GetMd5Bytes(PasswordMd5)...)
+	MD5InfoTwice := Bytes.GetMd5Bytes(MD5Info)
 	MO := MD5InfoTwice
 	for i := 0; i < keyRound; i++ {
-		MO = util.ToMd5Bytes(MO)
+		MO = Bytes.GetMd5Bytes(MO)
 	}
 	MD5Info = append(MO, MD5Info[TxpTEANKeySize:]...)
 	bodyLeft := MD5InfoTwice[:TxpTEANKeySize/2]
@@ -70,5 +71,5 @@ func CreateOfficial(PasswordMd5, OfficialSig, OfficialKey []byte) []byte {
 			off[id] = off[id] | bufMd5InfoEncode[id]
 		}
 	}
-	return util.ToMd5Bytes(off)
+	return Bytes.GetMd5Bytes(off)
 }

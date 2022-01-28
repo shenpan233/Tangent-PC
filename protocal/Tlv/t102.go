@@ -10,6 +10,7 @@ package Tlv
 import (
 	"Tangent-PC/model"
 	util "Tangent-PC/utils"
+	"Tangent-PC/utils/Bytes"
 	"Tangent-PC/utils/GuBuffer"
 )
 
@@ -22,7 +23,7 @@ func GetTlv102Official(info *model.Information) []byte {
 	pack.SetToken(OfficialSig)
 	pack.SetToken(GuBuffer.NewGuPacketFun(func(pack *GuBuffer.GuPacket) {
 		pack.SetBytes(OfficialKey)
-		pack.SetBytes(util.GetCrc32(OfficialKey))
+		pack.SetBytes(Bytes.GetCrc32(OfficialKey))
 	}))
 	return pack.ToTlv(0x102)
 }

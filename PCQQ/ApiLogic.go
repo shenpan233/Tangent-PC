@@ -11,6 +11,7 @@ import (
 	util "Tangent-PC/utils"
 	"Tangent-PC/utils/GuBuffer"
 	"Tangent-PC/utils/GuLog"
+	"fmt"
 )
 
 //refreshClient 刷新ClientKey
@@ -52,8 +53,9 @@ func (this *TangentPC) GetServerMsg(Cmd int16, seq uint16, MsgInfo, data []byte)
 		Msg := GroupMsg.GroupMsg(data)
 		Msg.Account = this.info.LongUin
 		if this.hook.GroupMsg != nil {
-			go this.hook.GroupMsg(Msg)
+			fmt.Println(Msg)
 			go this.ReadGroupMsg(Msg.GroupUin, Msg.MsgSeq)
+			go this.hook.GroupMsg(Msg)
 		}
 		break
 

@@ -4,7 +4,7 @@
   @Notice:  字符串的操作
 */
 
-package Str
+package GuStr
 
 import "strings"
 

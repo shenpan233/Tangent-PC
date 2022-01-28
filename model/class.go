@@ -1,7 +1,7 @@
 /*
 * @Author:  Trial
 * @email:   shenpan233@vip.qq.com
-* @app:     类
+* @app:     内部的类
 * @Creat:   2021/11/26 0026 22:33
  */
 
@@ -47,15 +47,15 @@ type (
 		BufPwdForConn    []byte
 	}
 
-	/*Computer*/
+	//Computer 硬件信息
 	Computer struct {
-		ComputerId   []byte
-		ComputerIdEx []byte
-		DeviceID     []byte
-		ComputerName string
-		MacGuid      []byte
+		ComputerId   []byte `json:"ComputerId"`
+		ComputerIdEx []byte `json:"ComputerIdEx"`
+		DeviceID     []byte `json:"DeviceID"`
+		ComputerName string `json:"ComputerName"`
+		MacGuid      []byte `json:"MacGuid"`
 		RedirectIp   *list.List
-		ConnectIp    string
+		ConnectIp    string `json:"ConnectIp"`
 		WlanIp       string
 	}
 )

@@ -1,0 +1,8 @@
+syntax = "proto2";
+package cmd0x0002;
+
+message SendGroupMsg{
+  required uint32 MsgSeq    = 1;//消息Seq 用于撤回自己
+  required uint32 Code      = 2; //业务状态
+  required uint64 GroupCode = 3;//接收的群
+}
