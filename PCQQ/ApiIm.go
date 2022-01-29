@@ -7,15 +7,21 @@
 package PCQQ
 
 import (
+	"errors"
 	GroupMsg "github.com/shenpan233/Tangent-PC/protocal/Msg/Group/Receive"
 	GroupSend "github.com/shenpan233/Tangent-PC/protocal/Msg/Group/Send"
 	"github.com/shenpan233/Tangent-PC/protocal/Protobuf/im/cmd0x0002"
 )
 
 //RevokeGroupMessage 撤回消息	(:要有管理员权限
-func (this *TangentPC) RevokeGroupMessage(GroupCode uint64, MsgSeq, MsgID uint32) {
+func (this *TangentPC) RevokeGroupMessage(GroupCode uint64, MsgSeq, MsgID uint32) error {
 	ssoSeq, buffer := this.pack0x3f7(GroupCode, MsgSeq, MsgID)
-	this.udper.SendAndGet(ssoSeq, WaitTime, &buffer)
+	bin := this.udper.SendAndGet(ssoSeq, WaitTime, &buffer)
+	if bin != nil {
+		return this.unpack0x3f7(bin)
+	} else {
+		return errors.New("revoked GroupMessage fail,No bytes was returned")
+	}
 }
 
 //ReadGroupMsg 置群消息已读
