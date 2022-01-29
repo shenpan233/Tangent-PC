@@ -8,18 +8,15 @@ package cmd0x3f7
 
 import (
 	"github.com/golang/protobuf/proto"
-	util "github.com/shenpan233/Tangent-PC/utils"
 	"github.com/shenpan233/Tangent-PC/utils/GuBuffer"
 )
 
-func GetBuffer(GroupCode uint64, MsgSeq uint32) []byte {
+func GetBuffer(GroupCode uint64, MsgSeq, MsgID uint32) []byte {
 	return GuBuffer.NewGuPacketFun(func(pack *GuBuffer.GuPacket) {
 		targer := Targer{
 			WCsCmdNo: proto.Uint32(wCsCmdNo),
 			GroupSub: &Info{
-				SubCmd:      proto.Uint32(subCmd),
-				GroupType:   proto.Uint32(util.GetRand32()),
-				DwRequestId: proto.Uint64(1),
+				SubCmd: proto.Uint32(subCmd),
 			},
 		}
 		msg := Msg{
@@ -27,11 +24,11 @@ func GetBuffer(GroupCode uint64, MsgSeq uint32) []byte {
 			Tag2:      zeroTag,
 			GroupCode: &GroupCode,
 			Cs: &Cs{
-				MsgSeq:    &MsgSeq,
-				MsgRandom: proto.Uint32(util.GetRand32()),
+				MsgSeq: &MsgSeq,
+				MsgID:  &MsgID,
 			},
 			Tag5: &Tag5{
-				Tag1: zeroTag,
+				Tag1: proto.Uint32(subCmd),
 				Tag2: &Tag5Tag2{
 					MsgSeq: &MsgSeq,
 					Tag2:   zeroTag,

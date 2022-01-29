@@ -12,8 +12,8 @@ import (
 	"github.com/shenpan233/Tangent-PC/utils/GuBuffer"
 )
 
-func (this *TangentPC) pack0x3f7(GroupCode uint64, MsgSeq uint32) (SsoSeq uint16, buffer []byte) {
-	return this.packetIMEnc(0x03_F7, cmd0x3f7.GetBuffer(GroupCode, MsgSeq))
+func (this *TangentPC) pack0x3f7(GroupCode uint64, MsgSeq, MsgID uint32) (SsoSeq uint16, buffer []byte) {
+	return this.packetIMEnc(0x03_F7, cmd0x3f7.GetBuffer(GroupCode, MsgSeq, MsgID))
 }
 
 func (this *TangentPC) unpack0x3f7(bin []byte) {

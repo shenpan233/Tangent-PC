@@ -13,8 +13,8 @@ import (
 )
 
 //RevokeGroupMessage 撤回消息	(:要有管理员权限
-func (this *TangentPC) RevokeGroupMessage(GroupCode uint64, MsgSeq uint32) {
-	ssoSeq, buffer := this.pack0x3f7(GroupCode, MsgSeq)
+func (this *TangentPC) RevokeGroupMessage(GroupCode uint64, MsgSeq, MsgID uint32) {
+	ssoSeq, buffer := this.pack0x3f7(GroupCode, MsgSeq, MsgID)
 	this.udper.SendAndGet(ssoSeq, WaitTime, &buffer)
 }
 
