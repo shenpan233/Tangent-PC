@@ -44,9 +44,10 @@ func GroupMsg(GroupUin uint64, Msg string) []byte {
 			pack.SetBytes(font.ToBytes())
 			pack.SetBytes([]byte{0x00, 0x00})
 			//构造消息
-			ret := BuildMsgStructure(Msg)
+			ret := BuildMsgStructure(Msg, GroupUin)
 			for _, subCall := range ret {
-				pack.SetBytes(reflect.ValueOf(subCall).MethodByName("Marshal").Call(nil)[0].Bytes())
+				bin := reflect.ValueOf(subCall).MethodByName("Marshal").Call(nil)[0].Bytes()
+				pack.SetBytes(bin)
 			}
 
 		}))
@@ -58,7 +59,7 @@ func GroupMsg(GroupUin uint64, Msg string) []byte {
 func Recall(bin []byte) (isSuc bool, Recall cmd0x0002.SendGroupMsg) {
 	pack := GuBuffer.NewGuUnPacket(bin)
 	isSuc = pack.GetUint8() == model.LogicSuc
-	if isSuc {
+	if !isSuc {
 		pack.Skip(4) //MsgRandom好像没用
 		_ = proto.Unmarshal(pack.GetToken(), &Recall)
 	}

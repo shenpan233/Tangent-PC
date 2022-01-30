@@ -7,9 +7,10 @@
 package Msg
 
 const (
-	FormatPic = "[Pic="
-	FormatAt  = "[At="
-	FormatEnd = "]"
+	FormatPic   = "[Pic="
+	FormatAt    = "[At="
+	FormatReply = "[Reply,FromUin=%s,MsgSeq=%s,SendTime=%s"
+	FormatEnd   = "]"
 )
 
 const (
@@ -17,5 +18,6 @@ const (
 	CommonMsg = 0x01
 	CommonAt  = 0x06
 	TypeFace  = 0x02
+	TypeReply = 0x19
 	TypePic   = 0x03
 )

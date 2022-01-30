@@ -8,10 +8,13 @@ package Group
 
 import (
 	"fmt"
+	"github.com/golang/protobuf/proto"
 	"github.com/shenpan233/Tangent-PC/protocal/Msg"
+	"github.com/shenpan233/Tangent-PC/protocal/Protobuf/im/cmd0x0002"
 	util "github.com/shenpan233/Tangent-PC/utils"
 	"github.com/shenpan233/Tangent-PC/utils/Bytes"
 	"github.com/shenpan233/Tangent-PC/utils/GuBuffer"
+	"strconv"
 )
 
 type (
@@ -47,14 +50,15 @@ func (this *Common) Marshal() []byte {
 				if this.AtUin == 0 {
 					this.Msg = "@全体成员"
 				} else {
-					this.Msg = "@小可爱." //TODO 这里At获取名称没搞定
+					this.Msg = "@小可爱" //TODO 这里At获取名称没搞定
 				}
 			}
 			pack.SetLitTlv(Msg.CommonMsg, []byte(this.Msg))
 			if this.IsAt {
 				pack.SetLitTlv(Msg.CommonAt, GuBuffer.NewGuPacketFun(func(pack *GuBuffer.GuPacket) {
 					pack.SetBytes([]byte{0x00, 0x01})
-					pack.SetUint32(5) //TODO 这个是上面this.Msg的字符长度 就是肉眼能看到的长度
+					pack.SetUint32(4) //TODO 这个是上面this.Msg的字符长度
+					pack.SetBytes([]byte{0x00})
 					pack.SetUint32(this.AtUin)
 					pack.SetBytes([]byte{0x00, 0x00})
 				}))
@@ -179,6 +183,51 @@ func (this *Pic) Marshal() []byte {
 				pack.SetString("A")
 			}))
 
+		}))
+	})
+}
+
+type (
+	Reply struct {
+		GroupCode, FromUin, SendTime uint64
+		MsgSeq                       uint32
+		message
+	}
+)
+
+func (this *Reply) ToString() string {
+	return fmt.Sprintf(Msg.FormatReply+Msg.FormatEnd, strconv.Itoa(int(this.FromUin)), strconv.Itoa(int(this.MsgSeq)), strconv.Itoa(int(this.SendTime)))
+}
+
+//Marshal 回复消息序列化
+func (this *Reply) Marshal() []byte {
+	return GuBuffer.NewGuPacketFun(func(pack *GuBuffer.GuPacket) {
+		pack.SetBytes((&Common{
+			IsAt:  true,
+			AtUin: uint32(this.FromUin),
+		}).Marshal()) //At对方
+		pack.SetBytes((&Common{
+			IsAt: false,
+			Msg:  " ",
+		}).Marshal()) //空格
+		pack.SetLitTlv(Msg.TypeReply, GuBuffer.NewGuPacketFun(func(pack *GuBuffer.GuPacket) {
+			reply := cmd0x0002.Reply{
+				Targer: &cmd0x0002.ReplyReplyTarger{
+					MsgSeq:   &this.MsgSeq,
+					FromUin:  &this.FromUin,
+					SendTime: &this.SendTime,
+					Tag4:     proto.Uint32(cmd0x0002.Default_ReplyReplyTarger_Tag4),
+					ShowMsg: &cmd0x0002.ShowMsg{
+						Show: &cmd0x0002.ShowMsg_Showed{
+							Text: proto.String("回复消息"),
+						},
+					},
+					Tag6:      proto.Uint64(cmd0x0002.Default_ReplyReplyTarger_Tag6),
+					GroupCode: &this.GroupCode,
+				},
+			}
+			marshal, _ := reply.Marshal()
+			pack.SetLitTlv(0x01, marshal)
 		}))
 	})
 }

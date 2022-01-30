@@ -1,0 +1,24 @@
+//回复消息
+syntax = "proto2";
+package cmd0x0002;
+
+
+message reply{
+  required replyTarger targer = 45;
+  message replyTarger{
+    required uint32  MsgSeq    = 1;
+    required uint64  FromUin   = 2;
+    required uint64  SendTime  = 3; //消息发送的时间
+    optional uint32  Tag4      = 4 [default = 1];//懒得逆向了写死吧
+    optional ShowMsg ShowMsg   = 5;
+    optional uint64  Tag6      = 6 [default = 1];//懒得逆向了写死吧
+    required uint64  GroupCode = 10;
+  }
+}
+
+message ShowMsg{
+  required Showed show = 1;
+  message Showed {
+    required string text = 1;
+  }
+}

@@ -20,13 +20,15 @@ var (
 	regularAt         = fmt.Sprintf(`\%s[0-9]{5,12}\%s|\[At=All\]`, Msg.FormatAt, Msg.FormatEnd)
 	regularPic        = fmt.Sprintf(`\%s\{[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}\}\.[jpginf]{3}%s`, Msg.FormatPic, Msg.FormatEnd)
 	regularCommonText = `.[^[{\\]{0,300}`
-	match             = regexp.MustCompile(fmt.Sprintf(`%s|%s|%s`, regularPic, regularAt, regularCommonText))
+	regularReply      = fmt.Sprintf(`\`+Msg.FormatReply+`\`+Msg.FormatEnd, "[0-9]{5,12}", "[0-9]+", "[0-9]{10,13}")
+	match             = regexp.MustCompile(fmt.Sprintf(`%s|%s|%s|%s`, regularPic, regularAt, regularReply, regularCommonText))
 	matchAt           = regexp.MustCompile(regularAt)
 	matchPic          = regexp.MustCompile(regularPic)
+	matchReply        = regexp.MustCompile(regularReply)
 )
 
 //BuildMsgStructure 结构化构建
-func BuildMsgStructure(data string) []interface{} {
+func BuildMsgStructure(data string, GroupCode uint64) []interface{} {
 	AllFound := match.FindAllString(data, -1)
 	ret := make([]interface{}, 0)
 	for _, SubStr := range AllFound {
@@ -40,6 +42,17 @@ func BuildMsgStructure(data string) []interface{} {
 			ret = append(ret, &Group.Pic{
 				Guid: GuStr.Between(SubStr, Msg.FormatPic, Msg.FormatEnd),
 			})
+		} else if matchReply.MatchString(SubStr) {
+			uin, _ := strconv.ParseUint(GuStr.Between(SubStr, "FromUin=", ","), 10, 64)
+			SendTime, _ := strconv.ParseUint(GuStr.Between(SubStr, "SendTime=", "]"), 10, 64)
+			MsgSeq, _ := strconv.ParseUint(GuStr.Between(SubStr, "MsgSeq=", ","), 10, 64)
+			reply := &Group.Reply{
+				GroupCode: GroupCode,
+				FromUin:   uin,
+				SendTime:  SendTime,
+				MsgSeq:    uint32(MsgSeq),
+			}
+			ret = append(ret, reply)
 		} else {
 			ret = append(ret, &Group.Common{
 				Msg: SubStr,
