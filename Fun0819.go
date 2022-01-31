@@ -5,9 +5,10 @@
 * @Creat:   2021/12/10 21:35
  */
 
-package PCQQ
+package Tangent_PC
 
 import (
+	"github.com/shenpan233/Tangent-PC/model"
 	"github.com/shenpan233/Tangent-PC/protocal/Tlv"
 	util "github.com/shenpan233/Tangent-PC/utils"
 	"github.com/shenpan233/Tangent-PC/utils/Bytes"
@@ -32,10 +33,10 @@ func (this *TangentPC) pack0819(resp *QRResp) (SsoSeq uint16, buffer []byte) {
 
 //二维码状态标识
 const (
-	QRNoAgree = 0x1  /*已扫码但未点击确认*/
-	QRNoScan  = 0x2  /*未扫码*/
-	QROk      = 0x0  /*已确认登录*/
-	QRUnKnow  = 0xFF /*未响应*/
+	QRNoAgree = 0x1            /*已扫码但未点击确认*/
+	QRNoScan  = 0x2            /*未扫码*/
+	QROk      = model.LogicSuc /*已确认登录*/
+	QRUnKnow  = 0xFF           /*未响应*/
 )
 
 func (this *TangentPC) unpack0819(qrResp *QRResp, bin []byte) (status uint8) {

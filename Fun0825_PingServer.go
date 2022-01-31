@@ -5,9 +5,10 @@
 * @Creat:   2021/11/26 0026 22:48
  */
 
-package PCQQ
+package Tangent_PC
 
 import (
+	"github.com/shenpan233/Tangent-PC/model"
 	"github.com/shenpan233/Tangent-PC/protocal/Tlv"
 	util "github.com/shenpan233/Tangent-PC/utils"
 	"github.com/shenpan233/Tangent-PC/utils/GuBuffer"
@@ -15,7 +16,7 @@ import (
 
 const (
 	_0825Redirect = 0xFE
-	_0825PingSuc  = 0x00
+	_0825PingSuc  = model.LogicSuc
 )
 
 //pack0825 0825组包

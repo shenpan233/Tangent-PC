@@ -4,7 +4,7 @@
   @Notice: 0828组包和解包
 */
 
-package PCQQ
+package Tangent_PC
 
 import (
 	"fmt"

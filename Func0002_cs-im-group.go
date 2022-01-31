@@ -4,7 +4,7 @@
   @Notice:	群消息处理/发送
 */
 
-package PCQQ
+package Tangent_PC
 
 import (
 	GroupMsgModel "github.com/shenpan233/Tangent-PC/protocal/Msg/Group"

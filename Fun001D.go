@@ -4,7 +4,7 @@
   @Notice:	刷新token
 */
 
-package PCQQ
+package Tangent_PC
 
 import "github.com/shenpan233/Tangent-PC/utils/GuBuffer"
 

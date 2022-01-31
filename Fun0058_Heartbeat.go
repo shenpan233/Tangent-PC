@@ -1,10 +1,10 @@
 /*
   @Author:  Trial(Trialpro@gmail.com)
   @Creat:   2022/1/1 15:15
-  @Notice:心跳
+  @Notice:  心跳包
 */
 
-package PCQQ
+package Tangent_PC
 
 import "github.com/shenpan233/Tangent-PC/utils/GuBuffer"
 

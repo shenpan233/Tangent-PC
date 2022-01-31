@@ -4,7 +4,7 @@
   @Notice:  聊天相关的Api
 */
 
-package PCQQ
+package Tangent_PC
 
 import (
 	"errors"

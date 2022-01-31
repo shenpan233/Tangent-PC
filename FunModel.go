@@ -1,10 +1,10 @@
 /*
   @Author:  Trial(Trialpro@gmail.com)
   @Creat:   2022/1/1 17:46
-  @Notice:
+  @Notice:  用于抄袭的组包解包模板
 */
 
-package PCQQ
+package Tangent_PC
 
 import (
 	util "github.com/shenpan233/Tangent-PC/utils"

@@ -4,7 +4,7 @@
   @Notice:  内部业务
 */
 
-package PCQQ
+package Tangent_PC
 
 import (
 	GroupMsg "github.com/shenpan233/Tangent-PC/protocal/Msg/Group/Receive"

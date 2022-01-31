@@ -4,7 +4,7 @@
   @Notice:	修改在线状态
 */
 
-package PCQQ
+package Tangent_PC
 
 import (
 	"github.com/shenpan233/Tangent-PC/utils/GuBuffer"

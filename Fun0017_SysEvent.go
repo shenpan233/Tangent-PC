@@ -4,7 +4,7 @@
   @Notice:	接收系统消息
 */
 
-package PCQQ
+package Tangent_PC
 
 import (
 	util "github.com/shenpan233/Tangent-PC/utils"

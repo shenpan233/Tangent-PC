@@ -4,7 +4,7 @@
   @Notice:	群消息撤回
 */
 
-package PCQQ
+package Tangent_PC
 
 import (
 	"errors"
@@ -20,9 +20,9 @@ func (this *TangentPC) pack0x3f7(GroupCode uint64, MsgSeq, MsgID uint32) (SsoSeq
 
 func (this *TangentPC) unpack0x3f7(bin []byte) (err error) {
 	GuBuffer.NewGuUnPacketFun(util.Decrypt(this.teaKey.SessionKey, bin[3:]), func(pack *GuBuffer.GuUnPacket) {
-		len1 := int(pack.GetUint32())
-		len2 := int(pack.GetUint32())
-		pack.GetBin(len1) //暂时无用
+		len1 := int64(pack.GetUint32()) //第一段pb的长度
+		len2 := int(pack.GetUint32())   //第二段pb的长度
+		pack.Skip(len1)                 //第一段pb暂时无用
 		resp := cmd0x3f7.Decode(pack.GetBin(len2))
 		switch resp.GetCode() {
 		case model.LogicSuc:

@@ -5,7 +5,7 @@
 * @Creat:   2021/12/4 0004 15:28
  */
 
-package PCQQ
+package Tangent_PC
 
 import (
 	"github.com/shenpan233/Tangent-PC/protocal/Tlv"
@@ -45,7 +45,7 @@ func (this *TangentPC) unpack0818(bin []byte) (ret *QRResp) {
 					ret.sigQRSing = tPack.GetAll()
 					break
 				case 0x9:
-					tPack.GetBin(2)
+					tPack.Skip(2)
 					ret.key = tPack.GetAll()
 					break
 				}

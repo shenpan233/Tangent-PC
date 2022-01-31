@@ -3,7 +3,7 @@
 package test
 
 import (
-	client2 "github.com/shenpan233/Tangent-PC/PCQQ"
+	"github.com/shenpan233/Tangent-PC"
 	"github.com/shenpan233/Tangent-PC/model"
 	util "github.com/shenpan233/Tangent-PC/utils"
 	"github.com/shenpan233/Tangent-PC/utils/GuLog"
@@ -13,7 +13,7 @@ import (
 
 func main() {
 	GuLog.Config(true, "")
-	client := client2.New("0", model.Computer{
+	client := Tangent_PC.New("0", model.Computer{
 		ComputerId:   util.HexToBin("9B 13 EE DA 00 00 00 00 00 00 00 00 00 00 00 00"),
 		ComputerIdEx: util.HexToBin("3B AE C1 AD 3C 07 44 EE 29 BE C0 38 4E F2 4A 1A"),
 		DeviceID:     util.GetRandomBin(32),
@@ -30,11 +30,11 @@ func main() {
 		resp := client.FetchQRCode()
 		os.WriteFile("./QRCode.png", resp.QRCode, os.FileMode(0777))
 		go func() {
-			for client.CheckQRCode(resp) != client2.QROk {
+			for client.CheckQRCode(resp) != Tangent_PC.QROk {
 				time.Sleep(3 * time.Second)
 			}
 			if client.QRLogin() {
-				if client.ChangeOnlineStatus(client2.Online) {
+				if client.ChangeOnlineStatus(Tangent_PC.Online) {
 					for {
 						client.HeatBoat()
 						time.Sleep(time.Minute)

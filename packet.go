@@ -1,11 +1,11 @@
 /*
 * @Author:  Trial
 * @email:   shenpan233@vip.qq.com
-* @app:		组包头尾
+* @app:		组包头+尾
 * @Creat:   2021/11/27 0027 12:31
  */
 
-package PCQQ
+package Tangent_PC
 
 import (
 	util "github.com/shenpan233/Tangent-PC/utils"

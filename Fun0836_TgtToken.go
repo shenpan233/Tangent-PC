@@ -5,7 +5,7 @@
 * @Creat:   2021/12/10 23:24
  */
 
-package PCQQ
+package Tangent_PC
 
 import (
 	"github.com/shenpan233/Tangent-PC/model"
@@ -40,8 +40,8 @@ func (this *TangentPC) pack0836QrCode() (Ssoseq uint16, data []byte) {
 }
 
 const (
-	ecdhTwice = 0x00_08
-	LoginSuc  = 0
+	ecdhTwice = 0x00_08 //二次ecdh计算的标识
+	LoginSuc  = model.LogicSuc
 )
 
 //0836解包

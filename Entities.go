@@ -4,7 +4,7 @@
   @Notice:  返回的类
 */
 
-package PCQQ
+package Tangent_PC
 
 import "github.com/shenpan233/Tangent-PC/model"
 
