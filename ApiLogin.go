@@ -8,9 +8,7 @@
 package Tangent_PC
 
 import (
-	"fmt"
 	"github.com/shenpan233/Tangent-PC/model"
-	util "github.com/shenpan233/Tangent-PC/utils"
 	"github.com/shenpan233/Tangent-PC/utils/GuLog"
 )
 
@@ -56,41 +54,41 @@ func (this TangentPC) CheckQRCode(resp *QRResp) uint8 {
 	return QRUnKnow
 }
 
-func (this *TangentPC) QRLogin() bool {
+func (this *TangentPC) QRLogin() (err error) {
 	ssoSeq, buffer := this.pack0836QrCode()
 	if bin := this.udper.SendAndGet(ssoSeq, WaitTime, &buffer); bin != nil {
 		tgt := this.unpack0836(bin)
 		if tgt != nil {
 			ssoSeq, buffer := this.pack0828(tgt)
 			if bin := this.udper.SendAndGet(ssoSeq, WaitTime, &buffer); bin != nil {
-				GuLog.Warm("QRLogin", "%s", util.BinToHex(bin[3:]))
-
-				if this.unpack0828(bin, tgt) == 0 {
-					fmt.Println(tgt.Encode())
-
+				result := uint8(0)
+				if result, err = this.unpack0828(bin, tgt); result == 0 {
 					this.finishLogin()
-					return true
+					return
+				} else {
+					GuLog.Error("LoginByToken", err.Error())
 				}
 			}
 		}
 	}
-	return false
+	return
 }
 
 //LoginByToken	令牌登录
-func (this *TangentPC) LoginByToken(tgt *model.TgtInfo) bool {
+func (this *TangentPC) LoginByToken(tgt *model.TgtInfo) (err error) {
 	if tgt != nil {
 		ssoSeq, buffer := this.pack0828(tgt)
-		fmt.Println(util.BinToHex(buffer))
 		if bin := this.udper.SendAndGet(ssoSeq, WaitTime, &buffer); bin != nil {
-			GuLog.Warm("QRLogin", "%s", util.BinToHex(bin[3:]))
-			if this.unpack0828(bin, tgt) == 0 {
+			result := uint8(0)
+			if result, err = this.unpack0828(bin, tgt); result == 0 {
 				this.finishLogin()
-				return true
+				return
+			} else {
+				GuLog.Error("LoginByToken", "%s", err.Error())
 			}
 		}
 	}
-	return false
+	return
 }
 
 //ChangeOnlineStatus 修改在线状态

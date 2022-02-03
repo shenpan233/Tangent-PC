@@ -153,7 +153,8 @@ func Encrypt(key, bin []byte) []byte {
 	return tea.Encrypt(bin)
 }
 
-func Decrypt(key, bin []byte) []byte {
+func Decrypt(key, bin []byte) (ret []byte) {
 	tea := NewCipher(key)
-	return tea.Decrypt(bin)
+	ret = tea.Decrypt(bin)
+	return
 }

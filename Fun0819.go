@@ -54,8 +54,8 @@ func (this *TangentPC) unpack0819(qrResp *QRResp, bin []byte) (status uint8) {
 				GuBuffer.NewGuUnPacketFun(tlv.Value, func(tPack *GuBuffer.GuUnPacket) {
 					switch tlv.Tag {
 					case 0x00_04: //扫码QQ号
-						tPack.GetInt16()
-						Account := tPack.GetStr(int32(tPack.GetInt16()))
+						tPack.GetUint16()
+						Account := tPack.GetStr(int32(tPack.GetUint16()))
 						//号码初始化
 						{
 							GuLog.Notice("扫码成功", "AtUin=%s", Account)

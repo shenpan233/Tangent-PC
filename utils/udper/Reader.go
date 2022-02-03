@@ -27,9 +27,9 @@ func (this *Udper) recv() {
 				}
 				/*普通处理*/
 				pack := GuBuffer.NewGuUnPacket(receiver) //申请缓冲器
-				pack.GetInt16()                          //Version
-				Cmd := pack.GetInt16()                   //命令
-				SsoSeq := uint16(pack.GetInt16())
+				pack.GetUint16()                         //Version
+				Cmd := pack.GetUint16()                  //命令
+				SsoSeq := uint16(pack.GetUint16())
 				pack.GetUint32() //QQUin
 				/*检查是否要拉取*/
 				if value, exits := this.pull.LoadAndDelete(SsoSeq); exits && value != nil {

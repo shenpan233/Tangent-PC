@@ -57,10 +57,10 @@ func (r *GuUnPacket) GetUint8() uint8 {
 	}
 }
 
-func (r *GuUnPacket) GetInt16() int16 {
+func (r *GuUnPacket) GetUint16() uint16 {
 	//int8(bArr[0] & 255)
 	if bArr := r.GetBin(2); bArr != nil {
-		return int16(((int(bArr[0]) << 8) & 65280) + ((int(bArr[1]) << 0) & 255))
+		return uint16(((int(bArr[0]) << 8) & 65280) + ((int(bArr[1]) << 0) & 255))
 	} else {
 		return 0
 	}
@@ -78,7 +78,7 @@ func (r *GuUnPacket) GetToken() []byte {
 	if r.GetLen() < 2 {
 		return make([]byte, 0)
 	}
-	return r.GetBin(int(r.GetInt16()))
+	return r.GetBin(int(r.GetUint16()))
 }
 
 func (r *GuUnPacket) GetTlv() (t *Tlv) {
@@ -86,8 +86,8 @@ func (r *GuUnPacket) GetTlv() (t *Tlv) {
 		return nil
 	}
 	t = &Tlv{
-		Tag:   uint(r.GetInt16()),
-		Len:   uint(r.GetInt16()),
+		Tag:   uint(r.GetUint16()),
+		Len:   uint(r.GetUint16()),
 		Value: nil,
 	}
 	t.Value = r.GetBin(int(t.Len))

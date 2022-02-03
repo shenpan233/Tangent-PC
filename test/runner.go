@@ -33,7 +33,7 @@ func main() {
 			for client.CheckQRCode(resp) != Tangent_PC.QROk {
 				time.Sleep(3 * time.Second)
 			}
-			if client.QRLogin() {
+			if client.QRLogin() == nil {
 				if client.ChangeOnlineStatus(Tangent_PC.Online) {
 					for {
 						client.HeatBoat()

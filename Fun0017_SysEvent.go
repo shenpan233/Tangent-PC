@@ -14,8 +14,8 @@ import (
 func (this *TangentPC) unpack0017(Seq uint16, bin []byte) {
 	pack := GuBuffer.NewGuUnPacket(bin)
 	MsgInfo := pack.GetBin(16) //可以细拆，但是没必要
-	pack.GetInt16()            //服务器端口 8000
-	cmd := pack.GetInt16()     //接收命令
+	pack.GetUint16()           //服务器端口 8000
+	cmd := pack.GetUint16()    //接收命令
 	this.GetServerMsg(cmd, Seq, MsgInfo, pack.GetAll())
 
 	return

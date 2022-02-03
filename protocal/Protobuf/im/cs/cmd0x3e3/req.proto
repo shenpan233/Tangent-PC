@@ -1,0 +1,8 @@
+package cmd0x3e3;
+
+
+message ReqBody{
+  required uint64 account = 1;//×ÔÉíÕËºÅ
+
+
+}

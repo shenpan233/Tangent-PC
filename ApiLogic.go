@@ -7,6 +7,8 @@
 package Tangent_PC
 
 import (
+	"fmt"
+	"github.com/shenpan233/Tangent-PC/model"
 	GroupMsg "github.com/shenpan233/Tangent-PC/protocal/Msg/Group/Receive"
 	util "github.com/shenpan233/Tangent-PC/utils"
 	"github.com/shenpan233/Tangent-PC/utils/GuBuffer"
@@ -17,7 +19,7 @@ import (
 func (this *TangentPC) refreshClient() {
 	ssoSeq, buffer := this.pack001D(0x11)
 	if bin := this.udper.SendAndGet(ssoSeq, WaitTime, &buffer); bin != nil {
-		GuLog.Error("refreshClient", util.BinToHex(bin))
+		//GuLog.Error("refreshClient", util.BinToHex(bin))
 	}
 }
 
@@ -25,8 +27,18 @@ func (this *TangentPC) refreshClient() {
 func (this *TangentPC) refresh26() {
 	ssoSeq, buffer := this.pack001D(0x26)
 	if bin := this.udper.SendAndGet(ssoSeq, WaitTime, &buffer); bin != nil {
-		GuLog.Error("refresh26", util.BinToHex(bin))
+		//GuLog.Error("refresh26", util.BinToHex(bin))
 	}
+}
+
+//refreshWebKey 刷新WebKey
+func (this *TangentPC) refreshWebKey() {
+	ssoSeq, buffer := this.pack001D(webKey)
+	if bin := this.udper.SendAndGet(ssoSeq, WaitTime, &buffer); bin != nil {
+		ret := this.unpack001D(buffer).(*model.CommonWebKey)
+		fmt.Println(ret)
+	}
+
 }
 
 //finishLogin 登录完成后的操作
@@ -34,15 +46,16 @@ func (this *TangentPC) finishLogin() {
 	//刷新token
 	this.refreshClient()
 	this.refresh26()
+	this.refreshWebKey()
 	//绑定接收器
 	this.udper.UdpRecv = this.Recv
-	this.handle = map[int16]unpack{
+	this.handle = map[uint16]unpack{
 		0x00_17: this.unpack0017,
 	}
 }
 
 //GetServerMsg 读取系统信息
-func (this *TangentPC) GetServerMsg(Cmd int16, seq uint16, MsgInfo, data []byte) {
+func (this *TangentPC) GetServerMsg(Cmd uint16, seq uint16, MsgInfo, data []byte) {
 	go func() {
 		buffer := this.pack0017(seq, MsgInfo)
 		this.udper.Send(&buffer)
@@ -61,7 +74,7 @@ func (this *TangentPC) GetServerMsg(Cmd int16, seq uint16, MsgInfo, data []byte)
 }
 
 //Recv 数据包接收
-func (this *TangentPC) Recv(Cmd int16, seq uint16, pack *GuBuffer.GuUnPacket) {
+func (this *TangentPC) Recv(Cmd uint16, seq uint16, pack *GuBuffer.GuUnPacket) {
 	pack.GetBin(3)
 	pack = GuBuffer.NewGuUnPacket(util.Decrypt(this.teaKey.SessionKey, pack.GetAll()))
 	if event := this.handle[Cmd]; event != nil {

@@ -55,7 +55,7 @@ func (this TangentPC) uCode0825Tlv(pack *GuBuffer.GuUnPacket) {
 				case 0x01_12:
 					this.sig.BufSigClientAddr = tlv.Value
 				case 0x00_17:
-					tPack.GetInt16()
+					tPack.GetUint16()
 					this.info.PingTime = tPack.GetUint32()
 					this.info.WlanIp = util.IntToIp(int32(tPack.GetUint32()))
 				}

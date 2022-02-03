@@ -35,7 +35,7 @@ func GroupMsg(data []byte) (Msg model.GroupMsg) {
 			pack.Skip(8)
 			//piceceNum := pack.GetUint8()
 			//piceceId := pack.GetUint8()
-			//piceceKind := pack.GetInt16()
+			//piceceKind := pack.GetUint16()
 			pack.Skip(4)
 			pack.Skip(12)
 			Msg.MsgTime.Send = uint64(pack.GetUint32()) //发送的时间
@@ -47,8 +47,8 @@ func GroupMsg(data []byte) (Msg model.GroupMsg) {
 				Msg.Green = pack.GetUint8()
 				Msg.Size = pack.GetUint8()
 				Msg.Style = pack.GetUint8()
-				Msg.Encoding = uint16(pack.GetInt16())
-				Msg.Font.FontName = pack.GetStr(int32(pack.GetInt16()))
+				Msg.Encoding = uint16(pack.GetUint16())
+				Msg.Font.FontName = pack.GetStr(int32(pack.GetUint16()))
 				pack.Skip(2)
 			}
 		}
@@ -73,7 +73,7 @@ func groupMsgUnpack(pack *GuBuffer.GuUnPacket) string {
 					}
 					GuBuffer.NewGuUnPacketFun(pack.GetAll(), func(pack *GuBuffer.GuUnPacket) {
 						pack.Skip(1)
-						pack = GuBuffer.NewGuUnPacket(pack.GetBin(int(pack.GetInt16())))
+						pack = GuBuffer.NewGuUnPacket(pack.GetBin(int(pack.GetUint16())))
 						if pack.GetLen() != 0 {
 							//有其他的内容
 							pack.Skip(7)

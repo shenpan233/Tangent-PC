@@ -7,6 +7,7 @@
 package Tangent_PC
 
 import (
+	"errors"
 	"fmt"
 	"github.com/shenpan233/Tangent-PC/model"
 	"github.com/shenpan233/Tangent-PC/protocal/Tlv"
@@ -15,7 +16,8 @@ import (
 	"github.com/shenpan233/Tangent-PC/utils/GuLog"
 )
 
-//需要tgt 参数
+//pack0828
+//	tgt=>tgt参数
 func (this *TangentPC) pack0828(tgt *model.TgtInfo) (SsoSeq uint16, buffer []byte) {
 	this.sig.BufSession = tgt.BufSession
 	this.teaKey.SessionKey = tgt.BufSessionKey
@@ -38,27 +40,33 @@ func (this *TangentPC) pack0828(tgt *model.TgtInfo) (SsoSeq uint16, buffer []byt
 	}))
 }
 
-//
-func (this *TangentPC) unpack0828(bin []byte, tgt *model.TgtInfo) (result uint8) {
+func (this *TangentPC) unpack0828(bin []byte, tgt *model.TgtInfo) (result uint8, err error) {
 	pack := GuBuffer.NewGuUnPacket(util.Decrypt(tgt.BufTgTgTKey, bin[3:]))
 	result = pack.GetUint8()
 	if result == 0 {
-		for pack.GetLen() > 0 {
-			tlv := pack.GetTlv()
-			pack := GuBuffer.NewGuUnPacket(tlv.Value)
-			switch tlv.Tag {
-			case 0x01_0C:
-				pack.GetInt16()
-				this.teaKey.SessionKey = pack.GetBin(16)
-			case 0x01_05:
-				pack.Skip(4)
-				tgt.Buf0102 = pack.GetToken()
-				tgt.Buf0202 = pack.GetToken()
-			default:
-				GuLog.Warm("un0828", "Tlv=%X\n%X", tlv.Tag, pack.GetAll())
-			}
-		}
 		GuLog.Info("unpack0828", "NewBufSessionKey=%X\n", this.teaKey.SessionKey)
+	} else {
+		pack = GuBuffer.NewGuUnPacket(util.Decrypt(tgt.BufSessionKey, bin[3:]))
+		result = pack.GetUint8()
 	}
+	for pack.GetLen() > 0 {
+		tlv := pack.GetTlv()
+		TlvPack := GuBuffer.NewGuUnPacket(tlv.Value)
+		switch tlv.Tag {
+		case 0x01_00:
+			TlvPack.Skip(8)
+			err = errors.New(string(TlvPack.GetToken()))
+		case 0x01_0C:
+			TlvPack.Skip(2)
+			this.teaKey.SessionKey = TlvPack.GetBin(16)
+		case 0x01_05:
+			TlvPack.Skip(4)
+			tgt.Buf0102 = TlvPack.GetToken()
+			tgt.Buf0202 = TlvPack.GetToken()
+		default:
+			GuLog.Warm("un0828", "Tag=%X\nTlv=%X", tlv.Tag, tlv.Value)
+		}
+	}
+
 	return
 }

@@ -47,7 +47,7 @@ const (
 //0836解包
 func (this *TangentPC) unpack0836(bin []byte) (tgt *model.TgtInfo) {
 	pack := GuBuffer.NewGuUnPacket(bin)
-	pack.GetInt16()                //是否二次加密
+	pack.GetUint16()               //是否二次加密
 	LoginStatus := pack.GetUint8() //登录状态
 	if LoginStatus == LoginSuc {
 		tgt = new(model.TgtInfo)
@@ -58,13 +58,13 @@ func (this *TangentPC) unpack0836(bin []byte) (tgt *model.TgtInfo) {
 			pack := GuBuffer.NewGuUnPacket(tlv.Value)
 			switch tlv.Tag {
 			case 0x01_09:
-				pack.GetInt16()
+				pack.GetUint16()
 				tgt.BufSessionKey = pack.GetBin(16)
 				tgt.BufSession = pack.GetToken()
 				this.sig.BufPwdForConn = pack.GetToken()
 				break
 			case 0x01_07:
-				pack.GetInt16()
+				pack.GetUint16()
 				pack.GetToken()
 				tgt.BufTgTgTKey = pack.GetBin(16)
 				tgt.BufTgt = pack.GetToken()
