@@ -20,10 +20,10 @@ import (
 //组包
 func (this *TangentPC) pack0819(resp *QRResp) (SsoSeq uint16, buffer []byte) {
 	return this.packetLogin(0x08_19, GuBuffer.NewGuPacketFun(func(packet *GuBuffer.GuPacket) {
-		packet.SetBytes(Tlv.GetTlv30(resp.sig0x30))
-		packet.SetBytes(util.Encrypt(resp.key, GuBuffer.NewGuPacketFun(func(pack *GuBuffer.GuPacket) {
+		packet.SetBytes(Tlv.GetTlv30(resp.Sig0x30))
+		packet.SetBytes(util.Encrypt(resp.BufQRKey, GuBuffer.NewGuPacketFun(func(pack *GuBuffer.GuPacket) {
 			pack.SetBytes(Tlv.GetTlv19SSOInfo(this.sdk))
-			pack.SetBytes(Tlv.GetTlv301(resp.sigQRSing))
+			pack.SetBytes(Tlv.GetTlv301(resp.SigQRSing))
 		}),
 		))
 	}))
@@ -40,7 +40,7 @@ const (
 )
 
 func (this *TangentPC) unpack0819(qrResp *QRResp, bin []byte) (status uint8) {
-	pack := GuBuffer.NewGuUnPacket(util.Decrypt(qrResp.key, bin[3:]))
+	pack := GuBuffer.NewGuUnPacket(util.Decrypt(qrResp.BufQRKey, bin[3:]))
 	status = pack.GetUint8()
 	qrResp.Status = status
 	switch status {

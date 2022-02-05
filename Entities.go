@@ -11,10 +11,11 @@ import "github.com/shenpan233/Tangent-PC/model"
 // QRResp /*二维码相关*/
 type (
 	QRResp struct {
-		Status             uint8
-		QRCode             []byte
-		sig0x30, sigQRSing []byte
-		key                []byte
+		Status    uint8  `json:"status"`
+		QRCode    []byte `json:"bufQRCode"`
+		Sig0x30   []byte `json:"bufSig0X30"`
+		SigQRSing []byte `json:"bufSigQRSing"`
+		BufQRKey  []byte `json:"bufQRKey"`
 	}
 
 	// HOOK 回调钩子

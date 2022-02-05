@@ -8,10 +8,11 @@ import (
 	util "github.com/shenpan233/Tangent-PC/utils"
 	"github.com/shenpan233/Tangent-PC/utils/GuLog"
 	"os"
+	"testing"
 	"time"
 )
 
-func main() {
+func TestQRCode_Login(t *testing.T) {
 	GuLog.Config(true, "")
 	client := Tangent_PC.New("0", model.Computer{
 		ComputerId:   util.HexToBin("9B 13 EE DA 00 00 00 00 00 00 00 00 00 00 00 00"),
@@ -28,7 +29,10 @@ func main() {
 	if client.PingServer() {
 		GuLog.Notice("System", "[QQ=%s]Ping成功", "0")
 		resp := client.FetchQRCode()
-		os.WriteFile("./QRCode.png", resp.QRCode, os.FileMode(0777))
+		if err := os.WriteFile("./QRCode.png", resp.QRCode, os.FileMode(0777)); err != nil {
+			GuLog.Error("TestQRCode", err.Error())
+			return
+		}
 		go func() {
 			for client.CheckQRCode(resp) != Tangent_PC.QROk {
 				time.Sleep(3 * time.Second)

@@ -35,8 +35,10 @@ func (this *TangentPC) refresh26() {
 func (this *TangentPC) refreshWebKey() {
 	ssoSeq, buffer := this.pack001D(webKey)
 	if bin := this.udper.SendAndGet(ssoSeq, WaitTime, &buffer); bin != nil {
-		ret := this.unpack001D(buffer).(*model.CommonWebKey)
-		fmt.Println(ret)
+		ret := this.unpack001D(bin)
+		if ret != nil {
+			fmt.Println(ret.(*model.WebKey))
+		}
 	}
 
 }

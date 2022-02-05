@@ -18,6 +18,7 @@ type (
 		CMainVer     uint16
 		CSubVer      uint16 //同CMainVer
 		DwQdVersion  uint32
+		DwClientType uint32
 		ClientMd5    []byte //客户端MD5
 
 	}

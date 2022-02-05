@@ -1,0 +1,14 @@
+syntax = "proto2";
+package HttpConn;
+import "ClientInfo.proto";
+
+
+message ReqBody{
+  required uint32      httpConnVer = 1;
+  required HttpConnSig Sig         = 4;
+  message SigSkey {
+    required uint32 CsVer = 1;
+    required string Skey  = 2;
+  }
+  required SigSkey     Skey        = 6;
+}

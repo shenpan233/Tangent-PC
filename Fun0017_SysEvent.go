@@ -28,7 +28,7 @@ func (this *TangentPC) pack0017(Seq uint16, MsgInfo []byte) (buffer []byte) {
 		pack.SetUint16(Seq)
 		pack.SetUint32(uint32(this.info.LongUin))
 		pack.SetBytes([]byte{0x02, 0x00, 0x00})
-		pack.SetUint32(0x00_01_01_01)
+		pack.SetUint32(this.sdk.DwClientType)
 		pack.SetUint32(this.sdk.DwPubNo)
 		pack.SetBytes(util.Encrypt(this.teaKey.SessionKey, MsgInfo))
 		pack.SetUint8(3)

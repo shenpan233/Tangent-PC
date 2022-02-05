@@ -36,16 +36,18 @@ func (this *TangentPC) unpack001D(bin []byte) (ret interface{}) {
 		pack.Skip(1) //业务代码，一般都会成功懒得搞
 		switch subCmd {
 		case webKey:
-			key := model.WebKey{}
+			key := model.WebKey{
+				WebSiteKeys: make(map[string]model.CommonWebKey),
+			}
 			key.Common.Skey = string(pack.GetToken())
 			key.Common.PSkey = string(pack.GetToken())
-			num := int(pack.GetUint16())
+			num := int(pack.GetUint16()) - 1
 			for i := 0; i < num; i++ {
 				website := string(pack.GetToken())
-				key.WebSiteKeys[website] = model.CommonWebKey{
-					Skey:  string(pack.GetToken()),
-					PSkey: string(pack.GetToken()),
-				}
+				tmpKey := model.CommonWebKey{}
+				tmpKey.Skey = string(pack.GetToken())
+				tmpKey.PSkey = string(pack.GetToken())
+				key.WebSiteKeys[website] = tmpKey
 			}
 			ret = &key
 			break

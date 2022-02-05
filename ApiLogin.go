@@ -8,6 +8,7 @@
 package Tangent_PC
 
 import (
+	"fmt"
 	"github.com/shenpan233/Tangent-PC/model"
 	"github.com/shenpan233/Tangent-PC/utils/GuLog"
 )
@@ -63,6 +64,7 @@ func (this *TangentPC) QRLogin() (err error) {
 			if bin := this.udper.SendAndGet(ssoSeq, WaitTime, &buffer); bin != nil {
 				result := uint8(0)
 				if result, err = this.unpack0828(bin, tgt); result == 0 {
+					fmt.Println(tgt.Encode())
 					this.finishLogin()
 					return
 				} else {

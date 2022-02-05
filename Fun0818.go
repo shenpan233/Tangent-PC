@@ -39,14 +39,14 @@ func (this *TangentPC) unpack0818(bin []byte) (ret *QRResp) {
 					ret.QRCode = tPack.GetToken()
 					break
 				case 0x30:
-					ret.sig0x30 = tPack.GetAll()
+					ret.Sig0x30 = tPack.GetAll()
 					break
 				case 0x301:
-					ret.sigQRSing = tPack.GetAll()
+					ret.SigQRSing = tPack.GetAll()
 					break
 				case 0x9:
 					tPack.Skip(2)
-					ret.key = tPack.GetAll()
+					ret.BufQRKey = tPack.GetAll()
 					break
 				}
 			})

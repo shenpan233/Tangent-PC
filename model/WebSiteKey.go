@@ -13,7 +13,7 @@ var (
 type WebKey struct {
 	Common CommonWebKey
 	//WebSiteKeys
-	//	Key=website
+	//	BufQRKey=website
 	WebSiteKeys map[string]CommonWebKey
 }
 
