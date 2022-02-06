@@ -27,6 +27,8 @@ func (this *Udper) SendAndGet(SsoSeq uint16, WaitTime uint32, bin *[]byte) []byt
 		this.pull.Store(SsoSeq, puller)
 		select {
 		case bin := <-puller:
+			close(puller)
+			this.pull.Delete(SsoSeq)
 			return bin
 		case <-time.After(time.Duration(WaitTime) * time.Second):
 			/*超时删除*/

@@ -8,7 +8,6 @@
 package Tangent_PC
 
 import (
-	"fmt"
 	"github.com/shenpan233/Tangent-PC/model"
 	"github.com/shenpan233/Tangent-PC/utils/GuLog"
 )
@@ -55,20 +54,19 @@ func (this TangentPC) CheckQRCode(resp *QRResp) uint8 {
 	return QRUnKnow
 }
 
-func (this *TangentPC) QRLogin() (err error) {
+func (this *TangentPC) QRLogin() (err error, tgt *model.TgtInfo) {
 	ssoSeq, buffer := this.pack0836QrCode()
 	if bin := this.udper.SendAndGet(ssoSeq, WaitTime, &buffer); bin != nil {
-		tgt := this.unpack0836(bin)
+		tgt = this.unpack0836(bin)
 		if tgt != nil {
 			ssoSeq, buffer := this.pack0828(tgt)
 			if bin := this.udper.SendAndGet(ssoSeq, WaitTime, &buffer); bin != nil {
 				result := uint8(0)
 				if result, err = this.unpack0828(bin, tgt); result == 0 {
-					fmt.Println(tgt.Encode())
 					this.finishLogin()
 					return
 				} else {
-					GuLog.Error("LoginByToken", err.Error())
+					GuLog.Error("QRLogin", "%s", err.Error())
 				}
 			}
 		}
