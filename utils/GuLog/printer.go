@@ -14,7 +14,7 @@ import (
 	"time"
 )
 
-func prinT(Type int8, info, msg string) {
+func print(Type int8, info, msg string) {
 	strLogType := "U"
 	var (
 		left, right string
