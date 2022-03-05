@@ -83,3 +83,16 @@ func (this *TangentPC) packetIMEnc(cmd uint16, bin []byte) (uint16, []byte) {
 		pack.SetUint8(3)
 	})
 }
+
+func (this *TangentPC) PacketHttpConn(bin ...[]byte) []byte {
+	return GuBuffer.NewGuPacketFun(func(pack *GuBuffer.GuPacket) {
+		pack.SetBytes([]byte{0x28})
+		for _, bytes := range bin {
+			pack.SetUint32(uint32(len(bytes)))
+		}
+		for _, bytes := range bin {
+			pack.SetBytes(bytes)
+		}
+		pack.SetBytes([]byte{0x29})
+	})
+}

@@ -21,6 +21,7 @@ type TangentPC struct {
 	hook   HOOK
 }
 
+//New 新建PC_QQ协议类
 func New(Account string, Computer model.Computer) (this *TangentPC) {
 	this = new(TangentPC)
 	/*通讯器部分*/

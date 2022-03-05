@@ -11,7 +11,7 @@ import (
 	"github.com/shenpan233/Tangent-PC/model"
 )
 
-func (this *TangentPC) U948() {
+func (this *TangentPC) U948() *TangentPC {
 	this.sdk = &model.Version{
 		DwSSOVersion: 0x00_00_04_5C,
 		DwPubNo:      0x00_00_6A_0A,
@@ -23,4 +23,5 @@ func (this *TangentPC) U948() {
 		ClientMd5:    []byte{0xD0, 0x1D, 0x63, 0xA5, 0x85, 0x28, 0x01, 0x97, 0x59, 0x8C, 0xEC, 0xFF, 0x29, 0xC6, 0x31, 0xA3},
 	}
 	this.sdk.CSubVer = this.sdk.CMainVer
+	return this
 }

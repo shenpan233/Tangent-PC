@@ -31,9 +31,9 @@ func (this *TgtInfo) Encode() string {
 		return string(data)
 	}
 }
-func (this *TgtInfo) Decode(data string) bool {
+func (this *TgtInfo) Decode(data string) *TgtInfo {
 	if err := json.Unmarshal([]byte(data), this); err != nil {
-		return false
+		return nil
 	}
-	return true
+	return this
 }

@@ -10,10 +10,11 @@ package GuLog
 import (
 	"bytes"
 	"fmt"
+	"strings"
 	"time"
 )
 
-func print(Type int8, info, msg string) {
+func prinT(Type int8, info, msg string) {
 	strLogType := "U"
 	var (
 		left, right string
@@ -57,21 +58,21 @@ func print(Type int8, info, msg string) {
 			break
 		}
 	}
-	msg = msgLoader(&msg, left, right)
+	msg = msgLoader(msg, left, right)
 	fmt.Printf("%s %s[%s]  %s %s\n%s\n", time.Now().Format(guLog.timeFormat), left, strLogType, info, right, msg)
 }
 
-func msgLoader(msg *string, left, right string) string {
+func msgLoader(msg string, left, right string) string {
 	buffer := bytes.NewBufferString("")
-	//lit := strings.Split(*msg, "\n")
-	//for _, kid := range lit {
-	//	buffer.WriteString(left)
-	//	buffer.WriteString(kid)
-	//	buffer.WriteString(right)
-	//	buffer.WriteString(" \n")
-	//}
-	buffer.WriteString(left)
-	buffer.WriteString(*msg)
-	buffer.WriteString(right)
+	lit := strings.Split(msg, "\n")
+	for _, kid := range lit {
+		buffer.WriteString(left)
+		buffer.WriteString(kid)
+		buffer.WriteString(right)
+		buffer.WriteString("\n")
+	}
+	//buffer.WriteString(left)
+	//buffer.WriteString(*msg)
+	//buffer.WriteString(right)
 	return buffer.String()
 }

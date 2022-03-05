@@ -7,7 +7,6 @@
 package Tangent_PC
 
 import (
-	"fmt"
 	"github.com/shenpan233/Tangent-PC/model"
 	GroupMsg "github.com/shenpan233/Tangent-PC/protocal/Msg/Group/Receive"
 	util "github.com/shenpan233/Tangent-PC/utils"
@@ -23,31 +22,46 @@ func (this *TangentPC) refreshClient() {
 	}
 }
 
-//refresh26 刷新Token26
-func (this *TangentPC) refresh26() {
-	ssoSeq, buffer := this.pack001D(0x26)
+//refreshHttpConnSig 刷新HttpConnSig
+func (this *TangentPC) refreshHttpConnSig() bool {
+	ssoSeq, buffer := this.pack001D(subCmd0x001DHttpConn)
 	if bin := this.udper.SendAndGet(ssoSeq, WaitTime, &buffer); bin != nil {
-		//GuLog.Error("refresh26", util.BinToHex(bin))
+		if gen := this.unpack001D(bin); gen != nil {
+			gen := gen.(map[int8][]byte)
+			this.teaKey.HttpConn = gen[0]
+			this.sig.BufSigHttpConnToken = gen[1]
+			return true
+		} else {
+			return false
+		}
 	}
+	return false
 }
 
 //refreshWebKey 刷新WebKey
 func (this *TangentPC) refreshWebKey() {
-	ssoSeq, buffer := this.pack001D(webKey)
+	ssoSeq, buffer := this.pack001D(subCmd0x001DWebKey)
 	if bin := this.udper.SendAndGet(ssoSeq, WaitTime, &buffer); bin != nil {
 		ret := this.unpack001D(bin)
 		if ret != nil {
-			fmt.Println(ret.(*model.WebKey))
+			this.info.SelfWebKey = ret.(*model.WebKey)
 		}
 	}
 
+}
+
+//GenHttpConn
+func (this *TangentPC) genHttpConn() {
+	ssoSeq, buffer := this.pack01BB(subCmd0x01BBHttpConn)
+	if bin := this.udper.SendAndGet(ssoSeq, WaitTime, &buffer); bin != nil {
+	}
 }
 
 //finishLogin 登录完成后的操作
 func (this *TangentPC) finishLogin() {
 	//刷新token
 	this.refreshClient()
-	this.refresh26()
+	this.refreshHttpConnSig()
 	this.refreshWebKey()
 	//绑定接收器
 	this.udper.UdpRecv = this.Recv

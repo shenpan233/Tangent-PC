@@ -24,10 +24,11 @@ type (
 	}
 
 	Information struct {
-		LongUin  uint64
-		Account  string
-		PassWord []byte //md5加密
-		PingTime uint32
+		LongUin    uint64
+		Account    string
+		PassWord   []byte //md5加密
+		PingTime   uint32
+		SelfWebKey *WebKey
 		Computer
 	}
 
@@ -37,15 +38,17 @@ type (
 		PublicKey   []byte
 		ShareKey    []byte
 		SessionKey  []byte
+		HttpConn    []byte
 	}
 
 	// Sig 一些token/sign
 	Sig struct {
-		BufSigClientAddr []byte /*0825返回*/
-		BufTgTGTKey      []byte
-		BufQR303         []byte
-		BufSession       []byte
-		BufPwdForConn    []byte
+		BufSigClientAddr    []byte /*0825返回*/
+		BufTgTGTKey         []byte
+		BufQR303            []byte
+		BufSession          []byte
+		BufPwdForConn       []byte
+		BufSigHttpConnToken []byte
 	}
 
 	//Computer 硬件信息
