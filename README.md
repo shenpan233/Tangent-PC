@@ -48,26 +48,28 @@
 
 括号内为返回Interface的具体类型 强制转一下就行了
 
-- [x] 年龄查询 (uint8)
-- [x] 昵称查询 (string)
-- [x] 等级查询 (uint8)
-- [ ] 邮箱查询 
-- [x] 生日查询 (model.Birthday)
-- [ ] 名片赞数查询
+- [X]  年龄查询 (uint8)
+- [X]  昵称查询 (string)
+- [X]  等级查询 (uint8)
+- [ ]  邮箱查询
+- [X]  生日查询 (model.Birthday)
+- [ ]  名片赞数查询
 
 #### 财付通类 :x:
 
-  > 由于[QQ钱包支付用户服务协议](https://www.tenpay.com/v2/html5/basic/public/agreement/protocol_mqq_pay.shtml), 将不支持一切有关QQ钱包的协议
-  >
+> 由于[QQ钱包支付用户服务协议](https://www.tenpay.com/v2/html5/basic/public/agreement/protocol_mqq_pay.shtml), 将不支持一切有关QQ钱包的协议
 
-  > 4.13 您不得利用本服务实施下列任一的行为：
-  >
-  > （9） **侵害QQ钱包支付服务系統；**
-  >
-
-
+> 4.13 您不得利用本服务实施下列任一的行为：
+>
+> （9） **侵害QQ钱包支付服务系統；**
 
 ### 更新日志
+
+
+#### 2022年3月25日
+
+1. [Improve] Log库
+2. [Improve] 群消息At
 
 #### 2022年1月28日16:09:58
 
