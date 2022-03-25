@@ -38,17 +38,14 @@ func (this *TangentPC) unpack001D(bin []byte) (ret interface{}) {
 		switch subCmd {
 		case subCmd0x001DWebKey:
 			key := model.WebKey{
-				WebSiteKeys: make(map[string]model.CommonWebKey),
+				WebSiteKeys: make(map[string]string),
 			}
-			key.Common.Skey = string(pack.GetToken())
-			key.Common.PSkey = string(pack.GetToken())
+			key.Skey = string(pack.GetToken())
+			key.PSkey = string(pack.GetToken())
 			num := int(pack.GetUint16()) - 1
 			for i := 0; i < num; i++ {
 				website := string(pack.GetToken())
-				tmpKey := model.CommonWebKey{}
-				tmpKey.Skey = string(pack.GetToken())
-				tmpKey.PSkey = string(pack.GetToken())
-				key.WebSiteKeys[website] = tmpKey
+				key.WebSiteKeys[website] = string(pack.GetToken())
 			}
 			ret = &key
 			break

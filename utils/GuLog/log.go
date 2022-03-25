@@ -1,31 +1,33 @@
+/*
+  @Author:  Trial(Trialpro@gmail.com)
+  @Creat:   2022/3/11 22:35
+  @Notice:  不带格式化的自动增量
+*/
+
 package GuLog
 
-import (
-	"fmt"
-)
+import "fmt"
 
-//这样写好像有点笨
-var guLog struct {
-	color      bool
-	timeFormat string
+func Error(v ...interface{}) {
+	msg := fmt.Sprint(v...)
+	dump(red, "E", msg)
+}
+func Debug(v ...interface{}) {
+	msg := fmt.Sprint(v...)
+	dump(grey, "D", msg)
 }
 
-func Error(info, format string, v ...interface{}) {
-	print(err, info, fmt.Sprintf(format, v...))
+func Warm(v ...interface{}) {
+	msg := fmt.Sprint(v...)
+	dump(yellow, "W", msg)
 }
 
-func Debug(info, format string, v ...interface{}) {
-	print(debug, info, fmt.Sprintf(format, v...))
+func Info(v ...interface{}) {
+	msg := fmt.Sprint(v...)
+	dump(blue, "I", msg)
 }
 
-func Warm(info, format string, v ...interface{}) {
-	print(warm, info, fmt.Sprintf(format, v...))
-}
-
-func Info(Info, format string, v ...interface{}) {
-	print(infO, Info, fmt.Sprintf(format, v...))
-}
-
-func Notice(info, format string, v ...interface{}) {
-	print(notice, info, fmt.Sprintf(format, v...))
+func Notice(v ...interface{}) {
+	msg := fmt.Sprint(v...)
+	dump(green, "N", msg)
 }

@@ -4,12 +4,12 @@
 * @app:		接收
 * @Creat:   2021/11/27 0027 13:17
  */
+
 package udper
 
 import (
 	"bytes"
 	"github.com/shenpan233/Tangent-PC/utils/GuBuffer"
-	"github.com/shenpan233/Tangent-PC/utils/GuLog"
 )
 
 func (this *Udper) recv() {
@@ -29,7 +29,7 @@ func (this *Udper) recv() {
 				pack := GuBuffer.NewGuUnPacket(receiver) //申请缓冲器
 				pack.GetUint16()                         //Version
 				Cmd := pack.GetUint16()                  //命令
-				SsoSeq := uint16(pack.GetUint16())
+				SsoSeq := pack.GetUint16()
 				pack.GetUint32() //QQUin
 				/*检查是否要拉取*/
 				if value, exits := this.pull.LoadAndDelete(SsoSeq); exits && value != nil {
@@ -43,7 +43,7 @@ func (this *Udper) recv() {
 					go this.UdpRecv(Cmd, SsoSeq, pack)
 				}
 			} else {
-				GuLog.Error("UdpEr", "%s", err.Error())
+				//GuLog.Error("UdpEr", "%s", err.Error())
 			}
 		}
 

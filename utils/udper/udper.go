@@ -4,11 +4,11 @@
 * @app:		Udp组件
 * @Creat:   2021/11/27 0027 12:03
  */
+
 package udper
 
 import (
 	"context"
-	"github.com/shenpan233/Tangent-PC/utils/GuLog"
 	"net"
 	"sync"
 	"sync/atomic"
@@ -43,7 +43,7 @@ func (this *Udper) ChangeConnect(host string) bool {
 	conn, _ := net.ResolveUDPAddr("udp", host)
 	var err error
 	if this.conn, err = net.Dial("udp", conn.String()); err != nil {
-		GuLog.Error("ChangeConnect", "重连失败,%s", err)
+		//GuLog.Error("ChangeConnect", "重连失败,%s", err)
 		return false
 	} else {
 		go this.recv()

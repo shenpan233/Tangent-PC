@@ -7,7 +7,7 @@
 package model
 
 import (
-	"encoding/json"
+	json "github.com/json-iterator/go"
 	"github.com/shenpan233/Tangent-PC/utils/GuBuffer"
 )
 
@@ -35,8 +35,10 @@ type Font struct {
 
 type GroupMsg struct {
 	Account   uint64 `json:"Account"`
+	GroupName string
 	GroupUin  uint64 `json:"GroupUin"` //群号
 	SenderUin uint64 `json:"FromUin"`  //发送者QQ
+	FromName  string
 	MsgID     uint32 `json:"MsgID"`
 	MsgSeq    uint32 `json:"MsgSeq"`
 	Msg       string `json:"Msg"`

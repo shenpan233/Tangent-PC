@@ -7,15 +7,11 @@
 package Tlv
 
 import (
-	"fmt"
 	util "github.com/shenpan233/Tangent-PC/utils"
 	"github.com/shenpan233/Tangent-PC/utils/GuBuffer"
 )
 
-func GetTlv105(buf0102, buf0202 []byte) []byte {
-	fmt.Println(util.BinToHex(buf0102))
-	fmt.Println(util.BinToHex(buf0202))
-
+func GetTlv105vec0x12c(buf0102, buf0202 []byte) []byte {
 	pack := GuBuffer.NewGuPacket()
 	pack.SetUint16(1)
 	pack.SetBytes([]byte{0x01, 0x02})

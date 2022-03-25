@@ -13,7 +13,7 @@ import (
 
 func GetTlv30FPcName(ComputerName string) []byte {
 	pack := GuBuffer.NewGuPacket()
-	pack.SetUint16(uint16(uint32(len(ComputerName) + 2)))
+	pack.SetUint16(uint16(len(ComputerName) + 2))
 	pack.SetString(ComputerName)
 	return pack.ToTlv(0x30f)
 }

@@ -39,27 +39,20 @@ func (this *TangentPC) unpack0825(bin []byte) (result uint8) {
 	pack := GuBuffer.NewGuUnPacket(util.Decrypt(this.teaKey.Ping0825Key, bin))
 	result = pack.GetUint8()
 	/*Tlv解析*/
-	this.uCode0825Tlv(pack)
+	GuBuffer.TlvEnum(pack.GetAll(), map[uint16]func(pack *GuBuffer.GuUnPacket){
+		0x00_0C: func(tPack *GuBuffer.GuUnPacket) {
+			tPack.Skip(12)
+			this.info.ConnectIp = util.IntToIp(int32(tPack.GetUint32()))
+			this.info.RedirectIp.PushBack(this.info.ConnectIp)
+		},
+		0x01_12: func(tPack *GuBuffer.GuUnPacket) {
+			this.sig.BufSigClientAddr = tPack.GetAll()
+		},
+		0x00_17: func(tPack *GuBuffer.GuUnPacket) {
+			tPack.Skip(2)
+			this.info.PingTime = tPack.GetUint32()
+			this.info.WlanIp = util.IntToIp(int32(tPack.GetUint32()))
+		},
+	})
 	return
-}
-
-func (this TangentPC) uCode0825Tlv(pack *GuBuffer.GuUnPacket) {
-	for pack.GetLen() > 0 {
-		if tlv := pack.GetTlv(); tlv != nil {
-			GuBuffer.NewGuUnPacketFun(tlv.Value, func(tPack *GuBuffer.GuUnPacket) {
-				switch tlv.Tag {
-				case 0x00_0C: /*Tlv000C*/
-					tPack.GetBin(12)
-					this.info.ConnectIp = util.IntToIp(int32(tPack.GetUint32()))
-					this.info.RedirectIp.PushBack(this.info.ConnectIp)
-				case 0x01_12:
-					this.sig.BufSigClientAddr = tlv.Value
-				case 0x00_17:
-					tPack.GetUint16()
-					this.info.PingTime = tPack.GetUint32()
-					this.info.WlanIp = util.IntToIp(int32(tPack.GetUint32()))
-				}
-			})
-		}
-	}
 }

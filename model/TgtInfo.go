@@ -7,7 +7,7 @@
 package model
 
 import (
-	"encoding/json"
+	json "github.com/json-iterator/go"
 )
 
 type (

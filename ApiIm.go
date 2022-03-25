@@ -39,7 +39,9 @@ func (this *TangentPC) ReadGroupMsg(GroupCode uint64, MsgSeq uint32) bool {
 //	GroupCode 群号
 //	Msg 	  消息内容
 func (this *TangentPC) SendGroupMsg(GroupCode uint64, Msg string) (Code bool, MsgSeq uint32) {
-	ssoSeq, buffer := this.pack0002(GroupSend.GroupMsg(GroupCode, Msg))
+	//对一些变量进行替换
+	//@
+	ssoSeq, buffer := this.pack0002(GroupSend.GroupMsg(GroupCode, Msg, this.GetGroupMemberCardFromCache))
 	if bin := this.udper.SendAndGet(ssoSeq, WaitTime, &buffer); bin != nil {
 		isSuc, Recall := this.unpack0002(bin)
 		if isSuc {
@@ -48,4 +50,14 @@ func (this *TangentPC) SendGroupMsg(GroupCode uint64, Msg string) (Code bool, Ms
 		}
 	}
 	return false, 0
+}
+
+func (this *TangentPC) GetJoinedGroupName(GroupUin uint64) string {
+	return this.cache.groupList[GroupUin]
+}
+func (this *TangentPC) GetGroupMemberCardFromCache(GroupUin, uin uint64) string {
+	if member := this.cache.member[GroupUin][uin]; member != nil {
+		return member.Name
+	}
+	return ""
 }

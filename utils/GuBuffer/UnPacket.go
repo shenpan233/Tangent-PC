@@ -109,3 +109,18 @@ func NewGuUnPacketFun(Buffer []byte, fun GuUnPackFun) *GuUnPacket {
 	}
 	return pack
 }
+
+//TlvEnum Tlv结构枚举
+func TlvEnum(bin []byte, store map[uint16]func(pack *GuUnPacket)) {
+	NewGuUnPacketFun(bin, func(pack *GuUnPacket) {
+		for pack.GetLen() > 0 {
+			Tag := pack.GetUint16()
+			if callBack := store[Tag]; callBack != nil {
+				callBack(NewGuUnPacket(pack.GetToken()))
+			} else {
+				//无需处理即跳过
+				pack.Skip(int64(pack.GetUint16()))
+			}
+		}
+	})
+}

@@ -12,7 +12,7 @@ import (
 	"github.com/shenpan233/Tangent-PC/utils/GuBuffer"
 )
 
-func GetTlv1A(tgtKey, tlv15 []byte) []byte {
+func GetTlv1AComputerGuid(tgtKey, tlv15 []byte) []byte {
 	pack := GuBuffer.NewGuPacket()
 	pack.SetBytes(util.Encrypt(tgtKey, tlv15))
 	return pack.ToTlv(0x1A)

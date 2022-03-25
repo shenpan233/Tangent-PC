@@ -33,20 +33,20 @@ func (this *TangentPC) unpack0818(bin []byte) (ret *QRResp) {
 	/*Tlv解析*/
 	for pack.GetLen() > 0 {
 		if tlv := pack.GetTlv(); tlv != nil {
-			GuBuffer.NewGuUnPacketFun(tlv.Value, func(tPack *GuBuffer.GuUnPacket) {
+			GuBuffer.NewGuUnPacketFun(tlv.Value, func(pack *GuBuffer.GuUnPacket) {
 				switch tlv.Tag {
 				case 0x302:
-					ret.QRCode = tPack.GetToken()
+					ret.QRCode = pack.GetToken()
 					break
 				case 0x30:
-					ret.Sig0x30 = tPack.GetAll()
+					ret.Sig0x30 = pack.GetAll()
 					break
 				case 0x301:
-					ret.SigQRSing = tPack.GetAll()
+					ret.SigQRSing = pack.GetAll()
 					break
 				case 0x9:
-					tPack.Skip(2)
-					ret.BufQRKey = tPack.GetAll()
+					pack.Skip(2)
+					ret.BufQRKey = pack.GetAll()
 					break
 				}
 			})

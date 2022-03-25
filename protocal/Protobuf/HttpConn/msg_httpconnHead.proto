@@ -1,0 +1,23 @@
+//ClientInfo.proto
+//每次都要发的版本信息和token
+syntax = "proto2";
+package HttpConn;
+
+message msg_httpConn_head {
+  required uint32       Uin                 = 1;
+  required uint32       command             = 2; //固定的command = 0x7FF
+  required uint32       subCommand          = 3;
+  required uint32       seq                 = 4;
+  required uint32       ClientVer           = 5;
+  required uint32       DwClientType        = 7;
+  required uint32       DwPubNo             = 8;
+  required uint32       ServiceId           = 17;
+  required bytes        BufSigHttpConnToken = 18;
+  required uint32       flag                = 19; // 固定为1
+  required uint32       compress_type       = 24; // 固定为 0
+  message msg_oidbhead {
+    required uint32 OidbCommand  = 1;
+    required uint32 service_type = 2;
+  }
+  required msg_oidbhead msgOiDbHead         = 25;
+}

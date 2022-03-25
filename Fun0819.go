@@ -13,7 +13,6 @@ import (
 	util "github.com/shenpan233/Tangent-PC/utils"
 	"github.com/shenpan233/Tangent-PC/utils/Bytes"
 	"github.com/shenpan233/Tangent-PC/utils/GuBuffer"
-	"github.com/shenpan233/Tangent-PC/utils/GuLog"
 	"strconv"
 )
 
@@ -49,32 +48,25 @@ func (this *TangentPC) unpack0819(qrResp *QRResp, bin []byte) (status uint8) {
 	case QROk:
 		/*已确认登录*/
 		/*Tlv解析*/
-		for pack.GetLen() > 0 {
-			if tlv := pack.GetTlv(); tlv != nil {
-				GuBuffer.NewGuUnPacketFun(tlv.Value, func(tPack *GuBuffer.GuUnPacket) {
-					switch tlv.Tag {
-					case 0x00_04: //扫码QQ号
-						tPack.GetUint16()
-						Account := tPack.GetStr(int32(tPack.GetUint16()))
-						//号码初始化
-						{
-							GuLog.Notice("扫码成功", "AtUin=%s", Account)
-							this.info.Account = Account
-							this.info.LongUin, _ = strconv.ParseUint(Account, 10, 64)
-						}
-						break
-					case 0x03_03: //一种临时密码
-						this.sig.BufQR303 = tlv.Value
-						this.info.PassWord = Bytes.GetMd5Bytes(tPack.GetAll())
-						break
-					case 0x03_04:
-						this.sig.BufTgTGTKey = tPack.GetAll()
-					}
-
-				})
-			}
-		}
-		break
+		GuBuffer.TlvEnum(pack.GetAll(), map[uint16]func(pack *GuBuffer.GuUnPacket){
+			0x00_04: func(pack *GuBuffer.GuUnPacket) {
+				pack.GetUint16()
+				Account := pack.GetStr(int32(pack.GetUint16()))
+				//号码初始化
+				{
+					//GuLog.Notice("扫码成功", "AtUin=%s", Account)
+					this.info.Account = Account
+					this.info.LongUin, _ = strconv.ParseUint(Account, 10, 64)
+				}
+			},
+			0x03_03: func(pack *GuBuffer.GuUnPacket) {
+				this.sig.BufQR303 = pack.GetAll()
+				this.info.PassWord = Bytes.GetMd5Bytes(this.sig.BufQR303)
+			},
+			0x03_04: func(pack *GuBuffer.GuUnPacket) {
+				this.sig.BufTgTGTKey = pack.GetAll()
+			},
+		})
 	}
 
 	return

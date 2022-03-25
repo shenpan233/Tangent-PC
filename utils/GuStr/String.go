@@ -6,7 +6,14 @@
 
 package GuStr
 
-import "strings"
+import (
+	"regexp"
+	"strings"
+)
+
+var (
+	mustPassage = regexp.MustCompile(".")
+)
 
 func Between(str, Start, End string) string {
 	s := strings.Index(str, Start)
@@ -19,4 +26,11 @@ func Between(str, Start, End string) string {
 		return ""
 	}
 	return str[s : s+e]
+}
+
+//GetPassLen 字数统计 英文1:1 中文1:1
+func GetPassLen(passage string) int {
+	must := mustPassage
+	m := must.FindAllStringSubmatchIndex(passage, -1)
+	return len(m)
 }

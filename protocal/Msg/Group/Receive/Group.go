@@ -12,7 +12,6 @@ import (
 	"github.com/shenpan233/Tangent-PC/protocal/Msg"
 	"github.com/shenpan233/Tangent-PC/protocal/Msg/Group"
 	"github.com/shenpan233/Tangent-PC/utils/GuBuffer"
-	"github.com/shenpan233/Tangent-PC/utils/GuLog"
 	"strings"
 )
 
@@ -47,7 +46,7 @@ func GroupMsg(data []byte) (Msg model.GroupMsg) {
 				Msg.Green = pack.GetUint8()
 				Msg.Size = pack.GetUint8()
 				Msg.Style = pack.GetUint8()
-				Msg.Encoding = uint16(pack.GetUint16())
+				Msg.Encoding = pack.GetUint16()
 				Msg.Font.FontName = pack.GetStr(int32(pack.GetUint16()))
 				pack.Skip(2)
 			}
@@ -97,7 +96,7 @@ func groupMsgUnpack(pack *GuBuffer.GuUnPacket) string {
 				msgBuilder.WriteString(buildPic(string(pack.GetToken())))
 				break
 			default:
-				GuLog.Warm("Group 解析", "Type=0x%d\nData=%X", MsgType, pack.GetAll())
+				//GuLog.Warm("Group 解析", "Type=0x%d\nData=%X", MsgType, pack.GetAll())
 			}
 		})
 	}

@@ -14,6 +14,7 @@ import (
 	util "github.com/shenpan233/Tangent-PC/utils"
 	"github.com/shenpan233/Tangent-PC/utils/Bytes"
 	"github.com/shenpan233/Tangent-PC/utils/GuBuffer"
+	"github.com/shenpan233/Tangent-PC/utils/GuStr"
 	"strconv"
 )
 
@@ -50,14 +51,14 @@ func (this *Common) Marshal() []byte {
 				if this.AtUin == 0 {
 					this.Msg = "@全体成员"
 				} else {
-					this.Msg = "@小可爱" //TODO 这里At获取名称没搞定
+					this.Msg = "@" + this.Msg
 				}
 			}
 			pack.SetLitTlv(Msg.CommonMsg, []byte(this.Msg))
 			if this.IsAt {
 				pack.SetLitTlv(Msg.CommonAt, GuBuffer.NewGuPacketFun(func(pack *GuBuffer.GuPacket) {
 					pack.SetBytes([]byte{0x00, 0x01})
-					pack.SetUint32(4) //TODO 这个是上面this.Msg的字符长度
+					pack.SetUint32(uint32(GuStr.GetPassLen(this.Msg))) //TODO 这个是上面this.Msg的字符长度
 					pack.SetBytes([]byte{0x00})
 					pack.SetUint32(this.AtUin)
 					pack.SetBytes([]byte{0x00, 0x00})

@@ -9,5 +9,5 @@ package Tangent_PC
 import "github.com/shenpan233/Tangent-PC/protocal/Protobuf/HttpConn"
 
 func (this *TangentPC) GetCommonHttpConnSig(subCmd uint32) []byte {
-	return HttpConn.GetReqBody(HttpConn.GetHttpConnSig(uint32(this.info.LongUin), subCmd, *this.sdk, this.sig.BufSigHttpConnToken), this.info.SelfWebKey.Common.Skey)
+	return HttpConn.GetReqBody(HttpConn.GetHttpConnSig(uint32(this.info.LongUin), subCmd, *this.sdk, this.sig.BufSigHttpConnToken), this.info.SelfWebKey.Skey)
 }

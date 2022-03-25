@@ -28,17 +28,20 @@ var (
 )
 
 //BuildMsgStructure 结构化构建
-func BuildMsgStructure(data string, GroupCode uint64) []interface{} {
+func BuildMsgStructure(data string, GroupCode uint64, atName GetGroupMemberCardFromCache) []interface{} {
 	AllFound := match.FindAllString(data, -1)
 	ret := make([]interface{}, 0)
 	for _, SubStr := range AllFound {
 		if matchAt.MatchString(SubStr) {
+			//群内@
 			uin, _ := strconv.Atoi(GuStr.Between(SubStr, Msg.FormatAt, Msg.FormatEnd))
 			ret = append(ret, &Group.Common{
 				IsAt:  true,
 				AtUin: uint32(uin),
+				Msg:   atName(GroupCode, uint64(uin)),
 			})
 		} else if matchPic.MatchString(SubStr) {
+			//发送图片
 			ret = append(ret, &Group.Pic{
 				Guid: GuStr.Between(SubStr, Msg.FormatPic, Msg.FormatEnd),
 			})

@@ -18,7 +18,7 @@ import (
 
 //GroupMsg 发送群消息
 //	Msg 消息内容
-func GroupMsg(GroupUin uint64, Msg string) []byte {
+func GroupMsg(GroupUin uint64, Msg string, atName GetGroupMemberCardFromCache) []byte {
 	return GuBuffer.NewGuPacketFun(func(pack *GuBuffer.GuPacket) {
 		pack.SetUint8(Model.Send) //事件类型
 		pack.SetUint32(uint32(GroupUin))
@@ -27,7 +27,7 @@ func GroupMsg(GroupUin uint64, Msg string) []byte {
 			pack.SetUint8(uint8(1))
 			pack.SetUint8(uint8(0))
 			pack.SetBytes([]byte{0x00, 0x00})                                     //RandomSeq
-			pack.SetBytes([]byte{0, 0, 0, 0})                                     //固定空白4字节
+			pack.SetBytes([]byte{0, 0, 0, 0})                                     //固定空白4 字节
 			pack.SetBytes([]byte{0x4D, 0x53, 0x47, 0x00, 0x00, 0x00, 0x00, 0x00}) //MSG
 			pack.SetUint32(uint32(util.GetServerCurTime()))
 			pack.SetUint32(util.GetRand32())
@@ -44,7 +44,7 @@ func GroupMsg(GroupUin uint64, Msg string) []byte {
 			pack.SetBytes(font.ToBytes())
 			pack.SetBytes([]byte{0x00, 0x00})
 			//构造消息
-			ret := BuildMsgStructure(Msg, GroupUin)
+			ret := BuildMsgStructure(Msg, GroupUin, atName)
 			for _, subCall := range ret {
 				bin := reflect.ValueOf(subCall).MethodByName("Marshal").Call(nil)[0].Bytes()
 				pack.SetBytes(bin)

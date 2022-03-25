@@ -10,69 +10,33 @@ package GuLog
 import (
 	"bytes"
 	"fmt"
+	"os"
+	"runtime"
+	"strconv"
 	"strings"
 	"time"
 )
 
-func print(Type int8, info, msg string) {
-	strLogType := "U"
-	var (
-		left, right string
-	)
-	{
-		switch Type {
-		case warm:
-			strLogType = warmSign
-			if guLog.color {
-				left = fmt.Sprintf("%c[1;43;30m", 0x1B)
-				right = fmt.Sprintf("%c[0m", 0x1B)
-			}
-			break
-		case err:
-			strLogType = errorSign
-			if guLog.color {
-				left = fmt.Sprintf("%c[31m", 0x1B)
-				right = fmt.Sprintf("%c[0m", 0x1B)
-			}
-			break
-		case debug:
-			strLogType = debugSign
-			if guLog.color {
-				left = fmt.Sprintf("%c[1;47;30m", 0x1B)
-				right = fmt.Sprintf("%c[0m", 0x1B)
-			}
-			break
-		case infO:
-			strLogType = infoSign
-			if guLog.color {
-				left = fmt.Sprintf("%c[1;34m", 0x1B)
-				right = fmt.Sprintf("%c[0m", 0x1B)
-			}
-			break
-		case notice:
-			strLogType = noticeSign
-			if guLog.color {
-				left = fmt.Sprintf("%c[1;32m", 0x1B)
-				right = fmt.Sprintf("%c[0m", 0x1B)
-			}
-			break
-		}
+func dump(color int, Tag, msg string) {
+	pc, file, line, _ := runtime.Caller(2)
+	funcName := runtime.FuncForPC(pc).Name()
+	funcName = funcName[strings.LastIndex(funcName, ".")+1:]
+	if guLog.isWindowConsole {
+		//颜色反射+goroutine缓解下读写锁的性能问题
+		go WinPrint(file, funcName, Tag, msg, line, winColor[linuxColor(color)])
+	} else {
+		buffer := bytes.NewBufferString(time.Now().Format(guLog.timeFormat))
+		buffer.WriteString(" " + file)
+		buffer.WriteString(":" + strconv.Itoa(line))
+		fun := ColorMap[color]
+		buffer.WriteString(fun(" [" + Tag + "] "))
+		buffer.WriteString(funcName)
+		buffer.WriteString("\n")
+		buffer.WriteString(enterColor(msg, fun))
+		fmt.Print(buffer)
 	}
-	msg = msgLoader(msg, left, right)
-	fmt.Printf("%s %s[%s]  %s %s\n%s\n", time.Now().Format(guLog.timeFormat), left, strLogType, info, right, msg)
 }
 
-func msgLoader(msg string, left, right string) string {
-	buffer := bytes.NewBufferString("")
-	lit := strings.Split(msg, "\n")
-	for _, kid := range lit {
-		buffer.WriteString(left)
-		buffer.WriteString(kid)
-		buffer.WriteString(right)
-		buffer.WriteString("\n")
-	}
-	//buffer.WriteString(left)
-	//buffer.WriteString(*msg)
-	//buffer.WriteString(right)
-	return buffer.String()
+func Clear() {
+	os.Stdout.Sync()
 }

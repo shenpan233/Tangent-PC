@@ -8,14 +8,23 @@
 package Tangent_PC
 
 import (
+	"errors"
 	"github.com/shenpan233/Tangent-PC/model"
-	"github.com/shenpan233/Tangent-PC/utils/GuLog"
+	"github.com/shenpan233/Tangent-PC/utils/Bytes"
+	"strconv"
 )
+
+//ResetAccount 账号重新设置
+func (this *TangentPC) ResetAccount(account string) {
+	this.info.LongUin, _ = strconv.ParseUint(account, 10, 64)
+	this.info.Account = account
+}
 
 // PingServer 连接初始化,Ping服务器
 func (this *TangentPC) PingServer() bool {
 	ssoSeq, buffer := this.pack0825()
 	if bin := this.udper.SendAndGet(ssoSeq, WaitTime, &buffer); bin == nil {
+		//GuLog.Error("返回空字节")
 		return false
 	} else {
 		/*正常接收*/
@@ -54,10 +63,11 @@ func (this TangentPC) CheckQRCode(resp *QRResp) uint8 {
 	return QRUnKnow
 }
 
+//QRLogin 二维码登录
 func (this *TangentPC) QRLogin() (err error, tgt *model.TgtInfo) {
 	ssoSeq, buffer := this.pack0836QrCode()
 	if bin := this.udper.SendAndGet(ssoSeq, WaitTime, &buffer); bin != nil {
-		tgt = this.unpack0836(bin)
+		tgt = this.unpack0836QrCode(bin)
 		if tgt != nil {
 			ssoSeq, buffer := this.pack0828(tgt)
 			if bin := this.udper.SendAndGet(ssoSeq, WaitTime, &buffer); bin != nil {
@@ -66,7 +76,7 @@ func (this *TangentPC) QRLogin() (err error, tgt *model.TgtInfo) {
 					this.finishLogin()
 					return
 				} else {
-					GuLog.Error("QRLogin", "%s", err.Error())
+					//GuLog.Error("QRLogin", "%s", err.Error())
 				}
 			}
 		}
@@ -75,20 +85,31 @@ func (this *TangentPC) QRLogin() (err error, tgt *model.TgtInfo) {
 }
 
 //LoginByToken	令牌登录
-func (this *TangentPC) LoginByToken(tgt *model.TgtInfo) (err error) {
+func (this *TangentPC) LoginByToken(tgt *model.TgtInfo) (code uint8, err error) {
 	if tgt != nil {
 		ssoSeq, buffer := this.pack0828(tgt)
 		if bin := this.udper.SendAndGet(ssoSeq, WaitTime, &buffer); bin != nil {
-			result := uint8(0)
-			if result, err = this.unpack0828(bin, tgt); result == 0 {
+			code, err = this.unpack0828(bin, tgt)
+			if code == 0 {
 				this.finishLogin()
 				return
 			} else {
-				GuLog.Error("LoginByToken", "%s", err.Error())
+				return
 			}
+		} else {
+			err = errors.New("TGTGT失效")
 		}
 	}
 	return
+}
+
+//Login 账号密码登录
+func (this *TangentPC) Login(Password string) {
+	this.info.PassWord = Bytes.GetMd5Bytes([]byte(Password))
+	ssoSeq, buffer := this.pack0836Common()
+	if bin := this.udper.SendAndGet(ssoSeq, WaitTime, &buffer); bin != nil {
+		this.unpack0836Login(bin)
+	}
 }
 
 //ChangeOnlineStatus 修改在线状态

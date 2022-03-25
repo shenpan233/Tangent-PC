@@ -15,33 +15,33 @@ const (
 	csVer = 1
 )
 
-func GetHttpConnSig(Uin uint32, subCmd uint32, sdk model.Version, BufSigHttpConnToken []byte) *HttpConnSig {
-	return &HttpConnSig{
+func GetHttpConnSig(Uin uint32, subCmd uint32, sdk model.Version, BufSigHttpConnToken []byte) *MsgHttpConnHead {
+	return &MsgHttpConnHead{
 		Uin:                 &Uin,
-		Tag2:                proto.Uint32(1791),
-		Tag3:                proto.Uint32(3088),
-		SubCmd:              &subCmd,
+		Command:             proto.Uint32(1791),
+		SubCommand:          proto.Uint32(3088),
+		Seq:                 &subCmd,
 		ClientVer:           &sdk.ClientVer,
 		DwClientType:        &sdk.DwClientType,
 		DwPubNo:             &sdk.DwPubNo,
 		ServiceId:           &sdk.ServiceId,
 		BufSigHttpConnToken: BufSigHttpConnToken,
-		Tag19:               proto.Uint32(0),
-		Tag24:               proto.Uint32(0),
-		Tag25: &HttpConnSigUnknowTag25{
-			Tag1: proto.Uint32(2029),
-			Tag2: proto.Uint32(1),
+		Flag:                proto.Uint32(0),
+		CompressType:        proto.Uint32(0),
+		MsgOiDbHead: &MsgHttpConnHeadMsgOidbhead{
+			OidbCommand: proto.Uint32(2029),
+			ServiceType: proto.Uint32(1),
 		},
 	}
 }
 
-func GetReqBody(CommonSig *HttpConnSig, Skey string) []byte {
+func GetReqBody(MsgHttpConnHead *MsgHttpConnHead, Skey string) []byte {
 	req, _ := (&ReqBody{
-		HttpConnVer: proto.Uint32(4),
-		Sig:         CommonSig,
-		Skey: &ReqBody_SigSkey{
-			CsVer: proto.Uint32(csVer),
-			Skey:  &Skey,
+		HeadType:        proto.Uint32(4),
+		MsgHttpConnHead: MsgHttpConnHead,
+		Skey: &ReqBodyPSkeyBuf{
+			Type: proto.Uint32(csVer),
+			Sig:  &Skey,
 		},
 	}).Marshal()
 	return req
