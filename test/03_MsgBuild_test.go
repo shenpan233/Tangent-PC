@@ -10,8 +10,8 @@ import (
 	"fmt"
 	"github.com/shenpan233/Tangent-PC/protocal/Msg"
 	"github.com/shenpan233/Tangent-PC/protocal/Msg/Group"
-	"github.com/shenpan233/Tangent-PC/protocal/Msg/Group/Send"
 	util "github.com/shenpan233/Tangent-PC/utils"
+	"github.com/shenpan233/Tangent-PC/utils/GuLog"
 	"github.com/shenpan233/Tangent-PC/utils/GuStr"
 	"reflect"
 	"regexp"
@@ -21,7 +21,7 @@ import (
 
 func BenchmarkMsgBuild(b *testing.B) {
 	for i := 0; i < b.N; i++ {
-		Send.GroupMsg(256783314, "[At=232233][At=All]大丘丘病了，二丘丘哭~ [Pic={35D6BF1F-EADA-FAA3-EF71-827AC0E7A542}.jpg]")
+		//Send.GroupMsg(256783314, "[At=232233][At=All]大丘丘病了，二丘丘哭~ [Pic={35D6BF1F-EADA-FAA3-EF71-827AC0E7A542}.jpg]")
 	}
 }
 
@@ -54,8 +54,7 @@ func TestMsgLen(t *testing.T) {
 	//
 
 	for _, subCall := range ret {
-		fmt.Println(subCall)
-		fmt.Println(util.BinToHex(reflect.ValueOf(subCall).MethodByName("Marshal").Call(nil)[0].Bytes()))
+		GuLog.Debug(util.BinToHex(reflect.ValueOf(subCall).MethodByName("Marshal").Call(nil)[0].Bytes()))
 	}
 
 }
