@@ -8,13 +8,17 @@
 package Tangent_PC
 
 import (
+	"github.com/shenpan233/Tangent-PC/model"
 	"github.com/shenpan233/Tangent-PC/protocal/Tlv"
 	util "github.com/shenpan233/Tangent-PC/utils"
 	"github.com/shenpan233/Tangent-PC/utils/GuBuffer"
+	"github.com/shenpan233/Tangent-PC/utils/GuLog"
 )
 
 func (this *TangentPC) pack0818() (SsoSeq uint16, buffer []byte) {
 	this.teaKey.Ping0818Key = util.GetRandomBin(16)
+	GuLog.DebugF("BufTgtKey:%X\nPublicKey:%X\nShareKey:%X", this.teaKey.Ping0818Key, this.teaKey.PublicKey, this.teaKey.ShareKey)
+
 	return this.packetLogin(0x08_18, GuBuffer.NewGuPacketFun(func(pack *GuBuffer.GuPacket) {
 		pack.SetBytes(this.teaKey.Ping0818Key)
 		pack.SetBytes(util.Encrypt(this.teaKey.Ping0818Key, GuBuffer.NewGuPacketFun(func(pack *GuBuffer.GuPacket) {
@@ -26,11 +30,10 @@ func (this *TangentPC) pack0818() (SsoSeq uint16, buffer []byte) {
 	}))
 }
 
-func (this *TangentPC) unpack0818(bin []byte) (ret *QRResp) {
+func (this *TangentPC) unpack0818(bin []byte) (ret *model.QRResp) {
 	pack := GuBuffer.NewGuUnPacket(util.Decrypt(this.teaKey.ShareKey, bin[3:]))
-	ret = new(QRResp)
+	ret = new(model.QRResp)
 	ret.Status = pack.GetUint8()
-	/*Tlv解析*/
 	for pack.GetLen() > 0 {
 		if tlv := pack.GetTlv(); tlv != nil {
 			GuBuffer.NewGuUnPacketFun(tlv.Value, func(pack *GuBuffer.GuUnPacket) {
@@ -52,6 +55,12 @@ func (this *TangentPC) unpack0818(bin []byte) (ret *QRResp) {
 			})
 		}
 	}
+	//if ret.Status == model.LogicSuc {
+	//	/*Tlv解析*/
+	//
+	//} else {
+	//
+	//}
 
 	return
 }

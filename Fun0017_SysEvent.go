@@ -7,7 +7,6 @@
 package Tangent_PC
 
 import (
-	util "github.com/shenpan233/Tangent-PC/utils"
 	"github.com/shenpan233/Tangent-PC/utils/GuBuffer"
 )
 
@@ -16,21 +15,6 @@ func (this *TangentPC) unpack0017(Seq uint16, bin []byte) {
 	MsgInfo := pack.GetBin(16) //可以细拆，但是没必要
 	pack.GetUint16()           //服务器端口 8000
 	cmd := pack.GetUint16()    //接收命令
-	this.GetServerMsg(cmd, Seq, MsgInfo, pack.GetAll())
-
+	this.GetServerMsg(0x00_17, cmd, Seq, MsgInfo, pack.GetAll())
 	return
-}
-func (this *TangentPC) pack0017(Seq uint16, MsgInfo []byte) (buffer []byte) {
-	return GuBuffer.NewGuPacketFun(func(pack *GuBuffer.GuPacket) {
-		pack.SetUint8(2)
-		pack.SetUint16(this.sdk.CMainVer)
-		pack.SetUint16(0x00_17)
-		pack.SetUint16(Seq)
-		pack.SetUint32(uint32(this.info.LongUin))
-		pack.SetBytes([]byte{0x02, 0x00, 0x00})
-		pack.SetUint32(this.sdk.DwClientType)
-		pack.SetUint32(this.sdk.DwPubNo)
-		pack.SetBytes(util.Encrypt(this.teaKey.SessionKey, MsgInfo))
-		pack.SetUint8(3)
-	})
 }

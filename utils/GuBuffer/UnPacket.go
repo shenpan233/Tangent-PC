@@ -34,6 +34,15 @@ func (r *GuUnPacket) GetAllHex() string {
 	return util.BinToHex2(&bin)
 }
 
+func (r *GuUnPacket) GetAllHexTmp() string {
+	bin := r.GetAll()
+	if bin == nil {
+		return ""
+	}
+	r.r.Seek(-int64(len(bin)), 1)
+	return util.BinToHex2(&bin)
+}
+
 func (r *GuUnPacket) GetBin(i int) []byte {
 	if i <= 0 || r.GetLen() < i {
 		return nil

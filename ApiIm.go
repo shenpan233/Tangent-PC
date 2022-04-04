@@ -52,9 +52,12 @@ func (this *TangentPC) SendGroupMsg(GroupCode uint64, Msg string) (Code bool, Ms
 	return false, 0
 }
 
+//GetJoinedGroupName 获取已加入的群列表
 func (this *TangentPC) GetJoinedGroupName(GroupUin uint64) string {
 	return this.cache.groupList[GroupUin]
 }
+
+//GetGroupMemberCardFromCache 从缓存获取群员的群名片
 func (this *TangentPC) GetGroupMemberCardFromCache(GroupUin, uin uint64) string {
 	if member := this.cache.member[GroupUin][uin]; member != nil {
 		return member.Name

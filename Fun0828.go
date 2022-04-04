@@ -19,19 +19,22 @@ import (
 func (this *TangentPC) pack0828(tgt *model.TgtInfo) (SsoSeq uint16, buffer []byte) {
 	this.sig.BufSession = tgt.BufSession
 	this.teaKey.SessionKey = tgt.BufSessionKey
+	this.sig.Buf0102 = tgt.Buf0102
+	this.sig.Buf0202 = tgt.Buf0202
+	this.sig.BufTgt = tgt.BufTgt
 	return this.packetCommon(0x08_28, GuBuffer.NewGuPacketFun(func(pack *GuBuffer.GuPacket) {
 		pack.SetBytes([]byte{0x00, 0x30, 0x00, 0x3A, 0x00, 0x38})
 		pack.SetBytes(this.sig.BufSession)
 		pack.SetBytes(util.Encrypt(tgt.BufSessionKey, GuBuffer.NewGuPacketFun(func(pack *GuBuffer.GuPacket) {
-			pack.SetBytes(Tlv.GetTlv7Tgt(&tgt.BufTgt))
+			pack.SetBytes(Tlv.GetTlv7Tgt(&this.sig.BufTgt))
 			pack.SetBytes(Tlv.GetTlvC(this.info.Computer.ConnectIp))
 			pack.SetBytes(Tlv.GetTlv15(&this.info.Computer))
 			pack.SetBytes(Tlv.GetTlv36LoginReason())
 			pack.SetBytes(Tlv.GetTlv18Ping(this.info.LongUin, this.sdk, uint16(this.info.RedirectIp.Len())))
 			pack.SetBytes(Tlv.GetTlv1FDeviceID(this.info.Computer.DeviceID))
-			pack.SetBytes(Tlv.GetTlv105vec0x12c(tgt.Buf0102, tgt.Buf0202))
+			pack.SetBytes(Tlv.GetTlv105vec0x12c(this.sig.Buf0102, this.sig.Buf0202))
 			QDData := Tlv.GetTlv32QDData(this.info.Computer.ComputerIdEx, this.sdk)
-			pack.SetBytes(Tlv.GetTlv10B(false, this.sdk, &tgt.BufTgt, &QDData))
+			pack.SetBytes(Tlv.GetTlv10B(false, this.sdk, &this.sig.BufTgt, &QDData))
 			pack.SetBytes(Tlv.GetTlv2D())
 		})))
 	}))

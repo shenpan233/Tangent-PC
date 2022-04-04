@@ -16,9 +16,9 @@ import (
 )
 
 const (
-	ecdhTwice              = 0x00_08 //二次ecdh计算的标识
-	LoginSuc               = model.LogicSuc
-	Login_Need_Verify_Code = 0xFB
+	ecdhTwice           = 0x00_08 //二次ecdh计算的标识
+	LoginSuc            = model.LogicSuc
+	LoginNeedVerifyCode = 0xFB
 )
 
 //pack0836QrCode 二维码登录组包

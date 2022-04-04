@@ -45,7 +45,7 @@ func (this *TangentPC) PingServer() bool {
 }
 
 // FetchQRCode 获取登录二维码
-func (this *TangentPC) FetchQRCode() *QRResp {
+func (this *TangentPC) FetchQRCode() *model.QRResp {
 	ssoSeq, buffer := this.pack0818()
 	if bin := this.udper.SendAndGet(ssoSeq, WaitTime, &buffer); bin != nil {
 		/*正常接收*/
@@ -55,7 +55,7 @@ func (this *TangentPC) FetchQRCode() *QRResp {
 }
 
 // CheckQRCode 检测二维码状态
-func (this TangentPC) CheckQRCode(resp *QRResp) uint8 {
+func (this TangentPC) CheckQRCode(resp *model.QRResp) uint8 {
 	ssoSeq, buffer := this.pack0819(resp)
 	if bin := this.udper.SendAndGet(ssoSeq, WaitTime, &buffer); bin != nil {
 		return this.unpack0819(resp, bin)
@@ -125,6 +125,7 @@ func (this *TangentPC) ChangeOnlineStatus(OnLineSts uint16) bool {
 func (this *TangentPC) HeatBoat() bool {
 	ssoSeq, buffer := this.pack0058HeatBoat()
 	if bin := this.udper.SendAndGet(ssoSeq, WaitTime, &buffer); bin != nil {
+		this.unpack0058(bin[3:])
 		return true
 	}
 	return false

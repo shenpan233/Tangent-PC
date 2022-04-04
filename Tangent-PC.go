@@ -61,8 +61,10 @@ func New(Account string, Computer model.Computer) (this *TangentPC) {
 	{
 		this.sig = new(model.Sig)
 		this.teaKey = new(model.TeaKey)
-		this.teaKey.PublicKey = util.HexToBin("03 1F 06 FA 3B 19 BF F9 2C 7C 02 7D 5D EA C5 60 83 52 86 C1 BF 75 CA 2A 96")
-		this.teaKey.ShareKey = util.HexToBin("6C 3E 9F 64 1C 27 F9 CA D6 B6 37 8A A7 74 D0 04")
+		this.teaKey.PublicKey = util.HexToBin("03 93 95 37 9C 4C E5 31 BE E8 1D 7A 5B 22 DE 9C 82 0B D8 3F A3 22 89 45 B6")
+		this.teaKey.ShareKey = util.HexToBin("00 98 5A A8 FC A4 01 C5 0C 8E 42 66 BE 68 C4 C8")
+		//this.teaKey.PublicKey, this.teaKey.ShareKey = util.GenECDHKey()
+
 	}
 	/*缓存空间申请*/
 	{

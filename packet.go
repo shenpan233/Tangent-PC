@@ -84,6 +84,21 @@ func (this *TangentPC) packetIMEnc(cmd uint16, bin []byte) (uint16, []byte) {
 	})
 }
 
+func (this *TangentPC) packetCommonNoSeq(Cmd, Seq uint16, bin []byte) []byte {
+	return GuBuffer.NewGuPacketFun(func(pack *GuBuffer.GuPacket) {
+		pack.SetUint8(2)
+		pack.SetUint16(this.sdk.CMainVer)
+		pack.SetUint16(Cmd)
+		pack.SetUint16(Seq)
+		pack.SetUint32(uint32(this.info.LongUin))
+		pack.SetBytes([]byte{0x02, 0x00, 0x00})
+		pack.SetUint32(this.sdk.DwClientType)
+		pack.SetUint32(this.sdk.DwPubNo)
+		pack.SetBytes(util.Encrypt(this.teaKey.SessionKey, bin))
+		pack.SetUint8(3)
+	})
+}
+
 func (this *TangentPC) PacketHttpConn(bin ...[]byte) []byte {
 	return GuBuffer.NewGuPacketFun(func(pack *GuBuffer.GuPacket) {
 		pack.SetBytes([]byte{0x28})

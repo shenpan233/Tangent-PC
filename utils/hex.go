@@ -2,9 +2,11 @@ package util
 
 import (
 	"bytes"
+	rand2 "crypto/rand"
 	"encoding/hex"
 	"fmt"
 	"github.com/shenpan233/Tangent-PC/utils/GuStr"
+	"math/big"
 	"math/rand"
 	"regexp"
 	"strconv"
@@ -17,10 +19,11 @@ var (
 )
 
 func GetRandomBin(len int) []byte {
-	rand.Seed(time.Now().Unix())
+	max := big.NewInt(255)
 	buffer := bytes.NewBuffer(nil)
 	for i := 0; i < len; i++ {
-		buffer.WriteByte(byte(rand.Intn(255)))
+		n, _ := rand2.Int(rand2.Reader, max)
+		buffer.Write(n.Bytes())
 	}
 	return buffer.Bytes()
 }

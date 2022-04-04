@@ -17,7 +17,7 @@ import (
 )
 
 //组包
-func (this *TangentPC) pack0819(resp *QRResp) (SsoSeq uint16, buffer []byte) {
+func (this *TangentPC) pack0819(resp *model.QRResp) (SsoSeq uint16, buffer []byte) {
 	return this.packetLogin(0x08_19, GuBuffer.NewGuPacketFun(func(packet *GuBuffer.GuPacket) {
 		packet.SetBytes(Tlv.GetTlv30(resp.Sig0x30))
 		packet.SetBytes(util.Encrypt(resp.BufQRKey, GuBuffer.NewGuPacketFun(func(pack *GuBuffer.GuPacket) {
@@ -38,7 +38,7 @@ const (
 	QRUnKnow  = 0xFF           /*未响应*/
 )
 
-func (this *TangentPC) unpack0819(qrResp *QRResp, bin []byte) (status uint8) {
+func (this *TangentPC) unpack0819(qrResp *model.QRResp, bin []byte) (status uint8) {
 	pack := GuBuffer.NewGuUnPacket(util.Decrypt(qrResp.BufQRKey, bin[3:]))
 	status = pack.GetUint8()
 	qrResp.Status = status

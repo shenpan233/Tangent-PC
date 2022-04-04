@@ -49,6 +49,9 @@ type (
 		BufSession          []byte
 		BufPwdForConn       []byte
 		BufSigHttpConnToken []byte
+		Buf0102             []byte
+		Buf0202             []byte
+		BufTgt              []byte
 	}
 
 	//Computer 硬件信息
