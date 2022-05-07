@@ -17,7 +17,7 @@ func GetTlv18Ping(Uin uint64, sdk *model.Version, RedirectCount uint16) []byte {
 	pack.SetUint16(wSubVer)
 	pack.SetUint32(sdk.DwSSOVersion)
 	pack.SetUint32(sdk.ServiceId)
-	pack.SetUint32(sdk.ClientVer)
+	pack.SetUint32(sdk.DwAppVer)
 	pack.SetUint32(uint32(Uin))
 	pack.SetUint16(RedirectCount)
 	pack.SetUint16(wUnknown1)

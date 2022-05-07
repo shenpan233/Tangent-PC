@@ -14,3 +14,10 @@ func GetTlv103(PublicKey *[]byte) []byte {
 	pack.SetBytes(*PublicKey)
 	return pack.ToTlv(0x01_03)
 }
+
+func GetTlv103BufSig(BufSig []byte) []byte {
+	pack := GuBuffer.NewGuPacket()
+	pack.SetUint16(wSubVer)
+	pack.SetToken(BufSig)
+	return pack.ToTlv(0x01_03)
+}

@@ -8,9 +8,12 @@ package Tangent_PC
 
 import (
 	"errors"
+	"github.com/shenpan233/Tangent-PC/model"
+	"github.com/shenpan233/Tangent-PC/protocal/Msg"
 	GroupMsg "github.com/shenpan233/Tangent-PC/protocal/Msg/Group/Receive"
-	GroupSend "github.com/shenpan233/Tangent-PC/protocal/Msg/Group/Send"
 	"github.com/shenpan233/Tangent-PC/protocal/Protobuf/im/cmd0x0002"
+	util "github.com/shenpan233/Tangent-PC/utils"
+	"github.com/shenpan233/Tangent-PC/utils/GuBuffer"
 )
 
 //RevokeGroupMessage 撤回消息	(:要有管理员权限
@@ -38,10 +41,39 @@ func (this *TangentPC) ReadGroupMsg(GroupCode uint64, MsgSeq uint32) bool {
 //SendGroupMsg 发送群消息
 //	GroupCode 群号
 //	Msg 	  消息内容
-func (this *TangentPC) SendGroupMsg(GroupCode uint64, Msg string) (Code bool, MsgSeq uint32) {
-	//对一些变量进行替换
-	//@
-	ssoSeq, buffer := this.pack0002(GroupSend.GroupMsg(GroupCode, Msg, this.GetGroupMemberCardFromCache))
+func (this *TangentPC) SendGroupMsg(GroupCode uint64, Msg ...Msg.Builder) (Code bool, MsgSeq uint32) {
+	ssoSeq, buffer := this.pack0002(GuBuffer.NewGuPacketFun(func(pack *GuBuffer.GuPacket) {
+		pack.SetUint8(_0x0002Send) //事件类型
+		pack.SetUint32(uint32(GroupCode))
+		pack.SetToken(GuBuffer.NewGuPacketFun(func(pack *GuBuffer.GuPacket) {
+			pack.SetUint16(1)
+			pack.SetUint8(uint8(1))
+			pack.SetUint8(uint8(0))
+			pack.SetBytes([]byte{0x00, 0x00})                                     //RandomSeq
+			pack.SetBytes([]byte{0x00, 0x00, 0x00, 0x00})                         //固定空白4 字节
+			pack.SetBytes([]byte{0x4D, 0x53, 0x47, 0x00, 0x00, 0x00, 0x00, 0x00}) //MSG
+			pack.SetUint32(uint32(util.GetServerCurTime()))
+			pack.SetUint32(util.GetRand32())
+			pack.SetBytes([]byte{0x00}) //一个分隔符
+			//TODO GroupMsg:Font自定义
+			font := model.Font{
+				Red:      0,
+				Blue:     0,
+				Green:    0,
+				Size:     0x0A, //老年人都看得见
+				Encoding: model.FontEncodingUTF8,
+				FontName: model.FontNameMicrosoftYaHei,
+			}
+			pack.SetBytes(font.ToBytes())
+			pack.SetBytes([]byte{0x00, 0x00})
+			//构造消息
+			for _, builder := range Msg {
+				pack.SetBytes(builder.Generate())
+			}
+		}))
+
+	}),
+	)
 	if bin := this.udper.SendAndGet(ssoSeq, WaitTime, &buffer); bin != nil {
 		isSuc, Recall := this.unpack0002(bin)
 		if isSuc {
@@ -50,6 +82,16 @@ func (this *TangentPC) SendGroupMsg(GroupCode uint64, Msg string) (Code bool, Ms
 		}
 	}
 	return false, 0
+}
+
+func (this *TangentPC) SendFriendMsg(FriendUin uint64, Msg ...Msg.Builder) (Code bool, MsgSeq uint32) {
+	if len(Msg) == 0 {
+		return false, 0
+	}
+	ssoSeq, buffer := this.pack00CD(FriendUin, Msg...)
+	if bin := this.udper.SendAndGet(ssoSeq, WaitTime, &buffer); bin != nil {
+	}
+	return true, 0
 }
 
 //GetJoinedGroupName 获取已加入的群列表

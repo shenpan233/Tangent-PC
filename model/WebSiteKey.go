@@ -8,10 +8,11 @@ package model
 
 const (
 	WebQun = "qun.qq.com"
+	WebT   = "t.qq.com"
 )
 
 var (
-	WebSite = []string{"t.qq.com", WebQun, "qzone.qq.com", "qzone.qq.com", "ke.qq.com"}
+	WebSite = []string{WebT, WebQun, "qzone.qq.com", "qzone.qq.com", "ke.qq.com"}
 )
 
 type WebKey struct {

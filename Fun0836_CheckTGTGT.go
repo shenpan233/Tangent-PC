@@ -13,6 +13,7 @@ import (
 	"github.com/shenpan233/Tangent-PC/protocal/Tlv"
 	util "github.com/shenpan233/Tangent-PC/utils"
 	"github.com/shenpan233/Tangent-PC/utils/GuBuffer"
+	"github.com/shenpan233/Tangent-PC/utils/GuLog"
 )
 
 const (
@@ -45,7 +46,7 @@ func (this *TangentPC) pack0836QrCode() (Ssoseq uint16, data []byte) {
 	}))
 }
 
-//pack0836Common 账号密码登录
+//pack0836Common 账号密码登录 未完成
 func (this *TangentPC) pack0836Common() (Ssoseq uint16, data []byte) {
 	return this.packetLogin(0x08_36, GuBuffer.NewGuPacketFun(func(pack *GuBuffer.GuPacket) {
 		//Ecdh块
@@ -66,12 +67,15 @@ func (this *TangentPC) pack0836Common() (Ssoseq uint16, data []byte) {
 			pack.SetBytes(tlv15)
 			pack.SetBytes(Tlv.GetTlv1AComputerGuid(this.sig.BufTgTGTKey, tlv15))
 			pack.SetBytes(Tlv.GetTlv18Ping(this.info.LongUin, this.sdk, uint16(this.info.RedirectIp.Len())))
+			pack.SetBytes(Tlv.GetTlv103BufSig(util.HexToBin("0B E6 A1 02 64 3C 3D 7C E7 9D 7E 44 09 9B AE 82")))
 			pack.SetBytes(Tlv.GetTlv312MiscFlag())
 			pack.SetBytes(Tlv.GetTlv508())
 			pack.SetBytes(Tlv.GetTlv313GUIDEx(this.info.Computer.MacGuid))
 			pack.SetBytes(Tlv.GetTlv102Official(this.info))
-			pack.SetBytes(Tlv.GetTlv511())
+			pack.SetBytes(Tlv.GetTlv551(this.sdk.DwSSOVersion))
+
 		})))
+
 	}))
 }
 
@@ -113,7 +117,7 @@ func (this *TangentPC) unpack0836Login(bin []byte) {
 	//Set DecryptData
 	GuBuffer.NewGuUnPacketFun(util.Decrypt(this.teaKey.ShareKey, bin[3:]), func(pack *GuBuffer.GuUnPacket) {
 		pack.GetUint8()
-		fmt.Printf("Decrypt\n%X\n", pack.GetAll())
+		//fmt.Printf("Decrypt\n%X\n", pack.GetAll())
 		GuBuffer.TlvEnum(pack.GetAll(), map[uint16]func(pack *GuBuffer.GuUnPacket){
 			0x01_04: func(pack *GuBuffer.GuUnPacket) {
 				pack.Skip(2) // ServiceId
@@ -132,6 +136,13 @@ func (this *TangentPC) unpack0836Login(bin []byte) {
 				})
 			},
 			0x01_15: func(pack *GuBuffer.GuUnPacket) {
+			},
+			0x01_00: func(pack *GuBuffer.GuUnPacket) {
+				pack.Skip(2)
+				pack.Skip(2)
+				pack.Skip(2)
+				pack.Skip(2)
+				GuLog.Error(string(pack.GetToken()))
 			},
 		})
 	})

@@ -1,7 +1,7 @@
 /*
   @Author:  Trial(Trialpro@gmail.com)
   @Creat:   2022/4/3 22:28
-  @Notice:  00CE
+  @Notice:  00CE接收好友消息
 */
 
 package Tangent_PC

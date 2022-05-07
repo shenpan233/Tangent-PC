@@ -54,7 +54,7 @@ func (this *TangentPC) unpack0819(qrResp *model.QRResp, bin []byte) (status uint
 				Account := pack.GetStr(int32(pack.GetUint16()))
 				//号码初始化
 				{
-					//GuLog.Notice("扫码成功", "AtUin=%s", Account)
+					//GuLog.Notice("扫码成功", "AtUin=%s", Uin)
 					this.info.Account = Account
 					this.info.LongUin, _ = strconv.ParseUint(Account, 10, 64)
 				}

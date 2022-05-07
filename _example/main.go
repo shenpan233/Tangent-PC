@@ -15,7 +15,7 @@ import (
 )
 
 func main() {
-	GuLog.Config(true, "", true)
+	GuLog.Config(true, "", false)
 	computer := model.Computer{
 		ComputerId:   util.HexToBin("9B 13 EE DA 00 00 00 00 00 00 00 00 00 00 00 00"),
 		ComputerIdEx: util.HexToBin("3B AE C1 AD 3C 07 44 EE 29 BE C0 38 4E F2 4A 1A"),
@@ -100,11 +100,16 @@ func Online(client *Tangent_PC.TangentPC) {
 			if Msg.SenderUin == client.Uin {
 				return
 			}
+			//reply := &GroupMsg.Reply{
+			//	Uin:       Msg.SenderUin,
+			//	MsgSeq:    Msg.MsgSeq,
+			//	SendTime:  Msg.MsgTime.Send,
+			//	GroupCode: Msg.GroupUin,
+			//	Card:      client.GetGroupMemberCardFromCache(Msg.GroupUin, Msg.SenderUin),
+			//}
+			//
+
 		})
 		go HeartBoat(client)
 	}
-}
-
-func GroupMsgHook(Msg model.GroupMsg) {
-
 }

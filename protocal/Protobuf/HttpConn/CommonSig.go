@@ -21,7 +21,7 @@ func GetHttpConnSig(Uin uint32, subCmd uint32, sdk model.Version, BufSigHttpConn
 		Command:             proto.Uint32(1791),
 		SubCommand:          proto.Uint32(3088),
 		Seq:                 &subCmd,
-		ClientVer:           &sdk.ClientVer,
+		ClientVer:           &sdk.DwAppVer,
 		DwClientType:        &sdk.DwClientType,
 		DwPubNo:             &sdk.DwPubNo,
 		ServiceId:           &sdk.ServiceId,

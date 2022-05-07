@@ -18,14 +18,18 @@ var (
 	matchHexData = regexp.MustCompile("[0-9a-fA-F]+")
 )
 
-func GetRandomBin(len int) []byte {
+func GetRandomBin(l int) []byte {
 	max := big.NewInt(255)
 	buffer := bytes.NewBuffer(nil)
-	for i := 0; i < len; i++ {
+	for i := 0; i < l; i++ {
 		n, _ := rand2.Int(rand2.Reader, max)
 		buffer.Write(n.Bytes())
 	}
-	return buffer.Bytes()
+	b := buffer.Bytes()
+	if len(b) < l {
+		b = GetRandomBin(l)
+	}
+	return b
 }
 
 func GetRand32() uint32 {

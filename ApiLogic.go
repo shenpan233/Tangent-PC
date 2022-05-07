@@ -7,10 +7,12 @@
 package Tangent_PC
 
 import (
+	"fmt"
 	"github.com/shenpan233/Tangent-PC/model"
 	"github.com/shenpan233/Tangent-PC/protocal/Http/HttpGroup/QunInfo"
 	GroupMsg "github.com/shenpan233/Tangent-PC/protocal/Msg/Group/Receive"
 	"github.com/shenpan233/Tangent-PC/utils/GuLog"
+	penguin_http "github.com/shenpan233/penguin-http"
 	"strconv"
 	"sync"
 	"time"
@@ -102,5 +104,23 @@ func (this *TangentPC) refreshWebKey() {
 func (this *TangentPC) genHttpConn() {
 	ssoSeq, buffer := this.pack01BB(subCmd0x01BBHttpConn)
 	if bin := this.udper.SendAndGet(ssoSeq, WaitTime, &buffer); bin != nil {
+	}
+}
+
+func (this *TangentPC) NewLevelSpeedUp() {
+	http := penguin_http.Builder().BaseUrl("https://ti.qq.com").Build()
+	result, err := http.GET().
+		SetCookieFromMap(map[string]string{
+			"uin":   "o0" + this.info.Account,
+			"skey":  this.info.SelfWebKey.Skey,
+			"p_uin": "o0" + this.info.Account,
+			//"p_skey": this.info.SelfWebKey.WebSiteKeys[model.WebT],
+			"p_skey": this.info.SelfWebKey.PSkey,
+		}).
+		Sync("/qqlevel/index")
+	if err == nil {
+		fmt.Println(result.String())
+	} else {
+		GuLog.Error(err.Error())
 	}
 }

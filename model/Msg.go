@@ -34,7 +34,7 @@ type Font struct {
 }
 
 type GroupMsg struct {
-	Account   uint64 `json:"Account"`
+	Account   uint64 `json:"Uin"`
 	GroupName string
 	GroupUin  uint64 `json:"GroupUin"` //群号
 	SenderUin uint64 `json:"FromUin"`  //发送者QQ

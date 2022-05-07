@@ -28,7 +28,7 @@ type MsgHttpConnHead struct {
 	Command              *uint32                     `protobuf:"varint,2,req,name=command" json:"command,omitempty"`
 	SubCommand           *uint32                     `protobuf:"varint,3,req,name=subCommand" json:"subCommand,omitempty"`
 	Seq                  *uint32                     `protobuf:"varint,4,req,name=seq" json:"seq,omitempty"`
-	ClientVer            *uint32                     `protobuf:"varint,5,req,name=ClientVer" json:"ClientVer,omitempty"`
+	ClientVer            *uint32                     `protobuf:"varint,5,req,name=DwAppVer" json:"DwAppVer,omitempty"`
 	DwClientType         *uint32                     `protobuf:"varint,7,req,name=DwClientType" json:"DwClientType,omitempty"`
 	DwPubNo              *uint32                     `protobuf:"varint,8,req,name=DwPubNo" json:"DwPubNo,omitempty"`
 	ServiceId            *uint32                     `protobuf:"varint,17,req,name=ServiceId" json:"ServiceId,omitempty"`
@@ -618,7 +618,7 @@ func (m *MsgHttpConnHead) Unmarshal(dAtA []byte) error {
 			hasFields[0] |= uint64(0x00000008)
 		case 5:
 			if wireType != 0 {
-				return fmt.Errorf("proto: wrong wireType = %d for field ClientVer", wireType)
+				return fmt.Errorf("proto: wrong wireType = %d for field DwAppVer", wireType)
 			}
 			var v uint32
 			for shift := uint(0); ; shift += 7 {

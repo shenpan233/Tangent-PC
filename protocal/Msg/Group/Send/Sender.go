@@ -16,7 +16,8 @@ import (
 	"reflect"
 )
 
-//GroupMsg 发送群消息
+//GroupMsg 发送群消息 废弃已重构
+//  @deprecated
 //	Msg 消息内容
 func GroupMsg(GroupUin uint64, Msg string, atName GetGroupMemberCardFromCache) []byte {
 	return GuBuffer.NewGuPacketFun(func(pack *GuBuffer.GuPacket) {
@@ -27,7 +28,7 @@ func GroupMsg(GroupUin uint64, Msg string, atName GetGroupMemberCardFromCache) [
 			pack.SetUint8(uint8(1))
 			pack.SetUint8(uint8(0))
 			pack.SetBytes([]byte{0x00, 0x00})                                     //RandomSeq
-			pack.SetBytes([]byte{0, 0, 0, 0})                                     //固定空白4 字节
+			pack.SetBytes([]byte{0x00, 0x00, 0x00, 0x00})                         //固定空白4 字节
 			pack.SetBytes([]byte{0x4D, 0x53, 0x47, 0x00, 0x00, 0x00, 0x00, 0x00}) //MSG
 			pack.SetUint32(uint32(util.GetServerCurTime()))
 			pack.SetUint32(util.GetRand32())

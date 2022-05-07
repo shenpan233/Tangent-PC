@@ -11,10 +11,12 @@ import "container/list"
 
 type (
 	Version struct {
+		SAppName     string
+		DwSSOConfig  uint32
 		DwSSOVersion uint32 //Sso版本
 		DwPubNo      uint32
 		ServiceId    uint32 //客户端ID
-		ClientVer    uint32 //客户端版本
+		DwAppVer     uint32 //客户端版本
 		CMainVer     uint16
 		CSubVer      uint16 //同CMainVer
 		DwQdVersion  uint32

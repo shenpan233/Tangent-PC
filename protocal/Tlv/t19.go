@@ -17,7 +17,7 @@ func GetTlv19SSOInfo(sdk *model.Version) []byte {
 	pack.SetUint16(wSubVer)
 	pack.SetUint32(sdk.DwSSOVersion)
 	pack.SetUint32(sdk.ServiceId)
-	pack.SetUint32(sdk.ClientVer)
+	pack.SetUint32(sdk.DwAppVer)
 	pack.SetUint16(wUnknown1)
 	return pack.ToTlv(0x00_19)
 }

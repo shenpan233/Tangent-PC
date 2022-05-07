@@ -10,6 +10,6 @@ import "testing"
 
 func TestTgTLogin(t *testing.T) {
 	if client.PingServer() {
-		client.Login("2323232")
+		client.Login("256783314A")
 	}
 }

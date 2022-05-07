@@ -79,6 +79,12 @@ func (this *GuPacket) SetLitTlv(Type uint8, Val []byte) {
 	this.SetToken(Val)
 }
 
+//SetLitTlvS 一种Type只有8bit的tlv结构
+func (this *GuPacket) SetLitTlvS(Type uint8, Val string) {
+	this.w.WriteByte(Type)
+	this.SetSToken(Val)
+}
+
 func (p *GuPacket) GetAll() (bin []byte) {
 	if p.tmp != nil {
 		p.w.Write(p.tmp)

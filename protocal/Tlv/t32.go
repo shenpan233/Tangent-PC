@@ -22,7 +22,7 @@ func GetTlv32QDData(Machine []byte, sdk *model.Version) []byte {
 	pack.SetBytes(Machine)
 	pack.SetUint16(1)
 	pack.SetUint32(sdk.DwPubNo)
-	pack.SetUint16(uint16(sdk.ClientVer))
+	pack.SetUint16(uint16(sdk.DwAppVer))
 	pack.SetBytes([]byte{00, 00, 00, 00, 00, 00, 00, 00})
 	pack.SetBytes([]byte{0x07, 0xDE, 0x00, 0x03, 0x00, 0x06, 0x00, 0x01, 0x00, 0x04, 0x00, 0x04, 0x00, 0x04, 0x24, 0x5A, 0x00})
 	pack.SetBytes(util.GetRandomBin(16)) //TODO QDData:32轮的Tea懒得弄了

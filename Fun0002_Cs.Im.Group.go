@@ -14,6 +14,10 @@ import (
 	"github.com/shenpan233/Tangent-PC/utils/GuBuffer"
 )
 
+const (
+	_0x0002Send = 0x2A
+)
+
 func (this *TangentPC) pack0002(bin []byte) (SsoSeq uint16, buffer []byte) {
 	return this.packetCommonEnc(0x00_02, bin)
 }
